@@ -912,7 +912,7 @@
   {
     "missionID": "",
     "missionName": "",
-    "SVGColourPath": "satellites/sentinel-6/sentinel-6-512px-vectorizer.svg",
+    "SVGColourPath": "satellites/sentinel-6/sentinel-6.svg",
     "SVGBlackPath": "satellites/sentinel-6/sentinel-6-icon.svg",
     "PNG1024Path": "satellites/sentinel-6/sentinel-6-1024px.png",
     "PNG512Path": "satellites/sentinel-6/sentinel-6-512px.png",
