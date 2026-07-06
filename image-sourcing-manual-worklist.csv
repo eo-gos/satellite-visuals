@@ -1,0 +1,15 @@
+folder,owner,image_library_url,library_licence,likelihood,action
+goes-16,NOAA/NASA (GOES-R),https://www.goes-r.gov/multimedia/multimedia.html  /  images.nasa.gov ('GOES-R'),Public domain (US gov),High,source-open
+GOLD,NASA (GOLD),https://www.nasa.gov/mission/gold/  /  https://gold.cs.ucf.edu/,Public domain (US gov),High,source-open
+alos-4,JAXA,https://global.jaxa.jp/projects/sat/alos4/  /  https://jda.jaxa.jp/,JAXA Terms of Use (attribution; commercial needs application) https://www.jaxa.jp/policy/use_e.html,Medium,source-open (confirm terms)
+meteosat-10,EUMETSAT (MSG),https://www.eumetsat.int/media/image-library,EUMETSAT copyright + usage terms (free w/ attribution; verify),Medium,source-open (confirm terms)
+meteosat-3,"EUMETSAT (MFG, legacy)",https://www.eumetsat.int/media/image-library,EUMETSAT terms (may only have a generic Meteosat-first-gen render),Medium,source-open (confirm terms)
+kalpana-1,ISRO,https://www.isro.gov.in/,ISRO / Govt of India — possibly GODL-India; verify per image,Medium,source-open (confirm licence)
+cfosat,CNES (+CNSA),https://cnes.fr/en  /  https://www.flickr.com/photos/cnes/,"CNES — mixed; some CC on CNES Flickr, else editorial-only",Medium,source-open (confirm licence)
+novasar-1,SSTL / UK Space Agency,https://www.sstl.co.uk/  /  https://www.flickr.com/photos/uk_space_agency/,SSTL © (permission) BUT UKSA Flickr often OGL v3 / CC — check UKSA first,Medium,"source-open via UKSA, else permission"
+Pleiades-1B,Airbus / CNES,https://cnes.fr/en  /  https://www.intelligence-airbusds.com/,CNES side may be usable; Airbus © (permission),Medium,"source-open via CNES, else permission"
+FY-3C,CMA / NSMC (China),http://www.nsmc.org.cn/nsmc/en/home/index.html,Chinese govt — licence unclear/restrictive,Low,svg-fallback (or confirm)
+Light-1,UAE Space Agency / Khalifa Univ,https://space.gov.ae/,Unclear; obscure cubesat,Low,svg-fallback
+meznsat,UAE Space Agency / AUS,https://space.gov.ae/,Unclear; obscure cubesat,Low,svg-fallback
+earthdaily-constellation,EarthDaily (commercial),https://earthdaily.com/ (newsroom),Copyright — press/editorial only,Low,request-permission / svg-fallback
+HotSat-1,SatVu (commercial),https://www.satellitevu.com/,Copyright — press/editorial only,Low,request-permission / svg-fallback
