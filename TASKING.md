@@ -11,7 +11,7 @@ The EO-GOS portal shows a page for every Earth-observation mission (~1,200 and g
 1. **Attribution is not a licence.** Saying where an image came from does not give us permission to host it. An image is usable only if its *owner* has granted an open licence (public domain, CC0, CC BY, CC BY-SA, OGL) or their published media terms permit reuse.
 2. **Never source images from Google Images or general web search.** Only from sources that state the licence machine-readably or explicitly: Wikimedia Commons, NASA/NOAA/USGS (US-gov = public domain), agency media pages with stated terms.
 3. **Every photo gets its paperwork before it gets committed:** `imageLicense`, `imageCredit`, `imageSourceURL` in `index.json`, plus a row in `ATTRIBUTIONS.csv`. No exceptions.
-4. **Commercial-operator renders (Tier D) are never taken without explicit permission.** The operators (Planet, ICEYE, Umbra, …) are people we work with; a licensing mistake costs trust, not just a takedown. When in doubt: leave the SVG as the visual (`imageStatus: svg-fallback`) or ask George to email the operator.
+4. **Commercial-operator renders (Tier D) are never taken without explicit permission.** The operators (Planet, ICEYE, Umbra, …) are people we work with; a licensing mistake costs trust, not just a takedown. Permission is often easier than it sounds — see the Tier D permission ladder under Task A. When in doubt: leave the SVG as the visual (`imageStatus: svg-fallback`) or ask George.
 5. **SVGs must be original depictions, not traces.** Drawing the satellite in our house style (using photos only as reference for what it looks like) is our own copyright. A 1:1 trace of one specific render copies that image's composition and is a derivative — don't do it, and flag any existing SVG that looks like one.
 6. **Logos are never redrawn** — official files only (see Task C).
 7. **All work on branches, PR per batch, never commit to `main`.** Keep commit messages plain (no generated-by/co-author trailers).
@@ -48,7 +48,31 @@ In the PR description, list each mission and its licence. The reviewer checks: i
 
 Batch size: ~10 missions per PR is comfortable to review.
 
-For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 4 applies.
+For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 4 applies, and the ladder below is how permission actually gets obtained.
+
+### Tier D — how permission realistically happens
+
+Three routes, tried in order:
+
+**Route 1 — published media terms (your job, do this first).** Many operators run a press/media page whose stated terms already permit use with credit. If the terms are clear, that *is* the permission — no email needed. Record: `imageSourceURL` = the media page, `imageCredit` = the credit they specify, `imageStatus: media-terms`. Verified examples:
+
+- **ICEYE** — [media assets page](https://www.iceye.com/newsroom/media-assets) offers satellite hardware renders and states: *"All photos, images and videos on this page are subject to copyright and should be credited to ICEYE, unless otherwise indicated."* → credit "ICEYE".
+- **Capella Space** — [media kit](https://www.capellaspace.com/media-kit) offers **Satellite Renders** and launch photos with explicit per-context rules: print/web = *"Image credit: Capella"*.
+
+Leads to follow up by hand (their terms pages need a browser; scripted checks couldn't confirm):
+
+- **Airbus** — Media Centre (mediacentre.airbus.com); find its conditions-of-use for Pleiades renders.
+- **Maxar/Vantor** — formal [Display & Media License](https://vantor.com/resources/display-media-license) with attribution format `[Product] © [YEAR] Maxar Technologies`; confirm whether it covers spacecraft photos or only data imagery. **Caution:** Maxar's Open Data Program is CC BY-**NC** — NC fails our licence rules; don't take it via the automated path.
+- **Planet** — press page (planet.com/press) was down when checked; retry.
+- **Umbra** — all their *data* is CC BY 4.0 ([open-license commitment](https://umbra.space/open-license)), so Umbra SAR imagery clears cleanly — but their [press kit](https://umbra.space/press-kit/) states no terms for spacecraft renders → route 2.
+
+If the terms are absent, ambiguous, or say "contact us" → escalate to George.
+
+**Route 2 — ask via an existing relationship (George).** For operators we already correspond with (survey counterparties: ICEYE, Umbra, iQPS, Planet, …), George appends a one-paragraph ask to an existing thread: approved render + preferred credit line for the mission page. Operators generally want their spacecraft depicted correctly in a CEOS-facing directory. Your part: prep the target list (operator, mission, proposed image, contact hint).
+
+**Route 3 — cold email to press@ (George, standard template).** Low expectation; the SVG stays in place until an answer arrives, and silence costs nothing.
+
+Record-keeping for routes 2–3: a reply saying "yes, use X with credit Y" is sufficient — note the sender and date in the `ATTRIBUTIONS.csv` notes column and keep the email. No signed paperwork needed.
 
 ## Task B — the 12 blank mission IDs (issue #99)
 
