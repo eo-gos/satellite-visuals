@@ -11,114 +11,16 @@ other-spacecraft/ibex/ibex-1024px.png,,repo maintainers,https://github.com/gamed
 other-spacecraft/ibex/ibex-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from ibex.svg via tools/render_pngs.mjs
 other-spacecraft/ibex/ibex-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 other-spacecraft/ibex/ibex.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/acrimsat/acrimsat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
-satellites/acrimsat/acrimsat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
-satellites/acrimsat/acrimsat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/acrimsat/acrimsat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/amazonia-1/amazonia-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
-satellites/amazonia-1/amazonia-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
-satellites/amazonia-1/amazonia-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/amazonia-1/amazonia-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/aws/aws-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
-satellites/aws/aws-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
-satellites/aws/aws-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/aws/aws.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/csg-2/csg-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
-satellites/csg-2/csg-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
-satellites/csg-2/csg-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/csg-2/csg-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/cygnss/cygnss-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cygnss.svg via tools/render_pngs.mjs
-satellites/cygnss/cygnss-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cygnss.svg via tools/render_pngs.mjs
-satellites/cygnss/cygnss-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/cygnss/cygnss.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/dscovr/dscovr-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
-satellites/dscovr/dscovr-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
-satellites/dscovr/dscovr-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/dscovr/dscovr.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/dubaisat-2/dubaisat-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-2.svg via tools/render_pngs.mjs
-satellites/dubaisat-2/dubaisat-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-2.svg via tools/render_pngs.mjs
-satellites/dubaisat-2/dubaisat-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/dubaisat-2/dubaisat-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/fy-1/fy-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-1.svg via tools/render_pngs.mjs
-satellites/fy-1/fy-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-1.svg via tools/render_pngs.mjs
-satellites/fy-1/fy-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/fy-1/fy-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/fy-3c/fy-3c-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-3c.svg via tools/render_pngs.mjs
-satellites/fy-3c/fy-3c-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-3c.svg via tools/render_pngs.mjs
-satellites/fy-3c/fy-3c-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/fy-3c/fy-3c.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/goce/goce-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
-satellites/goce/goce-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
-satellites/goce/goce-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/goce/goce.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/gold/gold-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
-satellites/gold/gold-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
-satellites/gold/gold-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/gold/gold.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/gomx4/gomx4-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
-satellites/gomx4/gomx4-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
-satellites/gomx4/gomx4-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/gomx4/gomx4.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/hotsat-1/hotsat-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from hotsat-1.svg via tools/render_pngs.mjs
-satellites/hotsat-1/hotsat-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from hotsat-1.svg via tools/render_pngs.mjs
-satellites/hotsat-1/hotsat-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/hotsat-1/hotsat-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/icesat/icesat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from icesat.svg via tools/render_pngs.mjs
-satellites/icesat/icesat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from icesat.svg via tools/render_pngs.mjs
-satellites/icesat/icesat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/icesat/icesat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/lares/lares-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from lares.svg via tools/render_pngs.mjs
-satellites/lares/lares-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from lares.svg via tools/render_pngs.mjs
-satellites/lares/lares-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/lares/lares.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/light-1/light-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from light-1.svg via tools/render_pngs.mjs
-satellites/light-1/light-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from light-1.svg via tools/render_pngs.mjs
-satellites/light-1/light-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/light-1/light-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/npoess-2/npoess-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from npoess-2.svg via tools/render_pngs.mjs
-satellites/npoess-2/npoess-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from npoess-2.svg via tools/render_pngs.mjs
-satellites/npoess-2/npoess-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/npoess-2/npoess-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/prisma/prisma-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from prisma.svg via tools/render_pngs.mjs
-satellites/prisma/prisma-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from prisma.svg via tools/render_pngs.mjs
-satellites/prisma/prisma-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/prisma/prisma.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/pleiades-1b/pleiades-1b-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from pleiades-1b.svg via tools/render_pngs.mjs
-satellites/pleiades-1b/pleiades-1b-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from pleiades-1b.svg via tools/render_pngs.mjs
-satellites/pleiades-1b/pleiades-1b-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/pleiades-1b/pleiades-1b.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/rapideye/rapideye-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from rapideye.svg via tools/render_pngs.mjs
-satellites/rapideye/rapideye-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from rapideye.svg via tools/render_pngs.mjs
-satellites/rapideye/rapideye-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/rapideye/rapideye.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/resurs-01-n2/resurs-01-n2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from resurs-01-n2.svg via tools/render_pngs.mjs
-satellites/resurs-01-n2/resurs-01-n2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from resurs-01-n2.svg via tools/render_pngs.mjs
-satellites/resurs-01-n2/resurs-01-n2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/resurs-01-n2/resurs-01-n2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/smos/smos-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
-satellites/smos/smos-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
-satellites/smos/smos-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/smos/smos.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/sorce/sorce-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
-satellites/sorce/sorce-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
-satellites/sorce/sorce-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/sorce/sorce.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/swot/swot-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
-satellites/swot/swot-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
-satellites/swot/swot-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/swot/swot.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/timed/timed-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from timed.svg via tools/render_pngs.mjs
-satellites/timed/timed-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from timed.svg via tools/render_pngs.mjs
-satellites/timed/timed-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/timed/timed.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/terrasar-x/terrasar-x-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from terrasar-x.svg via tools/render_pngs.mjs
-satellites/terrasar-x/terrasar-x-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from terrasar-x.svg via tools/render_pngs.mjs
-satellites/terrasar-x/terrasar-x-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/terrasar-x/terrasar-x.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/ace/ace-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/ace/ace-photo.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png
 satellites/ace/ace.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/acrimsat/acrimsat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
+satellites/acrimsat/acrimsat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
+satellites/acrimsat/acrimsat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/acrimsat/acrimsat-photo.png,File:ACRIMSat spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACRIMSat_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ACRIMSat_spacecraft_model.png
+satellites/acrimsat/acrimsat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/alos-2/alos-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from alos-2.svg via tools/render_pngs.mjs
 satellites/alos-2/alos-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from alos-2.svg via tools/render_pngs.mjs
 satellites/alos-2/alos-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -127,6 +29,15 @@ satellites/alos-4/alos-4-1024px.png,,repo maintainers,https://github.com/gameday
 satellites/alos-4/alos-4-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from alos-4.svg via tools/render_pngs.mjs
 satellites/alos-4/alos-4-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/alos-4/alos-4.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/amazonia-1/amazonia-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
+satellites/amazonia-1/amazonia-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
+satellites/amazonia-1/amazonia-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/amazonia-1/amazonia-1-photo.jpg,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg
+satellites/amazonia-1/amazonia-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/aws/aws-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
+satellites/aws/aws-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
+satellites/aws/aws-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/aws/aws.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/cfosat/cfosat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cfosat.svg via tools/render_pngs.mjs
 satellites/cfosat/cfosat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cfosat.svg via tools/render_pngs.mjs
 satellites/cfosat/cfosat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -134,19 +45,35 @@ satellites/cfosat/cfosat.svg,,repo maintainers,https://github.com/gamedaygeorge/
 satellites/cloudsat/cloudsat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cloudsat.svg via tools/render_pngs.mjs
 satellites/cloudsat/cloudsat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cloudsat.svg via tools/render_pngs.mjs
 satellites/cloudsat/cloudsat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/cloudsat/cloudsat-photo.png,File:CloudSat spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:CloudSat_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:CloudSat_spacecraft_model.png
 satellites/cloudsat/cloudsat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/cryosat-2/cryosat-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cryosat-2.svg via tools/render_pngs.mjs
 satellites/cryosat-2/cryosat-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cryosat-2.svg via tools/render_pngs.mjs
 satellites/cryosat-2/cryosat-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/cryosat-2/cryosat-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/csg-2/csg-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
+satellites/csg-2/csg-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
+satellites/csg-2/csg-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/csg-2/csg-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/cygnss/cygnss-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cygnss.svg via tools/render_pngs.mjs
+satellites/cygnss/cygnss-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from cygnss.svg via tools/render_pngs.mjs
+satellites/cygnss/cygnss-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/cygnss/cygnss-photo.png,File:CYGNSS spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:CYGNSS_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:CYGNSS_spacecraft_model.png
+satellites/cygnss/cygnss.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/dscovr/dscovr-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
+satellites/dscovr/dscovr-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
+satellites/dscovr/dscovr-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/dscovr/dscovr.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/dubaisat-1/dubaisat-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-1.svg via tools/render_pngs.mjs
 satellites/dubaisat-1/dubaisat-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-1.svg via tools/render_pngs.mjs
 satellites/dubaisat-1/dubaisat-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/dubaisat-1/dubaisat-1-photo.jpg,File:DubaiSat-1.jpg,Mohammed Bin Rashid Space Centre,https://commons.wikimedia.org/wiki/File:DubaiSat-1.jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:DubaiSat-1.jpg
 satellites/dubaisat-1/dubaisat-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/epoponcassiope/epoponcassiope-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
-satellites/epoponcassiope/epoponcassiope-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
-satellites/epoponcassiope/epoponcassiope-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/epoponcassiope/epoponcassiope.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/dubaisat-2/dubaisat-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-2.svg via tools/render_pngs.mjs
+satellites/dubaisat-2/dubaisat-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from dubaisat-2.svg via tools/render_pngs.mjs
+satellites/dubaisat-2/dubaisat-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/dubaisat-2/dubaisat-2-photo.jpg,File:DubaiSat-2 (cropped).jpg,Emirates Institution for Advanced Science and Technology,https://commons.wikimedia.org/wiki/File:DubaiSat-2_(cropped).jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:DubaiSat-2_(cropped).jpg
+satellites/dubaisat-2/dubaisat-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/earthcare/earthcare-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from earthcare.svg via tools/render_pngs.mjs
 satellites/earthcare/earthcare-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from earthcare.svg via tools/render_pngs.mjs
 satellites/earthcare/earthcare-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -159,33 +86,71 @@ satellites/envisat/envisat-1024px.png,,repo maintainers,https://github.com/gamed
 satellites/envisat/envisat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from envisat.svg via tools/render_pngs.mjs
 satellites/envisat/envisat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/envisat/envisat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/epoponcassiope/epoponcassiope-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
+satellites/epoponcassiope/epoponcassiope-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
+satellites/epoponcassiope/epoponcassiope-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/epoponcassiope/epoponcassiope.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/fy-1/fy-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-1.svg via tools/render_pngs.mjs
+satellites/fy-1/fy-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-1.svg via tools/render_pngs.mjs
+satellites/fy-1/fy-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/fy-1/fy-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/fy-3c/fy-3c-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-3c.svg via tools/render_pngs.mjs
+satellites/fy-3c/fy-3c-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from fy-3c.svg via tools/render_pngs.mjs
+satellites/fy-3c/fy-3c-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/fy-3c/fy-3c.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/goce/goce-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
+satellites/goce/goce-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
+satellites/goce/goce-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/goce/goce.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/goes-16/goes-16-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goes-16.svg via tools/render_pngs.mjs
 satellites/goes-16/goes-16-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goes-16.svg via tools/render_pngs.mjs
 satellites/goes-16/goes-16-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/goes-16/goes-16.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/goes-19/goes-19-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/goes-19/goes-19-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goes-19.svg via tools/render_pngs.mjs
 satellites/goes-19/goes-19-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from goes-19.svg via tools/render_pngs.mjs
+satellites/goes-19/goes-19-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/goes-19/goes-19.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/gold/gold-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
+satellites/gold/gold-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
+satellites/gold/gold-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/gold/gold-photo.jpg,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg
+satellites/gold/gold.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/gomx4/gomx4-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
+satellites/gomx4/gomx4-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
+satellites/gomx4/gomx4-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/gomx4/gomx4.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/gosat-gw/gosat-gw-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gosat-gw.svg via tools/render_pngs.mjs
 satellites/gosat-gw/gosat-gw-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from gosat-gw.svg via tools/render_pngs.mjs
 satellites/gosat-gw/gosat-gw-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/gosat-gw/gosat-gw.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/hotsat-1/hotsat-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from hotsat-1.svg via tools/render_pngs.mjs
+satellites/hotsat-1/hotsat-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from hotsat-1.svg via tools/render_pngs.mjs
+satellites/hotsat-1/hotsat-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/hotsat-1/hotsat-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/icesat/icesat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from icesat.svg via tools/render_pngs.mjs
+satellites/icesat/icesat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from icesat.svg via tools/render_pngs.mjs
+satellites/icesat/icesat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/icesat/icesat-photo.png,File:ICESat spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ICESat_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ICESat_spacecraft_model.png
+satellites/icesat/icesat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/jason-1/jason-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-1.svg via tools/render_pngs.mjs
 satellites/jason-1/jason-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-1.svg via tools/render_pngs.mjs
 satellites/jason-1/jason-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/jason-1/jason-1-photo.jpg,File:Jason-1.jpg,NASA,https://commons.wikimedia.org/wiki/File:Jason-1.jpg,Public domain,https://commons.wikimedia.org/wiki/File:Jason-1.jpg
 satellites/jason-1/jason-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/jason-2/jason-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-2.svg via tools/render_pngs.mjs
 satellites/jason-2/jason-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-2.svg via tools/render_pngs.mjs
 satellites/jason-2/jason-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/jason-2/jason-2-photo.png,File:OSTM Jason 2 spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:OSTM_Jason_2_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:OSTM_Jason_2_spacecraft_model.png
 satellites/jason-2/jason-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/jason-3/jason-3-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-3.svg via tools/render_pngs.mjs
 satellites/jason-3/jason-3-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jason-3.svg via tools/render_pngs.mjs
 satellites/jason-3/jason-3-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/jason-3/jason-3-photo.png,File:Jason-3 spacecraft model 2.png,NASA,https://commons.wikimedia.org/wiki/File:Jason-3_spacecraft_model_2.png,Public domain,https://commons.wikimedia.org/wiki/File:Jason-3_spacecraft_model_2.png
 satellites/jason-3/jason-3.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/jpss-1/jpss-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jpss-1.svg via tools/render_pngs.mjs
 satellites/jpss-1/jpss-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jpss-1.svg via tools/render_pngs.mjs
 satellites/jpss-1/jpss-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/jpss-1/jpss-1-photo.png,File:NOAA-20 JPSS-1 spacecraft model 3.png,NASA,https://commons.wikimedia.org/wiki/File:NOAA-20_JPSS-1_spacecraft_model_3.png,Public domain,https://commons.wikimedia.org/wiki/File:NOAA-20_JPSS-1_spacecraft_model_3.png
 satellites/jpss-1/jpss-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/jpss-2/jpss-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jpss-2.svg via tools/render_pngs.mjs
 satellites/jpss-2/jpss-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from jpss-2.svg via tools/render_pngs.mjs
@@ -198,19 +163,31 @@ satellites/kalpana-1/kalpana-1.svg,,repo maintainers,https://github.com/gamedayg
 satellites/khalifasat/khalifasat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from khalifasat.svg via tools/render_pngs.mjs
 satellites/khalifasat/khalifasat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from khalifasat.svg via tools/render_pngs.mjs
 satellites/khalifasat/khalifasat-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/khalifasat/khalifasat-photo.jpg,File:KhalifaSat UAE Satellite.jpg,Sana Kiyani,https://commons.wikimedia.org/wiki/File:KhalifaSat_UAE_Satellite.jpg,CC BY-SA 4.0,https://commons.wikimedia.org/wiki/File:KhalifaSat_UAE_Satellite.jpg
 satellites/khalifasat/khalifasat.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/landsat-7/landsat-7-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-7.svg via tools/render_pngs.mjs
 satellites/landsat-7/landsat-7-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-7.svg via tools/render_pngs.mjs
 satellites/landsat-7/landsat-7-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/landsat-7/landsat-7-photo.png,File:Landsat 7 Satellite 3D Render.png,NASA,https://commons.wikimedia.org/wiki/File:Landsat_7_Satellite_3D_Render.png,Public domain,https://commons.wikimedia.org/wiki/File:Landsat_7_Satellite_3D_Render.png
 satellites/landsat-7/landsat-7.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/landsat-8/landsat-8-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-8.svg via tools/render_pngs.mjs
 satellites/landsat-8/landsat-8-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-8.svg via tools/render_pngs.mjs
 satellites/landsat-8/landsat-8-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/landsat-8/landsat-8-photo.png,File:LDCM Landsat 8 spacecraft model.png,NASA's Goddard Space Flight Center Conceptual Image Lab,https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png
 satellites/landsat-8/landsat-8.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/landsat-9/landsat-9-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-9.svg via tools/render_pngs.mjs
 satellites/landsat-9/landsat-9-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from landsat-9.svg via tools/render_pngs.mjs
 satellites/landsat-9/landsat-9-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/landsat-9/landsat-9-photo.png,File:Landsat 9 Still – 3.png,NASA/Ross Walter,https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_3.png,Public domain,https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_3.png
 satellites/landsat-9/landsat-9.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/lares/lares-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from lares.svg via tools/render_pngs.mjs
+satellites/lares/lares-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from lares.svg via tools/render_pngs.mjs
+satellites/lares/lares-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/lares/lares.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/light-1/light-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from light-1.svg via tools/render_pngs.mjs
+satellites/light-1/light-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from light-1.svg via tools/render_pngs.mjs
+satellites/light-1/light-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/light-1/light-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/meteosat-10/meteosat-10-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from meteosat-10.svg via tools/render_pngs.mjs
 satellites/meteosat-10/meteosat-10-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from meteosat-10.svg via tools/render_pngs.mjs
 satellites/meteosat-10/meteosat-10-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -243,6 +220,10 @@ satellites/novasar-1/novasar-1-1024px.png,,repo maintainers,https://github.com/g
 satellites/novasar-1/novasar-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from novasar-1.svg via tools/render_pngs.mjs
 satellites/novasar-1/novasar-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/novasar-1/novasar-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/npoess-2/npoess-2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from npoess-2.svg via tools/render_pngs.mjs
+satellites/npoess-2/npoess-2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from npoess-2.svg via tools/render_pngs.mjs
+satellites/npoess-2/npoess-2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/npoess-2/npoess-2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/odin/odin-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from odin.svg via tools/render_pngs.mjs
 satellites/odin/odin-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from odin.svg via tools/render_pngs.mjs
 satellites/odin/odin-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -251,6 +232,22 @@ satellites/planet-dove/planet-dove-1024px.png,,repo maintainers,https://github.c
 satellites/planet-dove/planet-dove-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from planet-dove.svg via tools/render_pngs.mjs
 satellites/planet-dove/planet-dove-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/planet-dove/planet-dove.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/pleiades-1b/pleiades-1b-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from pleiades-1b.svg via tools/render_pngs.mjs
+satellites/pleiades-1b/pleiades-1b-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from pleiades-1b.svg via tools/render_pngs.mjs
+satellites/pleiades-1b/pleiades-1b-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/pleiades-1b/pleiades-1b.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/prisma/prisma-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from prisma.svg via tools/render_pngs.mjs
+satellites/prisma/prisma-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from prisma.svg via tools/render_pngs.mjs
+satellites/prisma/prisma-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/prisma/prisma.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/rapideye/rapideye-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from rapideye.svg via tools/render_pngs.mjs
+satellites/rapideye/rapideye-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from rapideye.svg via tools/render_pngs.mjs
+satellites/rapideye/rapideye-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/rapideye/rapideye.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/resurs-01-n2/resurs-01-n2-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from resurs-01-n2.svg via tools/render_pngs.mjs
+satellites/resurs-01-n2/resurs-01-n2-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from resurs-01-n2.svg via tools/render_pngs.mjs
+satellites/resurs-01-n2/resurs-01-n2-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/resurs-01-n2/resurs-01-n2.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/saocom-1a/saocom-1a-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from saocom-1a.svg via tools/render_pngs.mjs
 satellites/saocom-1a/saocom-1a-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from saocom-1a.svg via tools/render_pngs.mjs
 satellites/saocom-1a/saocom-1a-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
@@ -262,6 +259,7 @@ satellites/scisat-1/scisat-1.svg,,repo maintainers,https://github.com/gamedaygeo
 satellites/sentinel-1/sentinel-1-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-1.svg via tools/render_pngs.mjs
 satellites/sentinel-1/sentinel-1-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-1.svg via tools/render_pngs.mjs
 satellites/sentinel-1/sentinel-1-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-1/sentinel-1-photo.jpg,File:Sentinel 1-IMG 5874-white.jpg,Rama,https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg,CC BY-SA 2.0 fr,https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg
 satellites/sentinel-1/sentinel-1.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-1c/sentinel-1c-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-1c.svg via tools/render_pngs.mjs
 satellites/sentinel-1c/sentinel-1c-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-1c.svg via tools/render_pngs.mjs
@@ -278,10 +276,12 @@ satellites/sentinel-2c/sentinel-2c.svg,,repo maintainers,https://github.com/game
 satellites/sentinel-3/sentinel-3-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-3/sentinel-3-photo.jpg,File:Sentinel-3 spacecraft model.svg,SkywalkerPL,https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg,CC BY 4.0,https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg
 satellites/sentinel-3/sentinel-3.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-4/sentinel-4-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
 satellites/sentinel-4/sentinel-4-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
 satellites/sentinel-4/sentinel-4-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-4/sentinel-4-photo.jpg,File:MTG-S Sentinel 4.jpg,Chtiwiki,https://commons.wikimedia.org/wiki/File:MTG-S_Sentinel_4.jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:MTG-S_Sentinel_4.jpg
 satellites/sentinel-4/sentinel-4.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-5a/sentinel-5a-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-5a.svg via tools/render_pngs.mjs
 satellites/sentinel-5a/sentinel-5a-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-5a.svg via tools/render_pngs.mjs
@@ -294,8 +294,32 @@ satellites/sentinel-5p/sentinel-5p.svg,,repo maintainers,https://github.com/game
 satellites/sentinel-6/sentinel-6-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-6.svg via tools/render_pngs.mjs
 satellites/sentinel-6/sentinel-6-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-6.svg via tools/render_pngs.mjs
 satellites/sentinel-6/sentinel-6-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-6/sentinel-6-photo.png,File:Sentinel-6 Jason-CS spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:Sentinel-6_Jason-CS_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:Sentinel-6_Jason-CS_spacecraft_model.png
 satellites/sentinel-6/sentinel-6.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/smos/smos-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
+satellites/smos/smos-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
+satellites/smos/smos-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/smos/smos.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sorce/sorce-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
+satellites/sorce/sorce-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
+satellites/sorce/sorce-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sorce/sorce-photo.png,File:SORCE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:SORCE_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:SORCE_spacecraft_model.png
+satellites/sorce/sorce.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/swarm/swarm-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swarm.svg via tools/render_pngs.mjs
 satellites/swarm/swarm-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swarm.svg via tools/render_pngs.mjs
 satellites/swarm/swarm-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/swarm/swarm.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/swot/swot-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
+satellites/swot/swot-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
+satellites/swot/swot-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/swot/swot-photo.png,File:SWOT spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:SWOT_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:SWOT_spacecraft_model.png
+satellites/swot/swot.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/terrasar-x/terrasar-x-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from terrasar-x.svg via tools/render_pngs.mjs
+satellites/terrasar-x/terrasar-x-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from terrasar-x.svg via tools/render_pngs.mjs
+satellites/terrasar-x/terrasar-x-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/terrasar-x/terrasar-x.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/timed/timed-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from timed.svg via tools/render_pngs.mjs
+satellites/timed/timed-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from timed.svg via tools/render_pngs.mjs
+satellites/timed/timed-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/timed/timed-photo.jpg,File:TIMED.jpg,NASA,https://commons.wikimedia.org/wiki/File:TIMED.jpg,Public domain,https://commons.wikimedia.org/wiki/File:TIMED.jpg
+satellites/timed/timed.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/

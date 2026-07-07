@@ -6,12 +6,13 @@
     "SVGBlackPath": "satellites/ace/ace-icon.svg",
     "PNG1024Path": "satellites/ace/ace-1024px.png",
     "PNG512Path": "satellites/ace/ace-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/05/ACE.png",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png",
     "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/ace/ace-photo.png"
   },
   {
     "missionID": "147",
@@ -20,12 +21,13 @@
     "SVGBlackPath": "satellites/acrimsat/acrimsat-icon.svg",
     "PNG1024Path": "satellites/acrimsat/acrimsat-1024px.png",
     "PNG512Path": "satellites/acrimsat/acrimsat-512px.png",
-    "imageSourceURL": "",
-    "imageRightsHolder": "NASA/JPL",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:ACRIMSat_spacecraft_model.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/acrimsat/acrimsat-photo.png"
   },
   {
     "missionID": "629",
@@ -39,7 +41,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "861",
@@ -53,7 +56,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "602",
@@ -62,12 +66,13 @@
     "SVGBlackPath": "satellites/amazonia-1/amazonia-1-icon.svg",
     "PNG1024Path": "satellites/amazonia-1/amazonia-1-1024px.png",
     "PNG512Path": "satellites/amazonia-1/amazonia-1-512px.png",
-    "imageSourceURL": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ2TWXhFf0W9upk07UQGqEfy6ONPZXDSQIOBA&s",
-    "imageRightsHolder": "INPE (Brazil)",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg",
+    "imageRightsHolder": "CPTEC - INPE",
+    "imageLicense": "CC BY-SA 3.0",
+    "imageCredit": "http://www3.inpe.br/amazonia-1/en/about_satellite/",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/amazonia-1/amazonia-1-photo.jpg"
   },
   {
     "missionID": "986",
@@ -81,7 +86,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "723",
@@ -95,7 +101,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "347",
@@ -104,12 +111,13 @@
     "SVGBlackPath": "satellites/cloudsat/cloudsat-icon.svg",
     "PNG1024Path": "satellites/cloudsat/cloudsat-1024px.png",
     "PNG512Path": "satellites/cloudsat/cloudsat-512px.png",
-    "imageSourceURL": "https://upload.wikimedia.org/wikipedia/commons/d/dc/CloudSat_spacecraft_model.png",
-    "imageRightsHolder": "NASA/JPL",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:CloudSat_spacecraft_model.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/cloudsat/cloudsat-photo.png"
   },
   {
     "missionID": "529",
@@ -123,7 +131,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "635",
@@ -137,7 +146,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "740",
@@ -146,12 +156,13 @@
     "SVGBlackPath": "satellites/cygnss/cygnss-icon.svg",
     "PNG1024Path": "satellites/cygnss/cygnss-1024px.png",
     "PNG512Path": "satellites/cygnss/cygnss-512px.png",
-    "imageSourceURL": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:CYGNSS_spacecraft_model.png",
     "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/cygnss/cygnss-photo.png"
   },
   {
     "missionID": "350",
@@ -165,7 +176,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "pending-public-domain",
+    "PhotoPath": ""
   },
   {
     "missionID": "912",
@@ -174,12 +186,13 @@
     "SVGBlackPath": "satellites/dubaisat-1/dubaisat-1-icon.svg",
     "PNG1024Path": "satellites/dubaisat-1/dubaisat-1-1024px.png",
     "PNG512Path": "satellites/dubaisat-1/dubaisat-1-512px.png",
-    "imageSourceURL": "",
-    "imageRightsHolder": "MBRSC (UAE)",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:DubaiSat-1.jpg",
+    "imageRightsHolder": "Mohammed Bin Rashid Space Centre",
+    "imageLicense": "CC BY-SA 3.0",
+    "imageCredit": "Own work",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/dubaisat-1/dubaisat-1-photo.jpg"
   },
   {
     "missionID": "913",
@@ -188,12 +201,13 @@
     "SVGBlackPath": "satellites/dubaisat-2/dubaisat-2-icon.svg",
     "PNG1024Path": "satellites/dubaisat-2/dubaisat-2-1024px.png",
     "PNG512Path": "satellites/dubaisat-2/dubaisat-2-512px.png",
-    "imageSourceURL": "",
-    "imageRightsHolder": "MBRSC (UAE)",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:DubaiSat-2_(cropped).jpg",
+    "imageRightsHolder": "Emirates Institution for Advanced Science and Technology",
+    "imageLicense": "CC BY-SA 3.0",
+    "imageCredit": "Own work",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/dubaisat-2/dubaisat-2-photo.jpg"
   },
   {
     "missionID": "",
@@ -207,7 +221,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "1514",
@@ -221,7 +236,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "2",
@@ -235,7 +251,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "730",
@@ -249,7 +266,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -263,7 +281,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "368",
@@ -277,7 +296,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "376",
@@ -291,7 +311,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "470",
@@ -305,7 +326,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "pending-public-domain",
+    "PhotoPath": ""
   },
   {
     "missionID": "724",
@@ -319,7 +341,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "pending-public-domain",
+    "PhotoPath": ""
   },
   {
     "missionID": "1086",
@@ -328,12 +351,13 @@
     "SVGBlackPath": "satellites/gold/gold-icon.svg",
     "PNG1024Path": "satellites/gold/gold-1024px.png",
     "PNG512Path": "satellites/gold/gold-512px.png",
-    "imageSourceURL": "",
-    "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg",
+    "imageRightsHolder": "NASA/CIL/Chris Meaney",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://svs.gsfc.nasa.gov/12833 (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/gold/gold-photo.jpg"
   },
   {
     "missionID": "917",
@@ -347,7 +371,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "862",
@@ -361,7 +386,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "1479",
@@ -375,7 +401,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "212",
@@ -384,12 +411,13 @@
     "SVGBlackPath": "satellites/icesat/icesat-icon.svg",
     "PNG1024Path": "satellites/icesat/icesat-1024px.png",
     "PNG512Path": "satellites/icesat/icesat-512px.png",
-    "imageSourceURL": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:ICESat_spacecraft_model.png",
     "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/icesat/icesat-photo.png"
   },
   {
     "missionID": "286",
@@ -398,12 +426,13 @@
     "SVGBlackPath": "satellites/jason-1/jason-1-icon.svg",
     "PNG1024Path": "satellites/jason-1/jason-1-1024px.png",
     "PNG512Path": "satellites/jason-1/jason-1-512px.png",
-    "imageSourceURL": "https://upload.wikimedia.org/wikipedia/commons/5/57/Jason-1.jpg",
-    "imageRightsHolder": "NASA/CNES",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Jason-1.jpg",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "http://sealevel.jpl.nasa.gov/mission/jason-1.html (http://sealevel.jpl.nasa.gov/mission/images/jason-1-in-space.gif)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/jason-1/jason-1-photo.jpg"
   },
   {
     "missionID": "419",
@@ -412,12 +441,13 @@
     "SVGBlackPath": "satellites/jason-2/jason-2-icon.svg",
     "PNG1024Path": "satellites/jason-2/jason-2-1024px.png",
     "PNG512Path": "satellites/jason-2/jason-2-512px.png",
-    "imageSourceURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/5/54/OSTM_Jason_2_spacecraft_model.png/1200px-OSTM_Jason_2_spacecraft_model.png",
-    "imageRightsHolder": "NASA/NOAA/CNES/EUMETSAT",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:OSTM_Jason_2_spacecraft_model.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/jason-2/jason-2-photo.png"
   },
   {
     "missionID": "592",
@@ -426,12 +456,13 @@
     "SVGBlackPath": "satellites/jason-3/jason-3-icon.svg",
     "PNG1024Path": "satellites/jason-3/jason-3-1024px.png",
     "PNG512Path": "satellites/jason-3/jason-3-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/10/Jason3-sm.png?w=300",
-    "imageRightsHolder": "NASA/NOAA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Jason-3_spacecraft_model_2.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/jason-3/jason-3-photo.png"
   },
   {
     "missionID": "",
@@ -440,12 +471,13 @@
     "SVGBlackPath": "satellites/jpss-1/jpss-1-icon.svg",
     "PNG1024Path": "satellites/jpss-1/jpss-1-1024px.png",
     "PNG512Path": "satellites/jpss-1/jpss-1-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/10/JPSS-sm.png?w=300",
-    "imageRightsHolder": "NOAA/NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:NOAA-20_JPSS-1_spacecraft_model_3.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/jpss-1/jpss-1-photo.png"
   },
   {
     "missionID": "",
@@ -459,7 +491,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "pending-public-domain",
+    "PhotoPath": ""
   },
   {
     "missionID": "436",
@@ -473,7 +506,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "914",
@@ -482,12 +516,13 @@
     "SVGBlackPath": "satellites/khalifasat/khalifasat-icon.svg",
     "PNG1024Path": "satellites/khalifasat/khalifasat-1024px.png",
     "PNG512Path": "satellites/khalifasat/khalifasat-512px.png",
-    "imageSourceURL": "https://upload.wikimedia.org/wikipedia/commons/thumb/6/6e/KhalifaSat_UAE_Satellite.jpg/960px-KhalifaSat_UAE_Satellite.jpg",
-    "imageRightsHolder": "MBRSC (UAE)",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:KhalifaSat_UAE_Satellite.jpg",
+    "imageRightsHolder": "Sana Kiyani",
+    "imageLicense": "CC BY-SA 4.0",
+    "imageCredit": "Own work",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/khalifasat/khalifasat-photo.jpg"
   },
   {
     "missionID": "349",
@@ -496,12 +531,13 @@
     "SVGBlackPath": "satellites/landsat-7/landsat-7-icon.svg",
     "PNG1024Path": "satellites/landsat-7/landsat-7-1024px.png",
     "PNG512Path": "satellites/landsat-7/landsat-7-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/10/Landsat_7_b-sm.png?w=300",
-    "imageRightsHolder": "NASA/USGS",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Landsat_7_Satellite_3D_Render.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "Landsat 7 Satellite 3D Render",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/landsat-7/landsat-7-photo.png"
   },
   {
     "missionID": "547",
@@ -510,12 +546,13 @@
     "SVGBlackPath": "satellites/landsat-8/landsat-8-icon.svg",
     "PNG1024Path": "satellites/landsat-8/landsat-8-1024px.png",
     "PNG512Path": "satellites/landsat-8/landsat-8-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/10/Landsat8_LDCM-sm.png?w=300",
-    "imageRightsHolder": "NASA/USGS",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:LDCM_Landsat_8_spacecraft_model.png",
+    "imageRightsHolder": "NASA's Goddard Space Flight Center Conceptual Image Lab",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/get-involved/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/landsat-8/landsat-8-photo.png"
   },
   {
     "missionID": "772",
@@ -524,12 +561,13 @@
     "SVGBlackPath": "satellites/landsat-9/landsat-9-icon.svg",
     "PNG1024Path": "satellites/landsat-9/landsat-9-1024px.png",
     "PNG512Path": "satellites/landsat-9/landsat-9-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/05/landsat9.png",
-    "imageRightsHolder": "NASA/USGS",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_3.png",
+    "imageRightsHolder": "NASA/Ross Walter",
+    "imageLicense": "Public domain",
+    "imageCredit": "Landsat 9 Still \u2013 3",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/landsat-9/landsat-9-photo.png"
   },
   {
     "missionID": "19",
@@ -543,7 +581,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "916",
@@ -557,7 +596,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "260",
@@ -571,7 +611,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "451",
@@ -585,7 +626,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "32",
@@ -599,7 +641,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "259",
@@ -613,7 +656,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "230",
@@ -627,7 +671,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "915",
@@ -641,7 +686,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -655,7 +701,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "856",
@@ -669,7 +716,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "264",
@@ -683,7 +731,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "pending-public-domain",
+    "PhotoPath": ""
   },
   {
     "missionID": "388",
@@ -697,7 +746,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -711,7 +761,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "479",
@@ -725,7 +776,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "396",
@@ -739,7 +791,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "469",
@@ -753,7 +806,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "135",
@@ -767,7 +821,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "D",
-    "imageStatus": "needs-permission-or-svg-fallback"
+    "imageStatus": "needs-permission-or-svg-fallback",
+    "PhotoPath": ""
   },
   {
     "missionID": "405",
@@ -781,7 +836,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "394",
@@ -795,7 +851,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -804,12 +861,13 @@
     "SVGBlackPath": "satellites/sentinel-1/sentinel-1-icon.svg",
     "PNG1024Path": "satellites/sentinel-1/sentinel-1-1024px.png",
     "PNG512Path": "satellites/sentinel-1/sentinel-1-512px.png",
-    "imageSourceURL": "https://sentiwiki.copernicus.eu/__attachments/1680406/Sentinel-1.jpg?inst-v=869f0208-33ab-4833-803c-33b10e8dbfd3",
-    "imageRightsHolder": "ESA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Sentinel_1-IMG_5874-white.jpg",
+    "imageRightsHolder": "Rama",
+    "imageLicense": "CC BY-SA 2.0 fr",
+    "imageCredit": "Own work",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/sentinel-1/sentinel-1-photo.jpg"
   },
   {
     "missionID": "577",
@@ -823,7 +881,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -837,7 +896,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "578",
@@ -851,7 +911,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -860,12 +921,13 @@
     "SVGBlackPath": "satellites/sentinel-3/sentinel-3-icon.svg",
     "PNG1024Path": "satellites/sentinel-3/sentinel-3-1024px.png",
     "PNG512Path": "satellites/sentinel-3/sentinel-3-512px.png",
-    "imageSourceURL": "https://www-cdn.eumetsat.int/files/styles/16_9_large/s3/2020-11/ASpot_Sentinel-3.jpg?h=d5a0cc9b&itok=Fjf7yuho",
-    "imageRightsHolder": "ESA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg",
+    "imageRightsHolder": "SkywalkerPL",
+    "imageLicense": "CC BY 4.0",
+    "imageCredit": "Own work",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/sentinel-3/sentinel-3-photo.jpg"
   },
   {
     "missionID": "",
@@ -874,12 +936,13 @@
     "SVGBlackPath": "satellites/sentinel-4/sentinel-4-icon.svg",
     "PNG1024Path": "satellites/sentinel-4/sentinel-4-1024px.png",
     "PNG512Path": "satellites/sentinel-4/sentinel-4-512px.png",
-    "imageSourceURL": "https://www.eoportal.org/satellite-missions/copernicus-sentinel-4#eop-quick-facts-section",
-    "imageRightsHolder": "ESA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:MTG-S_Sentinel_4.jpg",
+    "imageRightsHolder": "Chtiwiki",
+    "imageLicense": "CC BY-SA 3.0",
+    "imageCredit": "Own work",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/sentinel-4/sentinel-4-photo.jpg"
   },
   {
     "missionID": "641",
@@ -893,7 +956,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "581",
@@ -907,7 +971,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "",
@@ -916,12 +981,13 @@
     "SVGBlackPath": "satellites/sentinel-6/sentinel-6-icon.svg",
     "PNG1024Path": "satellites/sentinel-6/sentinel-6-1024px.png",
     "PNG512Path": "satellites/sentinel-6/sentinel-6-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/05/s6_SC_04032020_A.png",
-    "imageRightsHolder": "ESA/NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Sentinel-6_Jason-CS_spacecraft_model.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/sentinel-6/sentinel-6-photo.png"
   },
   {
     "missionID": "379",
@@ -935,7 +1001,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "346",
@@ -944,12 +1011,13 @@
     "SVGBlackPath": "satellites/sorce/sorce-icon.svg",
     "PNG1024Path": "satellites/sorce/sorce-1024px.png",
     "PNG512Path": "satellites/sorce/sorce-512px.png",
-    "imageSourceURL": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:SORCE_spacecraft_model.png",
     "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link); derived from https://www.nasa.gov/centers/goddard/images/content/97147main_SORCE_nogel.jpg",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/sorce/sorce-photo.png"
   },
   {
     "missionID": "468",
@@ -963,7 +1031,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "pending-cc-by-sa"
+    "imageStatus": "pending-cc-by-sa",
+    "PhotoPath": ""
   },
   {
     "missionID": "646",
@@ -972,12 +1041,13 @@
     "SVGBlackPath": "satellites/swot/swot-icon.svg",
     "PNG1024Path": "satellites/swot/swot-1024px.png",
     "PNG512Path": "satellites/swot/swot-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/multimedia/spacecraft-icons/",
-    "imageRightsHolder": "NASA/CNES",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:SWOT_spacecraft_model.png",
+    "imageRightsHolder": "NASA",
+    "imageLicense": "Public domain",
+    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/swot/swot-photo.png"
   },
   {
     "missionID": "391",
@@ -991,7 +1061,8 @@
     "imageLicense": "",
     "imageCredit": "",
     "imageSourceTier": "C",
-    "imageStatus": "pending-agency-terms"
+    "imageStatus": "pending-agency-terms",
+    "PhotoPath": ""
   },
   {
     "missionID": "462",
@@ -1000,11 +1071,12 @@
     "SVGBlackPath": "satellites/timed/timed-icon.svg",
     "PNG1024Path": "satellites/timed/timed-1024px.png",
     "PNG512Path": "satellites/timed/timed-512px.png",
-    "imageSourceURL": "https://upload.wikimedia.org/wikipedia/commons/c/c4/TIMED.jpg",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:TIMED.jpg",
     "imageRightsHolder": "NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageLicense": "Public domain",
+    "imageCredit": "http://www.gsfc.nasa.gov/gsfc/newsroom/tv%20page/G01-022A_space.htm",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain"
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/timed/timed-photo.jpg"
   }
 ]
