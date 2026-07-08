@@ -19,7 +19,7 @@ import urllib.request
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
-UA = "satellite-visuals-curation/1.0 (https://github.com/gamedaygeorge/satellite-visuals)"
+UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
 
 picks = json.load(open(sys.argv[1]))
 index = json.load(open(REPO / "index.json"))
