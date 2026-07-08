@@ -29,7 +29,7 @@ OUT = REPO / "tools" / "out"
 
 COMMONS_API = "https://commons.wikimedia.org/w/api.php"
 NASA_API = "https://images-api.nasa.gov/search"
-UA = "satellite-visuals-curation/1.0 (https://github.com/gamedaygeorge/satellite-visuals)"
+UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
 
 # Licences we accept, matched against Commons extmetadata LicenseShortName.
 # The deny-list is checked first: NC/ND variants share the "CC BY" prefix,
