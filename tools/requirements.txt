@@ -1,0 +1,9 @@
+# Python deps for tools/process_photos.py (issue #109).
+# Install into a venv — do not install globally:
+#   python3 -m venv .venv && . .venv/bin/activate && pip install -r tools/requirements.txt
+# Requires Python >= 3.10 (rembg / onnxruntime). Pins are the versions the
+# batch-1 cutouts were produced with — record these in the ATTRIBUTIONS notes.
+rembg==2.0.59
+Pillow==10.4.0
+onnxruntime==1.19.2
+numpy==1.26.4

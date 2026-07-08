@@ -1,1 +1,12 @@
 .DS_Store
+
+# transient photo-processing artifacts (the cutout PNGs themselves are committed
+# via the paperwork PR, but the review gallery + report are disposable)
+cut_gallery.html
+cut_report.json
+
+# local tooling envs
+.venv/
+venv/
+__pycache__/
+*.pyc
