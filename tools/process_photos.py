@@ -3,7 +3,7 @@
 
 Pipeline per mission folder:
     raw <folder>-photo.<ext>
-      -> background removal (rembg, U2Net, local ONNX model)
+      -> background removal (rembg, local ONNX model; default isnet-general-use)
       -> crop to the alpha bounding box + a small margin
       -> emit <folder>-photo-cut-1024px.png and <folder>-photo-cut-512px.png
          (natural aspect, bound by max dimension, never padded square)
@@ -148,15 +148,22 @@ def process_folder(folder, entry, root, out_base, session, sizes, margin, force,
 
     # Licence flow-down guard (ASSET-LICENSING.md / issue #109): media-terms and
     # ND photos grant use *as provided* — a cropped/bg-removed cutout may exceed
-    # permission. Refuse to derive unless explicitly overridden.
+    # permission. The repo records these cases in imageStatus (media-terms /
+    # trademark-editorial-use), not necessarily in imageLicense, so both fields
+    # gate. Refuse to derive unless explicitly overridden.
     lic = entry.get("imageLicense", "") if entry else ""
-    if lic and not permits_derivatives(lic) and not allow_nonderiv:
-        print(f"SKIP {folder}: licence '{lic}' does not permit derivatives "
+    status = entry.get("imageStatus", "") if entry else ""
+    guarded_status = status in ("media-terms", "trademark-editorial-use")
+    guarded_licence = bool(lic) and not permits_derivatives(lic)
+    if (guarded_status or guarded_licence) and not allow_nonderiv:
+        reason = f"imageStatus '{status}'" if guarded_status else f"licence '{lic}'"
+        print(f"SKIP {folder}: {reason} does not permit derivatives "
               f"(use --allow-nonderiv to override once permission is confirmed)")
         return {
             "folder": folder, "group": group,
             "source": str(raw.relative_to(root)) if _under(raw, root) else str(raw),
-            "image_license": lic, "status": "skipped-no-derivatives",
+            "image_license": lic, "image_status": status,
+            "status": "skipped-no-derivatives",
         }
 
     out_dir = out_base / group / folder
@@ -209,7 +216,7 @@ def process_folder(folder, entry, root, out_base, session, sizes, margin, force,
 
     entry = entry or {}
     rv = rembg_version()
-    model = session.model_name if hasattr(session, "model_name") else "u2net"
+    model = session.model_name if hasattr(session, "model_name") else "unknown"
     note = (f"derivative of {raw.name} — cropped, background removed "
             f"(tools/process_photos.py, rembg {rv} {model})")
     return {

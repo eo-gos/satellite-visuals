@@ -22,9 +22,11 @@ Lowercase matters: these paths are served from a case-sensitive Linux bind-mount
 ## Deriving photo cutouts
 
 Transparent cutouts (`-photo-cut-*.png`) are derived from raw `-photo.*` files by
-`tools/process_photos.py` (rembg/U2Net background removal → alpha-bbox crop → size
-set). The raw photo is never modified; the cutout is a mechanical derivative and the
-source licence flows through unchanged (see `ASSET-LICENSING.md` and issue #109).
+`tools/process_photos.py` (rembg background removal — default model
+`isnet-general-use`, which beat u2net on thin structure in the batch-1 bake-off;
+`--model` overrides → alpha-bbox crop → size set). The raw photo is never modified;
+the cutout is a mechanical derivative and the source licence flows through
+unchanged (see `ASSET-LICENSING.md` and issue #109).
 
 ```bash
 # one-off setup (venv — never install these globally)
@@ -44,10 +46,12 @@ python3 tools/process_photos.py ace cloudsat       # or named folders
 #    Expected failure mode: thin booms/antennas and low-contrast bodies get eaten —
 #    reject those for manual mask touch-up.
 
-# 3. APPLY (separate paperwork PR, not yet built) — for approved cutouts, add the
-#    inherited ATTRIBUTIONS.csv rows and the PhotoCut1024Path / PhotoCut512Path index
-#    fields. cut_report.json carries the inherited licence, deed URL, rights holder,
-#    source URL and a ready-made derivative note for that step.
+# 3. APPLY — copy approved cutouts into the tree and write the paperwork (inherited
+#    ATTRIBUTIONS.csv rows inserted after each raw photo's row + PhotoCut1024Path /
+#    PhotoCut512Path index fields). Idempotent; rejected folders are ignored.
+python3 tools/apply_cuts.py --report cuts/cut_report.json \
+    --picks picks.json --cuts-dir cuts --repo-root .
+#    then: git diff, branch, commit, PR (the products PR is separate from tool changes)
 ```
 
 Licences that do not permit derivatives (media-terms, ND) are skipped by default;
