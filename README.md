@@ -22,11 +22,14 @@ Lowercase matters: these paths are served from a case-sensitive Linux bind-mount
 ## Deriving photo cutouts
 
 Transparent cutouts (`-photo-cut-*.png`) are derived from raw `-photo.*` files by
-`tools/process_photos.py` (rembg background removal — default model
-`isnet-general-use`, which beat u2net on thin structure in the batch-1 bake-off;
-`--model` overrides → alpha-bbox crop → size set). The raw photo is never modified;
-the cutout is a mechanical derivative and the source licence flows through
-unchanged (see `ASSET-LICENSING.md` and issue #109).
+`tools/process_photos.py`. When the raw carries its own alpha channel (many agency
+renders ship pre-cut — 13 of the 22 batch-1 raws did), that alpha is used directly:
+it is ground truth, and matting over it only loses structure (#115). Otherwise the
+background is removed with rembg (default model `isnet-general-use`, which beat
+u2net on thin structure in the batch-1 bake-off; `--model` overrides,
+`--force-matting` disables the source-alpha preference) → alpha-bbox crop → size
+set. The raw photo is never modified; the cutout is a mechanical derivative and the
+source licence flows through unchanged (see `ASSET-LICENSING.md` and issue #109).
 
 ```bash
 # one-off setup (venv — never install these globally)
