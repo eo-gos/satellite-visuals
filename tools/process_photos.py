@@ -391,7 +391,10 @@ def main():
                     help=f"crop margin as fraction of the cutout's larger side (default {DEFAULT_MARGIN})")
     ap.add_argument("--sizes", default=",".join(map(str, DEFAULT_SIZES)),
                     help=f"comma-separated max dimensions (default {','.join(map(str, DEFAULT_SIZES))})")
-    ap.add_argument("--model", default="u2net", help="rembg model name (default u2net)")
+    # isnet-general-use won the batch-1 bake-off: u2net ate thin structure
+    # (solar panels, booms) on 6 of 22 photos; isnet rescued 5 of those.
+    ap.add_argument("--model", default="isnet-general-use",
+                    help="rembg model name (default isnet-general-use)")
     ap.add_argument("--gallery", action="store_true",
                     help="also write cut_gallery.html (before/after approval review)")
     ap.add_argument("--force", action="store_true", help="rebuild cutouts even if they exist")
