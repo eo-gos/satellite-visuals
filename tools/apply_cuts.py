@@ -1,0 +1,123 @@
+#!/usr/bin/env python3
+"""Apply approved photo cutouts: copy files into the repo and write the paperwork.
+
+Joins process_photos.py's cut_report.json with the gallery picks JSON, then for
+every APPROVED folder:
+  - copies the -photo-cut-*px.png files into the repo tree
+  - appends one ATTRIBUTIONS.csv row per file (inherited licence, derivative
+    note, licence deed URL), inserted right after the raw photo's own row
+  - sets PhotoCut1024Path / PhotoCut512Path on the folder's index.json entry
+
+Rejected folders are ignored (they go back through a retry pass or manual
+touch-up). Idempotent: existing rows/paths are skipped, not duplicated.
+
+Usage:
+  python3 tools/apply_cuts.py --report cuts/cut_report.json \
+      --picks picks.json --cuts-dir cuts --repo-root .
+"""
+
+import argparse
+import csv
+import json
+import shutil
+import sys
+from pathlib import Path
+
+SIZE_TO_FIELD = {"1024": "PhotoCut1024Path", "512": "PhotoCut512Path"}
+
+
+def folder_of(entry: dict) -> str:
+    svg = entry.get("SVGColourPath") or ""
+    parts = svg.split("/")
+    return parts[1] if len(parts) > 1 else ""
+
+
+def main() -> int:
+    ap = argparse.ArgumentParser(description=__doc__)
+    ap.add_argument("--report", required=True, help="cut_report.json from process_photos.py")
+    ap.add_argument("--picks", required=True, help="gallery picks JSON ({approved:[], rejected:[]})")
+    ap.add_argument("--cuts-dir", required=True, help="directory holding the generated cutouts")
+    ap.add_argument("--repo-root", default=".", help="satellite-visuals repo to write into")
+    ap.add_argument("--dry-run", action="store_true")
+    args = ap.parse_args()
+
+    report = json.loads(Path(args.report).read_text())
+    picks = json.loads(Path(args.picks).read_text())
+    approved = set(picks.get("approved", []))
+    cuts_dir = Path(args.cuts_dir)
+    root = Path(args.repo_root)
+
+    attr_path = root / "ATTRIBUTIONS.csv"
+    rows = list(csv.reader(attr_path.open()))
+    existing_paths = {r[0] for r in rows if r}
+    raw_row_index = {r[0]: i for i, r in enumerate(rows) if r}
+
+    index_path = root / "index.json"
+    index = json.loads(index_path.read_text())
+    by_folder = {folder_of(e): e for e in index}
+
+    applied, skipped, missing = 0, 0, []
+    for photo in report["photos"]:
+        folder = photo["folder"]
+        if folder not in approved:
+            continue
+        entry = by_folder.get(folder)
+        if entry is None:
+            print(f"WARN {folder}: no index.json entry — skipped", file=sys.stderr)
+            continue
+
+        # title travels from the raw photo's own ledger row
+        raw_title = ""
+        if photo["source"] in raw_row_index:
+            raw_title = rows[raw_row_index[photo["source"]]][1]
+
+        insert_at = raw_row_index.get(photo["source"])
+        new_rows = []
+        for size, out in sorted(photo["outputs"].items(), reverse=True):
+            rel = out["path"]
+            src_file = cuts_dir / rel
+            dst_file = root / rel
+            if not src_file.exists():
+                missing.append(str(src_file))
+                continue
+            if not args.dry_run:
+                dst_file.parent.mkdir(parents=True, exist_ok=True)
+                shutil.copyfile(src_file, dst_file)
+            entry[SIZE_TO_FIELD[size]] = rel
+            if rel in existing_paths:
+                skipped += 1
+                continue
+            note = photo.get("derivative_note", "")
+            deed = photo.get("license_deed_url", "")
+            if deed:
+                note = f"{note}; licence deed: {deed}" if note else f"licence deed: {deed}"
+            new_rows.append([
+                rel,
+                raw_title,
+                photo.get("image_rights_holder", ""),
+                photo.get("image_source_url", ""),
+                photo.get("image_license", ""),
+                note,
+            ])
+            existing_paths.add(rel)
+            applied += 1
+        if new_rows and insert_at is not None:
+            rows[insert_at + 1:insert_at + 1] = new_rows
+            raw_row_index = {r[0]: i for i, r in enumerate(rows) if r}
+        elif new_rows:
+            rows.extend(new_rows)
+
+    if not args.dry_run:
+        with attr_path.open("w", newline="") as f:
+            csv.writer(f).writerows(rows)
+        index_path.write_text(json.dumps(index, indent=2) + "\n")
+
+    print(f"{applied} files applied, {skipped} already present, "
+          f"{len(missing)} missing from cuts dir{' (dry run)' if args.dry_run else ''}")
+    for m in missing:
+        print(f"  MISSING: {m}", file=sys.stderr)
+    return 1 if missing else 0
+
+
+if __name__ == "__main__":
+    raise SystemExit(main())
