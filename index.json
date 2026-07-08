@@ -6,13 +6,12 @@
     "SVGBlackPath": "satellites/ace/ace-icon.svg",
     "PNG1024Path": "satellites/ace/ace-1024px.png",
     "PNG512Path": "satellites/ace/ace-512px.png",
-    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png",
+    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/05/ACE.png",
     "imageRightsHolder": "NASA",
-    "imageLicense": "Public domain",
-    "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
+    "imageLicense": "",
+    "imageCredit": "",
     "imageSourceTier": "A",
-    "imageStatus": "licensed",
-    "PhotoPath": "satellites/ace/ace-photo.png"
+    "imageStatus": "pending-public-domain"
   },
   {
     "missionID": "147",
@@ -921,13 +920,12 @@
     "SVGBlackPath": "satellites/sentinel-3/sentinel-3-icon.svg",
     "PNG1024Path": "satellites/sentinel-3/sentinel-3-1024px.png",
     "PNG512Path": "satellites/sentinel-3/sentinel-3-512px.png",
-    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg",
-    "imageRightsHolder": "SkywalkerPL",
-    "imageLicense": "CC BY 4.0",
-    "imageCredit": "Own work",
+    "imageSourceURL": "https://www-cdn.eumetsat.int/files/styles/16_9_large/s3/2020-11/ASpot_Sentinel-3.jpg?h=d5a0cc9b&itok=Fjf7yuho",
+    "imageRightsHolder": "ESA",
+    "imageLicense": "",
+    "imageCredit": "",
     "imageSourceTier": "B",
-    "imageStatus": "licensed",
-    "PhotoPath": "satellites/sentinel-3/sentinel-3-photo.jpg"
+    "imageStatus": "pending-cc-by-sa"
   },
   {
     "missionID": "",

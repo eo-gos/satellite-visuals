@@ -14,7 +14,6 @@ other-spacecraft/ibex/ibex.svg,,repo maintainers,https://github.com/gamedaygeorg
 satellites/ace/ace-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/ace/ace-photo.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png
 satellites/ace/ace.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/acrimsat/acrimsat-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
 satellites/acrimsat/acrimsat-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
@@ -276,7 +275,6 @@ satellites/sentinel-2c/sentinel-2c.svg,,repo maintainers,https://github.com/game
 satellites/sentinel-3/sentinel-3-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-icon.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/sentinel-3/sentinel-3-photo.jpg,File:Sentinel-3 spacecraft model.svg,SkywalkerPL,https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg,CC BY 4.0,https://commons.wikimedia.org/wiki/File:Sentinel-3_spacecraft_model.svg
 satellites/sentinel-3/sentinel-3.svg,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-4/sentinel-4-1024px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
 satellites/sentinel-4/sentinel-4-512px.png,,repo maintainers,https://github.com/gamedaygeorge/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
