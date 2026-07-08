@@ -10,15 +10,18 @@ The EO-GOS portal shows a page for every Earth-observation mission (~1,200 and g
 
 1. **Attribution is not a licence.** Saying where an image came from does not give us permission to host it. An image is usable only if its *owner* has granted an open licence (public domain, CC0, CC BY, CC BY-SA, OGL) or their published media terms permit reuse.
 2. **Never source images from Google Images or general web search.** Only from sources that state the licence machine-readably or explicitly: Wikimedia Commons, NASA/NOAA/USGS (US-gov = public domain), agency media pages with stated terms.
-3. **Every photo gets its paperwork before it gets committed:** `imageLicense`, `imageCredit`, `imageSourceURL` in `index.json`, plus a row in `ATTRIBUTIONS.csv`. No exceptions.
-4. **Commercial-operator renders (Tier D) are never taken without explicit permission.** The operators (Planet, ICEYE, Umbra, …) are people we work with; a licensing mistake costs trust, not just a takedown. Permission is often easier than it sounds — see the Tier D permission ladder under Task A. When in doubt: leave the SVG as the visual (`imageStatus: svg-fallback`) or ask George.
-5. **SVGs must be original depictions, not traces.** Drawing the satellite in our house style (using photos only as reference for what it looks like) is our own copyright. A 1:1 trace of one specific render copies that image's composition and is a derivative — don't do it, and flag any existing SVG that looks like one.
-6. **Logos are never redrawn** — official files only (see Task C).
-7. **All work on branches, PR per batch, never commit to `main`.** Keep commit messages plain (no generated-by/co-author trailers).
+3. **Photos must be agency or manufacturer imagery.** Real photos and official 3D renders published by the operating agency, manufacturer, or a space agency's media outlet are in (NASA's "spacecraft model" renders are exactly right). Fan art and community-drawn illustrations are out, even when properly licensed — being on Commons doesn't make something agency imagery. Photos of physical models/mockups (museum or exhibition pieces) are case-by-case: ask George. Also check the file is what its extension says (batch 1 included an SVG mislabelled `.jpg`).
+4. **Every photo gets its paperwork before it gets committed:** `imageLicense`, `imageCredit`, `imageSourceURL` in `index.json`, plus a row in `ATTRIBUTIONS.csv`. No exceptions.
+5. **Commercial-operator renders (Tier D) are never taken without explicit permission.** The operators (Planet, ICEYE, Umbra, …) are people we work with; a licensing mistake costs trust, not just a takedown. Permission is often easier than it sounds — see the Tier D permission ladder under Task A. When in doubt: leave the SVG as the visual (`imageStatus: svg-fallback`) or ask George.
+6. **SVGs must be original depictions, not traces.** Drawing the satellite in our house style (using photos only as reference for what it looks like) is our own copyright. A 1:1 trace of one specific render copies that image's composition and is a derivative — don't do it, and flag any existing SVG that looks like one.
+7. **Logos are never redrawn** — official files only (see Task C).
+8. **All work on branches, PR per batch, never commit to `main`.** Keep commit messages plain (no generated-by/co-author trailers).
 
 ## Task A — satellite photos (the main job)
 
 Goal: every mission folder gets a properly licensed photo/render of the spacecraft, recorded in `index.json` with `imageStatus: licensed`. Where none exists, `imageStatus: svg-fallback` — the SVG is the visual, and that's fine.
+
+**One folder per visual design, not per mission.** The portal's API maps mission variants onto a folder (Sentinel-1A and 1B both use `sentinel-1`; 1C/1D use `sentinel-1c` because they look different). So a photo of *any* visually-identical unit serves the whole series — note which unit it shows in the ATTRIBUTIONS title if known. Only make a new folder when a block/generation genuinely looks different.
 
 The workflow (from the repo root):
 
@@ -31,7 +34,7 @@ python3 tools/make_gallery.py
 open tools/out/gallery.html
 ```
 
-3. **Pick.** This is the judgement step a script can't do: most search hits are the satellite's *data* (pretty pictures of Earth), not the satellite. Pick the best image *of the spacecraft* — renders and pre-launch cleanroom photos both count. Leave "none of these" selected if nothing shows the spacecraft. Click **Export picks** (downloads `picks.json`).
+3. **Pick.** This is the judgement step a script can't do: most search hits are the satellite's *data* (pretty pictures of Earth), not the satellite. Pick the best image *of the spacecraft* — official renders and pre-launch cleanroom photos both count (golden rule 3: agency/manufacturer imagery only). Between licence-equal candidates, prefer one where the spacecraft is fully in frame against an uncluttered background — after your batch merges, the maintainers derive transparent cutouts from these photos for the portal, and clean subjects cut best. Leave "none of these" selected if nothing shows the spacecraft. Click **Export picks** (downloads `picks.json`).
 
 ```bash
 # 4. Apply: downloads each pick and writes all the paperwork
@@ -44,11 +47,13 @@ git add -A && git commit -m "Photos batch 1: <folders>"
 git push -u origin feat/photos-batch-01   # then open a PR
 ```
 
-In the PR description, list each mission and its licence. The reviewer checks: is it actually the right satellite, is the licence real (click through to the source page), is the credit sensible.
+**In the PR description, list each mission and its licence** (batch 1 skipped this — required from batch 2 on). The reviewer checks: is it actually the right satellite, is the licence real (click through to the source page), is the credit sensible.
 
-Batch size: ~10 missions per PR is comfortable to review.
+Batch size: ~20–25 missions per PR (batch 1 landed 22 and reviewed comfortably).
 
-For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 4 applies, and the ladder below is how permission actually gets obtained.
+For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 5 applies, and the ladder below is how permission actually gets obtained.
+
+**After your batch merges (not your job):** the maintainers run `tools/process_photos.py` over the new photos to derive transparent cutouts (`-photo-cut-1024px/-512px.png`) with their own paperwork. Your only lever on that step is picking cuttable images. Anything the cutter can't handle goes on the re-source list — current priorities are in issue #113 (plus ace and sentinel-3 from batch 1, which need proper agency imagery; for Sentinels, ESA's multimedia library publishes renders under CC BY-SA 3.0 IGO, which qualifies).
 
 ### Tier D — how permission realistically happens
 
