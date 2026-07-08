@@ -439,7 +439,9 @@
     "imageCredit": "http://sealevel.jpl.nasa.gov/mission/jason-1.html (http://sealevel.jpl.nasa.gov/mission/images/jason-1-in-space.gif)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/jason-1/jason-1-photo.jpg"
+    "PhotoPath": "satellites/jason-1/jason-1-photo.jpg",
+    "PhotoCut512Path": "satellites/jason-1/jason-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/jason-1/jason-1-photo-cut-1024px.png"
   },
   {
     "missionID": "419",
@@ -469,7 +471,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/jason-3/jason-3-photo.png"
+    "PhotoPath": "satellites/jason-3/jason-3-photo.png",
+    "PhotoCut512Path": "satellites/jason-3/jason-3-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/jason-3/jason-3-photo-cut-1024px.png"
   },
   {
     "missionID": "",
@@ -884,7 +888,9 @@
     "imageCredit": "Own work",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/sentinel-1/sentinel-1-photo.jpg"
+    "PhotoPath": "satellites/sentinel-1/sentinel-1-photo.jpg",
+    "PhotoCut512Path": "satellites/sentinel-1/sentinel-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/sentinel-1/sentinel-1-photo-cut-1024px.png"
   },
   {
     "missionID": "577",
@@ -1067,7 +1073,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/swot/swot-photo.png"
+    "PhotoPath": "satellites/swot/swot-photo.png",
+    "PhotoCut512Path": "satellites/swot/swot-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/swot/swot-photo-cut-1024px.png"
   },
   {
     "missionID": "391",
@@ -1097,6 +1105,8 @@
     "imageCredit": "http://www.gsfc.nasa.gov/gsfc/newsroom/tv%20page/G01-022A_space.htm",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/timed/timed-photo.jpg"
+    "PhotoPath": "satellites/timed/timed-photo.jpg",
+    "PhotoCut512Path": "satellites/timed/timed-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/timed/timed-photo-cut-1024px.png"
   }
 ]
