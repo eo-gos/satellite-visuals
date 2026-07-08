@@ -161,7 +161,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/cygnss/cygnss-photo.png"
+    "PhotoPath": "satellites/cygnss/cygnss-photo.png",
+    "PhotoCut512Path": "satellites/cygnss/cygnss-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/cygnss/cygnss-photo-cut-1024px.png"
   },
   {
     "missionID": "350",
@@ -191,7 +193,9 @@
     "imageCredit": "Own work",
     "imageSourceTier": "C",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/dubaisat-1/dubaisat-1-photo.jpg"
+    "PhotoPath": "satellites/dubaisat-1/dubaisat-1-photo.jpg",
+    "PhotoCut512Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-1024px.png"
   },
   {
     "missionID": "913",
@@ -206,7 +210,9 @@
     "imageCredit": "Own work",
     "imageSourceTier": "C",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/dubaisat-2/dubaisat-2-photo.jpg"
+    "PhotoPath": "satellites/dubaisat-2/dubaisat-2-photo.jpg",
+    "PhotoCut512Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-1024px.png"
   },
   {
     "missionID": "",
@@ -416,7 +422,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/icesat/icesat-photo.png"
+    "PhotoPath": "satellites/icesat/icesat-photo.png",
+    "PhotoCut512Path": "satellites/icesat/icesat-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/icesat/icesat-photo-cut-1024px.png"
   },
   {
     "missionID": "286",
@@ -476,7 +484,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/jpss-1/jpss-1-photo.png"
+    "PhotoPath": "satellites/jpss-1/jpss-1-photo.png",
+    "PhotoCut512Path": "satellites/jpss-1/jpss-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/jpss-1/jpss-1-photo-cut-1024px.png"
   },
   {
     "missionID": "",
@@ -521,7 +531,9 @@
     "imageCredit": "Own work",
     "imageSourceTier": "C",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/khalifasat/khalifasat-photo.jpg"
+    "PhotoPath": "satellites/khalifasat/khalifasat-photo.jpg",
+    "PhotoCut512Path": "satellites/khalifasat/khalifasat-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/khalifasat/khalifasat-photo-cut-1024px.png"
   },
   {
     "missionID": "349",
@@ -536,7 +548,9 @@
     "imageCredit": "Landsat 7 Satellite 3D Render",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/landsat-7/landsat-7-photo.png"
+    "PhotoPath": "satellites/landsat-7/landsat-7-photo.png",
+    "PhotoCut512Path": "satellites/landsat-7/landsat-7-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/landsat-7/landsat-7-photo-cut-1024px.png"
   },
   {
     "missionID": "547",
@@ -551,7 +565,9 @@
     "imageCredit": "https://science.nasa.gov/get-involved/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/landsat-8/landsat-8-photo.png"
+    "PhotoPath": "satellites/landsat-8/landsat-8-photo.png",
+    "PhotoCut512Path": "satellites/landsat-8/landsat-8-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/landsat-8/landsat-8-photo-cut-1024px.png"
   },
   {
     "missionID": "772",
@@ -566,7 +582,9 @@
     "imageCredit": "Landsat 9 Still \u2013 3",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/landsat-9/landsat-9-photo.png"
+    "PhotoPath": "satellites/landsat-9/landsat-9-photo.png",
+    "PhotoCut512Path": "satellites/landsat-9/landsat-9-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/landsat-9/landsat-9-photo-cut-1024px.png"
   },
   {
     "missionID": "19",
@@ -940,7 +958,9 @@
     "imageCredit": "Own work",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/sentinel-4/sentinel-4-photo.jpg"
+    "PhotoPath": "satellites/sentinel-4/sentinel-4-photo.jpg",
+    "PhotoCut512Path": "satellites/sentinel-4/sentinel-4-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/sentinel-4/sentinel-4-photo-cut-1024px.png"
   },
   {
     "missionID": "641",
@@ -985,7 +1005,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/sentinel-6/sentinel-6-photo.png"
+    "PhotoPath": "satellites/sentinel-6/sentinel-6-photo.png",
+    "PhotoCut512Path": "satellites/sentinel-6/sentinel-6-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/sentinel-6/sentinel-6-photo-cut-1024px.png"
   },
   {
     "missionID": "379",
