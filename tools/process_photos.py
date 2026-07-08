@@ -3,7 +3,10 @@
 
 Pipeline per mission folder:
     raw <folder>-photo.<ext>
-      -> background removal (rembg, local ONNX model; default isnet-general-use)
+      -> alpha: the source file's own channel when it carries one (many agency
+         renders ship pre-cut — issue #115 showed matting a pre-cut raw only
+         DEGRADES it), else background removal (rembg, local ONNX model;
+         default isnet-general-use; --force-matting overrides the preference)
       -> crop to the alpha bounding box + a small margin
       -> emit <folder>-photo-cut-1024px.png and <folder>-photo-cut-512px.png
          (natural aspect, bound by max dimension, never padded square)
@@ -108,6 +111,18 @@ def find_raw(root, group, folder, entry):
     return None
 
 
+MIN_SOURCE_ALPHA_TRANSPARENT = 0.05  # share of fully-clear pixels that marks a real cutout
+
+
+def usable_source_alpha(rgba):
+    """True when the raw already carries a real cutout alpha (13 of the 22
+    batch-1 raws did — NASA renders ship pre-cut). 'Real' means a meaningful
+    share of fully-transparent pixels; an all-opaque alpha channel is just
+    format padding, and matting is still needed."""
+    hist = rgba.getchannel("A").histogram()
+    return hist[0] / (rgba.width * rgba.height) >= MIN_SOURCE_ALPHA_TRANSPARENT
+
+
 def alpha_bbox_with_margin(img, margin):
     """Bounding box of non-transparent pixels, expanded by `margin` * max side
     on every edge, clamped to the image. Returns (raw_bbox, padded_bbox)."""
@@ -136,10 +151,8 @@ def scaled_to_max(img, max_dim):
     )
 
 
-def process_folder(folder, entry, root, out_base, session, sizes, margin, force,
-                   allow_nonderiv=False):
-    from rembg import remove
-
+def process_folder(folder, entry, root, out_base, get_session, model_name, sizes,
+                   margin, force, allow_nonderiv=False, force_matting=False):
     group = group_of(folder, entry, root)
     raw = find_raw(root, group, folder, entry)
     if raw is None:
@@ -190,14 +203,23 @@ def process_folder(folder, entry, root, out_base, session, sizes, margin, force,
     try:
         with Image.open(raw) as im:
             src_w, src_h = im.size
-            cut = remove(im.convert("RGBA"), session=session)  # RGBA, bg alpha->0
+            rgba = im.convert("RGBA")
     except Exception as exc:  # noqa: BLE001  (bad/mislabelled raster, decode error)
         print(f"FAIL {folder}: cannot load raw ({type(exc).__name__}: {exc})")
         return {**base_rec, "status": "failed-load", "error": f"{type(exc).__name__}: {exc}"}
+    if not force_matting and usable_source_alpha(rgba):
+        # the publisher already cut this one out — their alpha is ground truth,
+        # and matting over it can only lose structure (issue #115)
+        method = "source-alpha"
+        cut = rgba
+    else:
+        method = "matting"
+        from rembg import remove
+        cut = remove(rgba, session=get_session())  # RGBA, bg alpha->0
     raw_bbox, bbox = alpha_bbox_with_margin(cut, margin)
     if bbox is None:
-        print(f"FAIL {folder}: rembg produced a fully-transparent mask")
-        return {**base_rec, "status": "failed-empty-mask"}
+        print(f"FAIL {folder}: {method} produced a fully-transparent mask")
+        return {**base_rec, "status": "failed-empty-mask", "method": method}
     cropped = cut.crop(bbox)
 
     out_dir.mkdir(parents=True, exist_ok=True)
@@ -212,18 +234,22 @@ def process_folder(folder, entry, root, out_base, session, sizes, margin, force,
     dt = time.perf_counter() - t0
 
     dims = "/".join(f"{written[str(s)]['width']}x{written[str(s)]['height']}" for s in sizes)
-    print(f"OK   {folder}: {src_w}x{src_h} -> bbox {bbox} -> {dims}  ({dt:.1f}s)")
+    print(f"OK   {folder}: {src_w}x{src_h} -> {method} -> bbox {bbox} -> {dims}  ({dt:.1f}s)")
 
     entry = entry or {}
     rv = rembg_version()
-    model = session.model_name if hasattr(session, "model_name") else "unknown"
-    note = (f"derivative of {raw.name} — cropped, background removed "
-            f"(tools/process_photos.py, rembg {rv} {model})")
+    if method == "source-alpha":
+        note = (f"derivative of {raw.name} — cropped; alpha taken from the source "
+                f"file's own channel (tools/process_photos.py, no matting)")
+    else:
+        note = (f"derivative of {raw.name} — cropped, background removed "
+                f"(tools/process_photos.py, rembg {rv} {model_name})")
     return {
         **base_rec,
         "source_size": [src_w, src_h],
-        "rembg_version": rv,
-        "rembg_model": session.model_name if hasattr(session, "model_name") else None,
+        "method": method,
+        "rembg_version": rv if method == "matting" else None,
+        "rembg_model": model_name if method == "matting" else None,
         "margin": margin,
         "alpha_bbox": list(raw_bbox),
         "alpha_bbox_padded": list(bbox),
@@ -306,7 +332,7 @@ def build_gallery(report, root, out_base):
         <figure><figcaption>raw</figcaption><img src="{before}"></figure>
         <figure class="cut"><figcaption>cutout</figcaption><img src="{after}"></figure>
       </div>
-      <div class="meta">licence: {lic_html} · bbox {html.escape(str(r.get('alpha_bbox_padded')))}</div>
+      <div class="meta">licence: {lic_html} · {html.escape(r.get('method') or 'matting')} · bbox {html.escape(str(r.get('alpha_bbox_padded')))}</div>
       <div class="vote">
         <label class="approve"><input type="radio" name="{html.escape(folder)}" value="approve" checked> approve</label>
         <label class="reject"><input type="radio" name="{html.escape(folder)}" value="reject"> reject (manual touch-up)</label>
@@ -402,6 +428,9 @@ def main():
     # (solar panels, booms) on 6 of 22 photos; isnet rescued 5 of those.
     ap.add_argument("--model", default="isnet-general-use",
                     help="rembg model name (default isnet-general-use)")
+    ap.add_argument("--force-matting", action="store_true",
+                    help="run rembg even when the raw carries its own alpha channel "
+                         "(default is to trust a source alpha — it's ground truth)")
     ap.add_argument("--gallery", action="store_true",
                     help="also write cut_gallery.html (before/after approval review)")
     ap.add_argument("--force", action="store_true", help="rebuild cutouts even if they exist")
@@ -426,10 +455,18 @@ def main():
     if not folders:
         ap.error("give one or more folder names, or --all")
 
-    from rembg import new_session
     print(f"rembg {rembg_version()} · model {args.model} · margin {args.margin} · "
           f"sizes {sizes}\nroot {root}\nout  {out_base}\n")
-    session = new_session(args.model)
+
+    # the ONNX session takes seconds + ~170 MB to build; a run where every raw
+    # carries its own alpha never needs it, so build lazily on first matting
+    _session = []
+
+    def get_session():
+        if not _session:
+            from rembg import new_session
+            _session.append(new_session(args.model))
+        return _session[0]
 
     report = {
         "tool": "tools/process_photos.py",
@@ -443,7 +480,8 @@ def main():
     t_all = time.perf_counter()
     for folder in folders:
         rec = process_folder(folder, by_folder.get(folder), root, out_base,
-                             session, sizes, args.margin, args.force, args.allow_nonderiv)
+                             get_session, args.model, sizes, args.margin, args.force,
+                             args.allow_nonderiv, args.force_matting)
         if rec:
             report["photos"].append(rec)
     total = time.perf_counter() - t_all

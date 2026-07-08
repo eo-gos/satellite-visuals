@@ -26,7 +26,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/acrimsat/acrimsat-photo.png"
+    "PhotoPath": "satellites/acrimsat/acrimsat-photo.png",
+    "PhotoCut512Path": "satellites/acrimsat/acrimsat-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/acrimsat/acrimsat-photo-cut-1024px.png"
   },
   {
     "missionID": "629",
@@ -116,7 +118,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/cloudsat/cloudsat-photo.png"
+    "PhotoPath": "satellites/cloudsat/cloudsat-photo.png",
+    "PhotoCut512Path": "satellites/cloudsat/cloudsat-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/cloudsat/cloudsat-photo-cut-1024px.png"
   },
   {
     "missionID": "529",
@@ -456,7 +460,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/jason-2/jason-2-photo.png"
+    "PhotoPath": "satellites/jason-2/jason-2-photo.png",
+    "PhotoCut512Path": "satellites/jason-2/jason-2-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/jason-2/jason-2-photo-cut-1024px.png"
   },
   {
     "missionID": "592",
@@ -1043,7 +1049,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link); derived from https://www.nasa.gov/centers/goddard/images/content/97147main_SORCE_nogel.jpg",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/sorce/sorce-photo.png"
+    "PhotoPath": "satellites/sorce/sorce-photo.png",
+    "PhotoCut512Path": "satellites/sorce/sorce-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/sorce/sorce-photo-cut-1024px.png"
   },
   {
     "missionID": "468",
