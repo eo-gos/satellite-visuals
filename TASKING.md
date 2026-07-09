@@ -23,6 +23,17 @@ Goal: every mission folder gets a properly licensed photo/render of the spacecra
 
 **One folder per visual design, not per mission.** The portal's API maps mission variants onto a folder (Sentinel-1A and 1B both use `sentinel-1`; 1C/1D use `sentinel-1c` because they look different). So a photo of *any* visually-identical unit serves the whole series — note which unit it shows in the ATTRIBUTIONS title if known. Only make a new folder when a block/generation genuinely looks different.
 
+### Folder-to-mission mapping and priority
+
+The folder is keyed to the *visual*; mission→folder is an explicit, curated mapping — never inferred from names.
+
+- **One folder per family, by default.** A single family folder (`sentinel-2`) supplies the image for every instance in that family (2A/2B/2C/2D). Only split out a per-instance folder (`sentinel-1c`) when a block genuinely looks different — and then map *only* those instances to it. When a family has one image, every instance uses it; when a folder holds instance-specific artwork, those instances map there.
+- **The mapping is authored, not derived.** Which folder covers a mission lives in the API's mission→folder map (`missions.json`) and the `index.json` `missionID`, set by hand. Do **not** infer family membership by stripping the name — names lie: Sentinel-5P is a standalone satellite, not a Sentinel-5 variant; FY-1 and FY-3C are unrelated; Landsat-7 differs from 8/9. A wrong guess puts the wrong picture on a mission page.
+- **Don't create variant folders speculatively.** If unsure whether a new unit looks different, use the family folder. One folder until a visual difference forces a second.
+- **Priority is coverage-first.** A family with *no* image at all outranks completing a variant set. Get one good image for every family before adding a second visual to any family. When picking a batch, read the pending list as *families needing a first image*, not as individual folders — e.g. do `sentinel-3` (no image yet) before a second Sentinel-2 variant. This follows from the rule above: once the family folder has an image, every instance is already covered, so there is nothing to "complete" unless a variant genuinely differs.
+
+The current folder set predates this policy and needs a one-off cleanup to match it — tracked in issue #117 (`sentinel-2c` folds into `sentinel-2`; `sentinel-1c` stays; blank-`missionID` canonical folders get their mappings authored, overlapping #99). It does not affect in-flight batches.
+
 The workflow (from the repo root):
 
 ```bash
@@ -81,7 +92,7 @@ Record-keeping for routes 2–3: a reply saying "yes, use X with credit Y" is su
 
 ## Task B — the 12 blank mission IDs (issue #99)
 
-Twelve `index.json` entries have an empty `missionID` because the mapping needs a human call (e.g. the `sentinel-1` folder vs per-satellite A/B/C DB rows; the `ace` folder, whose image is probably the 1997 Advanced Composition Explorer, not missionID 648). Issue #99 has the full list and notes. Resolve each with George — the answer is sometimes "this folder maps to no mission and should be moved to `other-spacecraft/`".
+Twelve `index.json` entries have an empty `missionID` because the mapping needs a human call (e.g. the `sentinel-1` folder vs per-satellite A/B/C DB rows; the `ace` folder, whose image is probably the 1997 Advanced Composition Explorer, not missionID 648). Issue #99 has the full list and notes. Resolve each with George — the answer is sometimes "this folder maps to no mission and should be moved to `other-spacecraft/`". Several of these are family-canonical folders whose instance mappings are governed by the folder-to-mission policy above; the cleanup in #117 authors them.
 
 ## Task C — agency/provider logos (issue #101)
 
