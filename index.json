@@ -76,7 +76,9 @@
     "imageCredit": "http://www3.inpe.br/amazonia-1/en/about_satellite/",
     "imageSourceTier": "C",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/amazonia-1/amazonia-1-photo.jpg"
+    "PhotoPath": "satellites/amazonia-1/amazonia-1-photo.jpg",
+    "PhotoCut512Path": "satellites/amazonia-1/amazonia-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/amazonia-1/amazonia-1-photo-cut-1024px.png"
   },
   {
     "missionID": "986",
@@ -371,7 +373,9 @@
     "imageCredit": "https://svs.gsfc.nasa.gov/12833 (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/gold/gold-photo.jpg"
+    "PhotoPath": "satellites/gold/gold-photo.jpg",
+    "PhotoCut512Path": "satellites/gold/gold-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/gold/gold-photo-cut-1024px.png"
   },
   {
     "missionID": "917",
