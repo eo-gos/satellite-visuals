@@ -92,10 +92,19 @@ def main() -> int:
                 note = f"{note}; licence deed: {deed}" if note else f"licence deed: {deed}"
             if rel in existing_paths:
                 # regenerated file replacing one already in the ledger: keep the
-                # row, refresh the derivative note if the method changed
+                # row, refresh every provenance field — a re-sourced raw photo
+                # must propagate to its cutout rows, not just a changed method
                 i = raw_row_index.get(rel)
-                if i is not None and len(rows[i]) >= 6 and rows[i][5] != note:
-                    rows[i][5] = note
+                fresh = [
+                    rel,
+                    raw_title,
+                    photo.get("image_rights_holder", ""),
+                    photo.get("image_source_url", ""),
+                    photo.get("image_license", ""),
+                    note,
+                ]
+                if i is not None and len(rows[i]) >= 6 and rows[i][:6] != fresh:
+                    rows[i][:6] = fresh
                     updated += 1
                 else:
                     skipped += 1
