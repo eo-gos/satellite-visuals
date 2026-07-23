@@ -12,7 +12,9 @@
     "imageCredit": "https://science.nasa.gov/toolkits/spacecraft-icons (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/ace/ace-photo.png"
+    "PhotoPath": "satellites/ace/ace-photo.png",
+    "PhotoCut512Path": "satellites/ace/ace-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/ace/ace-photo-cut-1024px.png"
   },
   {
     "missionID": "147",
@@ -183,7 +185,9 @@
     "imageCredit": "http://www.nasa.gov/content/goddard/qa-on-noaas-dscovr-mission/ (image link)",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/dscovr/dscovr-photo.jpg"
+    "PhotoPath": "satellites/dscovr/dscovr-photo.jpg",
+    "PhotoCut512Path": "satellites/dscovr/dscovr-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/dscovr/dscovr-photo-cut-1024px.png"
   },
   {
     "missionID": "912",
@@ -590,7 +594,7 @@
     "imageSourceURL": "https://commons.wikimedia.org/wiki/File:Landsat_9_Still_%E2%80%93_5.png",
     "imageRightsHolder": "NASA/Ross Walter",
     "imageLicense": "Public domain",
-    "imageCredit": "Landsat 9 Still – 5",
+    "imageCredit": "Landsat 9 Still \u2013 5",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
     "PhotoPath": "satellites/landsat-9/landsat-9-photo.png",
