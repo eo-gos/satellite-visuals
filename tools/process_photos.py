@@ -428,6 +428,10 @@ def main():
     # (solar panels, booms) on 6 of 22 photos; isnet rescued 5 of those.
     ap.add_argument("--model", default="isnet-general-use",
                     help="rembg model name (default isnet-general-use)")
+    ap.add_argument("--cpu", action="store_true",
+                    help="force onnxruntime's CPUExecutionProvider — macOS CoreML/ANE "
+                         "compilation wedges indefinitely on very large models "
+                         "(birefnet-general's 928 MB graph); plain CPU cuts in seconds")
     ap.add_argument("--force-matting", action="store_true",
                     help="run rembg even when the raw carries its own alpha channel "
                          "(default is to trust a source alpha — it's ground truth)")
@@ -465,7 +469,8 @@ def main():
     def get_session():
         if not _session:
             from rembg import new_session
-            _session.append(new_session(args.model))
+            kwargs = {"providers": ["CPUExecutionProvider"]} if args.cpu else {}
+            _session.append(new_session(args.model, **kwargs))
         return _session[0]
 
     report = {
