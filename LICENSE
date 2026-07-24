@@ -1,20 +1,50 @@
 License Overview
 
-1. Original materials (including `.svg` files under `satellites/`)
+This repository contains two kinds of material with different terms. The
+authoritative per-file record is `ATTRIBUTIONS.csv`; the policy behind it is
+`ASSET-LICENSING.md`. In short: CC BY 4.0, except where a file's
+`ATTRIBUTIONS.csv` row says otherwise.
 
-The repository’s original materials authored by the maintainers — including documentation, any curation/metadata files, and all `.svg` files under the `satellites/` directory — are licensed under the Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+1. Original materials — CC BY 4.0
+
+The repository's original materials authored by the maintainers are licensed
+under the Creative Commons Attribution 4.0 International (CC BY 4.0) license.
+This covers:
+
+- all `.svg` files under `satellites/` and `other-spacecraft/` (colour
+  illustrations and icons — original depictions, not traces);
+- the raster renders of those SVGs (`*-512px.png`, `*-1024px.png`,
+  regenerated with `tools/render_pngs.mjs`);
+- documentation, tooling, and curation/metadata files (`index.json`,
+  `ATTRIBUTIONS.csv`).
 
 Full CC BY 4.0 text:
 https://creativecommons.org/licenses/by/4.0/legalcode
 
 Attribution requirement:
-Please credit this project by linking to the repository: https://github.com/eo-gos/satellite-visuals and retain notices of any modifications where reasonable.
+Please credit this project by linking to the repository:
+https://github.com/eo-gos/satellite-visuals and retain notices of any
+modifications where reasonable.
 
-2. Third‑party raster assets under `satellites/` (`.png`, `.jpg`, `.jpeg`)
+2. Sourced photographs and their cutouts — the upstream licence applies
 
-Raster image files under the `satellites/` directory with extensions `.png`, `.jpg`, or `.jpeg` are third‑party materials that have been discovered on the public web and resized for reference. No license to copy, modify, redistribute, or otherwise use these raster assets is granted by the repository authors. Copyright and related rights remain with their respective owners under the original terms indicated in `ATTRIBUTIONS.csv` and/or the source links.
+Photograph files (`*-photo.*`) are third-party works committed only after
+their owner's open licence is confirmed (public domain, CC BY, CC BY-SA,
+CC BY-SA IGO, or an operator's published media terms). The maintainers do not
+own these images and grant no rights in them; each file's licence, rights
+holder, and source are recorded in its `ATTRIBUTIONS.csv` row, and that row —
+not this file — states the terms under which you may reuse it.
 
-If you wish to use any asset, you must obtain permission or rely on the original terms from the rights holder. See `ASSET-LICENSING.md` and `ATTRIBUTIONS.csv` for details.
+Cutout derivatives (`*-photo-cut-*px.png`) are mechanical crops/background
+removals of those photographs. The processing adds no new rights: each cutout
+carries its source photograph's licence unchanged (share-alike terms included),
+with the modification and tooling recorded in its own `ATTRIBUTIONS.csv` row.
+
+Note that revisions of this repository before July 2026 contained rasters
+resized from third-party websites without licence confirmation. Those files
+were removed and are not licensed by this repository; any use of historical
+revisions must comply with the original rights holders' terms.
 
 Takedown / corrections:
-If you are a rights holder and believe an asset is used in error, please open an issue or contact the maintainer for removal or correction.
+If you are a rights holder and believe an asset is used in error, please open
+an issue or contact the maintainer for removal or correction.
