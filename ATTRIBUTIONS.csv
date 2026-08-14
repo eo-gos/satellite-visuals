@@ -14,9 +14,9 @@ other-spacecraft/ibex/ibex.svg,,repo maintainers,https://github.com/eo-gos/satel
 satellites/ace/ace-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from ace.svg via tools/render_pngs.mjs
 satellites/ace/ace-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/ace/ace-photo.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png
-satellites/ace/ace-photo-cut-512px.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,"derivative of ace-photo.png — cropped; alpha taken from the source file's own channel (tools/process_photos.py, no matting); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
 satellites/ace/ace-photo-cut-1024px.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,"derivative of ace-photo.png — cropped; alpha taken from the source file's own channel (tools/process_photos.py, no matting); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/ace/ace-photo-cut-512px.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,"derivative of ace-photo.png — cropped; alpha taken from the source file's own channel (tools/process_photos.py, no matting); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/ace/ace-photo.png,File:ACE spacecraft model.png,NASA,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png,Public domain,https://commons.wikimedia.org/wiki/File:ACE_spacecraft_model.png
 satellites/ace/ace.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/acrimsat/acrimsat-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
 satellites/acrimsat/acrimsat-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from acrimsat.svg via tools/render_pngs.mjs
@@ -36,13 +36,14 @@ satellites/alos-4/alos-4.svg,,repo maintainers,https://github.com/eo-gos/satelli
 satellites/amazonia-1/amazonia-1-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
 satellites/amazonia-1/amazonia-1-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from amazonia-1.svg via tools/render_pngs.mjs
 satellites/amazonia-1/amazonia-1-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/amazonia-1/amazonia-1-photo.jpg,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg
-satellites/amazonia-1/amazonia-1-photo-cut-512px.png,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,"derivative of amazonia-1-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/licenses/by-sa/3.0/"
 satellites/amazonia-1/amazonia-1-photo-cut-1024px.png,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,"derivative of amazonia-1-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/licenses/by-sa/3.0/"
+satellites/amazonia-1/amazonia-1-photo-cut-512px.png,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,"derivative of amazonia-1-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/licenses/by-sa/3.0/"
+satellites/amazonia-1/amazonia-1-photo.jpg,File:Amazonia 1 PMM with Payload Module.jpg,CPTEC - INPE,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg,CC BY-SA 3.0,https://commons.wikimedia.org/wiki/File:Amazonia_1_PMM_with_Payload_Module.jpg
 satellites/amazonia-1/amazonia-1.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/aws/aws-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
 satellites/aws/aws-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from aws.svg via tools/render_pngs.mjs
 satellites/aws/aws-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/aws/aws-photo.png,Arctic Weather Satellite small but perfectly formed,ESA/Mlabspace,https://www.esa.int/ESA_Multimedia/Images/2024/07/Arctic_Weather_Satellite_small_but_perfectly_formed,ESA Standard Licence,ESA Standard Licence — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/aws/aws.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/cfosat/cfosat-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from cfosat.svg via tools/render_pngs.mjs
 satellites/cfosat/cfosat-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from cfosat.svg via tools/render_pngs.mjs
@@ -58,6 +59,7 @@ satellites/cloudsat/cloudsat.svg,,repo maintainers,https://github.com/eo-gos/sat
 satellites/cryosat-2/cryosat-2-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from cryosat-2.svg via tools/render_pngs.mjs
 satellites/cryosat-2/cryosat-2-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from cryosat-2.svg via tools/render_pngs.mjs
 satellites/cryosat-2/cryosat-2-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/cryosat-2/cryosat-2-photo.jpg,CryoSat,ESA – P. Carril,https://www.esa.int/ESA_Multimedia/Images/2009/09/CryoSat3,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/cryosat-2/cryosat-2.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/csg-2/csg-2-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
 satellites/csg-2/csg-2-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from csg-2.svg via tools/render_pngs.mjs
@@ -73,9 +75,9 @@ satellites/cygnss/cygnss.svg,,repo maintainers,https://github.com/eo-gos/satelli
 satellites/dscovr/dscovr-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
 satellites/dscovr/dscovr-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from dscovr.svg via tools/render_pngs.mjs
 satellites/dscovr/dscovr-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/dscovr/dscovr-photo.jpg,File:DSCOVR rendering (white bg).jpg,NOAA/NASA,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg,Public domain,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg
-satellites/dscovr/dscovr-photo-cut-512px.png,File:DSCOVR rendering (white bg).jpg,NOAA/NASA,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg,Public domain,"derivative of dscovr-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
 satellites/dscovr/dscovr-photo-cut-1024px.png,File:DSCOVR rendering (white bg).jpg,NOAA/NASA,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg,Public domain,"derivative of dscovr-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/dscovr/dscovr-photo-cut-512px.png,File:DSCOVR rendering (white bg).jpg,NOAA/NASA,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg,Public domain,"derivative of dscovr-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 isnet-general-use); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/dscovr/dscovr-photo.jpg,File:DSCOVR rendering (white bg).jpg,NOAA/NASA,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg,Public domain,https://commons.wikimedia.org/wiki/File:DSCOVR_rendering_(white_bg).jpg
 satellites/dscovr/dscovr.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/dubaisat-1/dubaisat-1-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from dubaisat-1.svg via tools/render_pngs.mjs
 satellites/dubaisat-1/dubaisat-1-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from dubaisat-1.svg via tools/render_pngs.mjs
@@ -94,6 +96,7 @@ satellites/dubaisat-2/dubaisat-2.svg,,repo maintainers,https://github.com/eo-gos
 satellites/earthcare/earthcare-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from earthcare.svg via tools/render_pngs.mjs
 satellites/earthcare/earthcare-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from earthcare.svg via tools/render_pngs.mjs
 satellites/earthcare/earthcare-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/earthcare/earthcare-photo.jpg,Artist's view of EarthCARE,"ESA–P. Carril, 2013",https://www.esa.int/ESA_Multimedia/Images/2013/12/Artist_s_view_of_EarthCARE3,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/earthcare/earthcare.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/earthdaily-constellation/earthdaily-constellation-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from earthdaily-constellation.svg via tools/render_pngs.mjs
 satellites/earthdaily-constellation/earthdaily-constellation-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from earthdaily-constellation.svg via tools/render_pngs.mjs
@@ -102,6 +105,7 @@ satellites/earthdaily-constellation/earthdaily-constellation.svg,,repo maintaine
 satellites/envisat/envisat-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from envisat.svg via tools/render_pngs.mjs
 satellites/envisat/envisat-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from envisat.svg via tools/render_pngs.mjs
 satellites/envisat/envisat-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/envisat/envisat-photo.jpg,"Envisat, artist's impression",ESA/Denmann production,https://www.esa.int/ESA_Multimedia/Images/2002/02/Envisat_artist_s_impression,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/envisat/envisat.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/epoponcassiope/epoponcassiope-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
 satellites/epoponcassiope/epoponcassiope-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from epoponcassiope.svg via tools/render_pngs.mjs
@@ -118,6 +122,7 @@ satellites/fy-3c/fy-3c.svg,,repo maintainers,https://github.com/eo-gos/satellite
 satellites/goce/goce-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
 satellites/goce/goce-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from goce.svg via tools/render_pngs.mjs
 satellites/goce/goce-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/goce/goce-photo.jpg,Artist's impression of GOCE,ESA/AOES Medialab,https://www.esa.int/ESA_Multimedia/Images/2004/03/Artist_s_impression_of_GOCE3,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/goce/goce.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/goes-16/goes-16-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from goes-16.svg via tools/render_pngs.mjs
 satellites/goes-16/goes-16-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from goes-16.svg via tools/render_pngs.mjs
@@ -130,9 +135,9 @@ satellites/goes-19/goes-19.svg,,repo maintainers,https://github.com/eo-gos/satel
 satellites/gold/gold-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
 satellites/gold/gold-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from gold.svg via tools/render_pngs.mjs
 satellites/gold/gold-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
-satellites/gold/gold-photo.jpg,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg
-satellites/gold/gold-photo-cut-512px.png,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,"derivative of gold-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 birefnet-general); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
 satellites/gold/gold-photo-cut-1024px.png,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,"derivative of gold-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 birefnet-general); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/gold/gold-photo-cut-512px.png,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,"derivative of gold-photo.jpg — cropped, background removed (tools/process_photos.py, rembg 2.0.59 birefnet-general); licence deed: https://creativecommons.org/publicdomain/mark/1.0/"
+satellites/gold/gold-photo.jpg,File:SES-14 with GOLD hosted payload.jpg,NASA/CIL/Chris Meaney,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg,Public domain,https://commons.wikimedia.org/wiki/File:SES-14_with_GOLD_hosted_payload.jpg
 satellites/gold/gold.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/gomx4/gomx4-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
 satellites/gomx4/gomx4-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from gomx4.svg via tools/render_pngs.mjs
@@ -307,6 +312,7 @@ satellites/sentinel-1c/sentinel-1c.svg,,repo maintainers,https://github.com/eo-g
 satellites/sentinel-2/sentinel-2-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-2.svg via tools/render_pngs.mjs
 satellites/sentinel-2/sentinel-2-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-2.svg via tools/render_pngs.mjs
 satellites/sentinel-2/sentinel-2-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-2/sentinel-2-photo.jpg,Sentinel-2: high-resolution and multispectral,ESA/ATG medialab,https://www.esa.int/ESA_Multimedia/Images/2014/07/Sentinel-2_high-resolution_and_multispectral,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/sentinel-2/sentinel-2.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-2c/sentinel-2c-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-2c.svg via tools/render_pngs.mjs
 satellites/sentinel-2c/sentinel-2c-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-2c.svg via tools/render_pngs.mjs
@@ -315,6 +321,7 @@ satellites/sentinel-2c/sentinel-2c.svg,,repo maintainers,https://github.com/eo-g
 satellites/sentinel-3/sentinel-3-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-3.svg via tools/render_pngs.mjs
 satellites/sentinel-3/sentinel-3-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-3/sentinel-3-photo.jpg,Sentinel-3,ESA–Pierre Carril,https://www.esa.int/ESA_Multimedia/Images/2016/01/Sentinel-33,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/sentinel-3/sentinel-3.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-4/sentinel-4-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
 satellites/sentinel-4/sentinel-4-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-4.svg via tools/render_pngs.mjs
@@ -326,10 +333,12 @@ satellites/sentinel-4/sentinel-4.svg,,repo maintainers,https://github.com/eo-gos
 satellites/sentinel-5a/sentinel-5a-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-5a.svg via tools/render_pngs.mjs
 satellites/sentinel-5a/sentinel-5a-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-5a.svg via tools/render_pngs.mjs
 satellites/sentinel-5a/sentinel-5a-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-5a/sentinel-5a-photo.jpg,Sentinel-5 on MetOp Second Generation satellite,ESA/P. Carril,https://www.esa.int/ESA_Multimedia/Images/2017/02/Sentinel-5_on_MetOp_Second_Generation_satellite,ESA Standard Licence,ESA Standard Licence — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/sentinel-5a/sentinel-5a.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-5p/sentinel-5p-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-5p.svg via tools/render_pngs.mjs
 satellites/sentinel-5p/sentinel-5p-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-5p.svg via tools/render_pngs.mjs
 satellites/sentinel-5p/sentinel-5p-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/sentinel-5p/sentinel-5p-photo.jpg,Sentinel-5P,ESA/ATG medialab,https://www.esa.int/ESA_Multimedia/Images/2017/06/Sentinel-5P,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/sentinel-5p/sentinel-5p.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sentinel-6/sentinel-6-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-6.svg via tools/render_pngs.mjs
 satellites/sentinel-6/sentinel-6-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sentinel-6.svg via tools/render_pngs.mjs
@@ -341,6 +350,7 @@ satellites/sentinel-6/sentinel-6.svg,,repo maintainers,https://github.com/eo-gos
 satellites/smos/smos-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
 satellites/smos/smos-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from smos.svg via tools/render_pngs.mjs
 satellites/smos/smos-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/smos/smos-photo.jpg,SMOS,ESA - P. Carril,https://www.esa.int/ESA_Multimedia/Images/2009/06/SMOS,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/smos/smos.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/sorce/sorce-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
 satellites/sorce/sorce-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from sorce.svg via tools/render_pngs.mjs
@@ -352,6 +362,7 @@ satellites/sorce/sorce.svg,,repo maintainers,https://github.com/eo-gos/satellite
 satellites/swarm/swarm-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from swarm.svg via tools/render_pngs.mjs
 satellites/swarm/swarm-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from swarm.svg via tools/render_pngs.mjs
 satellites/swarm/swarm-icon.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
+satellites/swarm/swarm-photo.jpg,Artist's view of Swarm,"ESA–P. Carril, 2013",https://www.esa.int/ESA_Multimedia/Images/2013/11/Artist_s_view_of_Swarm6,ESA Standard Licence,ESA Standard Licence and Additional permission may be required (contact spaceinimages@esa.int for further information) — terms: https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website
 satellites/swarm/swarm.svg,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,https://creativecommons.org/licenses/by/4.0/
 satellites/swot/swot-1024px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
 satellites/swot/swot-512px.png,,repo maintainers,https://github.com/eo-gos/satellite-visuals,CC BY 4.0,rendered from swot.svg via tools/render_pngs.mjs
