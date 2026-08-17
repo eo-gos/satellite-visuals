@@ -64,7 +64,7 @@ Batch size: ~20–25 missions per PR (batch 1 landed 22 and reviewed comfortably
 
 For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 5 applies, and the ladder below is how permission actually gets obtained.
 
-**After your batch merges (not your job):** the maintainers run `tools/process_photos.py` over the new photos to derive transparent cutouts (`-photo-cut-1024px/-512px.png`) with their own paperwork. Your only lever on that step is picking cuttable images. Anything the cutter can't handle goes on the re-source list — current priorities are in issue #113 (plus ace and sentinel-3 from batch 1, which need proper agency imagery; for Sentinels, ESA's multimedia library publishes renders under CC BY-SA 3.0 IGO, which qualifies).
+**After your batch merges (not your job):** the maintainers run `tools/process_photos.py` over the new photos to derive transparent cutouts (`-photo-cut-1024px/-512px.png`) with their own paperwork. Your only lever on that step is picking cuttable images. Anything the cutter can't handle goes on the re-source list — current priorities are in issue #113 (plus ace and sentinel-3 from batch 1, which need proper agency imagery; for Sentinels, ESA's multimedia library publishes some renders under CC BY-SA 3.0 IGO, which qualifies — but note that ESA's CC subset is overwhelmingly *data* imagery, so most spacecraft renders come under the ESA Standard Licence, which is also accepted; see `ASSET-LICENSING.md`).
 
 ### Tier D — how permission realistically happens
 

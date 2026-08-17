@@ -33,6 +33,9 @@ LICENSE_DEEDS = {
     "ogl v3.0": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
     "media-terms": None,
     "trademark-editorial-use": None,
+    # The "deed" is ESA's terms page itself — the same URL every ESA row's
+    # licence note records (snapshot: docs/licence-snapshots/esa-standard-licence.md).
+    "esa standard licence": "https://www.esa.int/ESA_Multimedia/Terms_and_conditions_of_use_of_images_and_videos_available_on_the_esa_website",
 }
 
 # Generic Creative Commons deeds: cc <flavour> <version> [<jurisdiction port>].
@@ -82,11 +85,14 @@ def requires_attribution(name):
 def permits_derivatives(name):
     """True when the source licence lets us host a cropped / bg-removed cutout.
     ND blocks derivatives; media-terms grants use *as provided* only, so a
-    cutout may exceed permission -> gated (issue #109 flow-down table)."""
+    cutout may exceed permission -> gated (issue #109 flow-down table). The
+    ESA Standard Licence grants use/reproduction but never adaptation, and
+    most render pages add "additional permission may be required" -> gated
+    until ESA clarifies (asked via spaceinimages@esa.int, 2026-08)."""
     key = _norm(name)
     if "nd" in re.split(r"[ -]", key):
         return False
-    if key in ("media-terms", "trademark-editorial-use"):
+    if key in ("media-terms", "trademark-editorial-use", "esa standard licence"):
         return False
     return True
 
@@ -98,6 +104,7 @@ if __name__ == "__main__":
         "Public domain", "CC0", "CC BY 4.0", "CC BY 3.0", "CC BY-SA 4.0",
         "CC BY-SA 3.0", "CC BY-SA 2.5", "CC BY-SA 2.0", "CC BY-SA 2.0 fr",
         "CC BY-SA 3.0 igo", "OGL v3", "media-terms", "trademark-editorial-use",
+        "ESA Standard Licence",
     ]
     for s in samples:
         print(f"{s:26} -> {deed_url(s)}  "
