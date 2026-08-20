@@ -93,6 +93,7 @@
     "imageCredit": "ESA/Mlabspace",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/aws/aws-photo.png"
   },
   {
@@ -140,6 +141,7 @@
     "imageCredit": "ESA – P. Carril",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/cryosat-2/cryosat-2-photo.jpg"
   },
   {
@@ -238,6 +240,7 @@
     "imageCredit": "ESA–P. Carril, 2013",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/earthcare/earthcare-photo.jpg"
   },
   {
@@ -268,6 +271,7 @@
     "imageCredit": "ESA/Denmann production",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/envisat/envisat-photo.jpg"
   },
   {
@@ -328,6 +332,7 @@
     "imageCredit": "ESA/AOES Medialab",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/goce/goce-photo.jpg"
   },
   {
@@ -935,6 +940,7 @@
     "imageCredit": "ESA/ATG medialab",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/sentinel-2/sentinel-2-photo.jpg"
   },
   {
@@ -965,6 +971,7 @@
     "imageCredit": "ESA–Pierre Carril",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/sentinel-3/sentinel-3-photo.jpg"
   },
   {
@@ -997,6 +1004,7 @@
     "imageCredit": "ESA/P. Carril",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/sentinel-5a/sentinel-5a-photo.jpg"
   },
   {
@@ -1012,6 +1020,7 @@
     "imageCredit": "ESA/ATG medialab",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/sentinel-5p/sentinel-5p-photo.jpg"
   },
   {
@@ -1044,6 +1053,7 @@
     "imageCredit": "ESA - P. Carril",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/smos/smos-photo.jpg"
   },
   {
@@ -1076,6 +1086,7 @@
     "imageCredit": "ESA–P. Carril, 2013",
     "imageSourceTier": "B",
     "imageStatus": "licensed",
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
     "PhotoPath": "satellites/swarm/swarm-photo.jpg"
   },
   {

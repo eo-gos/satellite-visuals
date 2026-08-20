@@ -8,6 +8,7 @@ photos were accepted under stays auditable even if ESA revises the page.
 - Page states: "Last updated on 18 January 2024"
 - Captured: 2026-08-17
 - Repository decision record: `ASSET-LICENSING.md` (ESA Standard Licence bullet, decision of 2026-08-15)
+- 2026-08-19: ESA confirmed this repository's reading of the terms in writing, under reference **ESA HQ PHOTOS 20260819-0333** — cropping/resizing permitted, background removal never, credit plus a licence notice required per image, and blanket permission for future ESA-copyright images. See `docs/permissions/esa-20260819-0333.md`. The verbatim terms below are unchanged.
 
 ---
 
