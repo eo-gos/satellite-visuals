@@ -166,9 +166,22 @@ def process_folder(folder, entry, root, out_base, get_session, model_name, sizes
     # gate. Refuse to derive unless explicitly overridden.
     lic = entry.get("imageLicense", "") if entry else ""
     status = entry.get("imageStatus", "") if entry else ""
+    # Both gates below read index metadata, so a folder with a raw photo but no
+    # usable entry (directly named on the CLI, say) would sail through them on
+    # empty strings. Metadata-first is the repo's whole model: no licence
+    # recorded, no derivative.
+    if not (lic and status):
+        print(f"SKIP {folder}: index.json entry missing or lacks "
+              f"imageLicense/imageStatus — record the licence before cutting")
+        return {
+            "folder": folder, "group": group,
+            "source": str(raw.relative_to(root)) if _under(raw, root) else str(raw),
+            "image_license": lic, "image_status": status,
+            "status": "skipped-missing-index",
+        }
     guarded_status = status in ("media-terms", "trademark-editorial-use")
-    guarded_licence = bool(lic) and not permits_derivatives(lic)
-    if bool(lic) and derivatives_refused(lic):
+    guarded_licence = not permits_derivatives(lic)
+    if derivatives_refused(lic):
         print(f"SKIP {folder}: licence '{lic}' — rights holder refused derivatives "
               f"in writing (docs/permissions/); --allow-nonderiv does not apply")
         return {
