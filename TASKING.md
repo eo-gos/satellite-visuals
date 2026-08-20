@@ -17,6 +17,17 @@ The EO-GOS portal shows a page for every Earth-observation mission (~1,200 and g
 7. **Logos are never redrawn** — official files only (see Task C).
 8. **All work on branches, PR per batch, never commit to `main`.** Keep commit messages plain (no generated-by/co-author trailers).
 
+### ESA images — the standing rules
+
+ESA answered our permission query in writing on 2026-08-19 (reference **ESA HQ PHOTOS 20260819-0333**; full record in `docs/permissions/esa-20260819-0333.md`). That answer sets four rules you must follow whenever a batch touches esa.int:
+
+- **ESA-copyright images are pre-cleared.** Future batches may take them under the ESA Standard Licence with no per-image permission ask — ESA granted blanket permission. Contractor credits (ESA/ATG medialab, ESA–P. Carril, ESA/AOES Medialab, ESA/Mlabspace, ESA/Denmann production) are covered too. The usual paperwork still applies (rule 4).
+- **Every ESA entry carries `licenceNoticeUrl` in `index.json`:** `"licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"`, placed after `imageStatus`. This is ESA's condition of the grant — the credit alone is not enough; the image must also be marked as available *only* under the ESA Standard Licence. It goes in `index.json` only, not in `ATTRIBUTIONS.csv`.
+- **Never background-remove an ESA image.** ESA ruled that removing the background "would fundamentally change" the image. Cropping, aspect-ratio changes and resizing are fine; matting is prohibited permanently, and the cutter refuses these photos by design. Instead, look for ESA's **official "clean" version** — many missions have a render on a plain or transparent background in the same multimedia library. Source that as `<folder>-photo-clean.<ext>` with the usual paperwork: source URL, credit copied verbatim, `ATTRIBUTIONS.csv` row.
+- **Resize-only display versions are allowed** from a clean original: `<folder>-photo-clean-1024px.png` and `<folder>-photo-clean-512px.png`, mirroring the photo-cut naming. Scale only — no matting, no background edits.
+
+Finding clean versions for the eleven ESA folders already committed is live curator work (issue #125).
+
 ## Task A — satellite photos (the main job)
 
 Goal: every mission folder gets a properly licensed photo/render of the spacecraft, recorded in `index.json` with `imageStatus: licensed`. Where none exists, `imageStatus: svg-fallback` — the SVG is the visual, and that's fine.
@@ -64,7 +75,7 @@ Batch size: ~20–25 missions per PR (batch 1 landed 22 and reviewed comfortably
 
 For the ~14 missions Commons can't cover, `image-sourcing-manual-worklist.csv` lists each owner's image library and the licence you're looking for — same paperwork, found by hand. Tier D rows: rule 5 applies, and the ladder below is how permission actually gets obtained.
 
-**After your batch merges (not your job):** the maintainers run `tools/process_photos.py` over the new photos to derive transparent cutouts (`-photo-cut-1024px/-512px.png`) with their own paperwork. Your only lever on that step is picking cuttable images. Anything the cutter can't handle goes on the re-source list — current priorities are in issue #113 (plus ace and sentinel-3 from batch 1, which need proper agency imagery; for Sentinels, ESA's multimedia library publishes some renders under CC BY-SA 3.0 IGO, which qualifies — but note that ESA's CC subset is overwhelmingly *data* imagery, so most spacecraft renders come under the ESA Standard Licence, which is also accepted; see `ASSET-LICENSING.md`).
+**After your batch merges (not your job):** the maintainers run `tools/process_photos.py` over the new photos to derive transparent cutouts (`-photo-cut-1024px/-512px.png`) with their own paperwork. Your only lever on that step is picking cuttable images. Anything the cutter can't handle goes on the re-source list — current priorities are in issue #113 (plus ace and sentinel-3 from batch 1, which need proper agency imagery; for Sentinels, ESA's multimedia library publishes some renders under CC BY-SA 3.0 IGO, which qualifies — but note that ESA's CC subset is overwhelmingly *data* imagery, so most spacecraft renders come under the ESA Standard Licence, which is also accepted; see `ASSET-LICENSING.md`). ESA Standard Licence photos are never cut — their display version is ESA's own clean render, per the ESA rules above.
 
 ### Tier D — how permission realistically happens
 
