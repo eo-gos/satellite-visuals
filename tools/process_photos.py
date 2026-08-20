@@ -47,7 +47,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from licenses import deed_url, permits_derivatives  # noqa: E402  (local sibling module)
+from licenses import deed_url, derivatives_refused, permits_derivatives  # noqa: E402  (local sibling module)
 
 TOOLS = Path(__file__).resolve().parent
 REPO = TOOLS.parent
@@ -168,6 +168,15 @@ def process_folder(folder, entry, root, out_base, get_session, model_name, sizes
     status = entry.get("imageStatus", "") if entry else ""
     guarded_status = status in ("media-terms", "trademark-editorial-use")
     guarded_licence = bool(lic) and not permits_derivatives(lic)
+    if bool(lic) and derivatives_refused(lic):
+        print(f"SKIP {folder}: licence '{lic}' — rights holder refused derivatives "
+              f"in writing (docs/permissions/); --allow-nonderiv does not apply")
+        return {
+            "folder": folder, "group": group,
+            "source": str(raw.relative_to(root)) if _under(raw, root) else str(raw),
+            "image_license": lic, "image_status": status,
+            "status": "skipped-derivatives-refused",
+        }
     if (guarded_status or guarded_licence) and not allow_nonderiv:
         reason = f"imageStatus '{status}'" if guarded_status else f"licence '{lic}'"
         print(f"SKIP {folder}: {reason} does not permit derivatives "

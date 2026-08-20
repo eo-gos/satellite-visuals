@@ -104,6 +104,15 @@ def permits_derivatives(name):
     return True
 
 
+def derivatives_refused(name):
+    """True when the rights holder has refused derivatives IN WRITING — a
+    permanent prohibition, distinct from the default gate above, which exists
+    for licences whose terms are merely silent on adaptation. The cut pass
+    must not honour --allow-nonderiv for these: the override means "permission
+    was confirmed", and here the confirmation was a refusal."""
+    return _norm(name) == "esa standard licence"
+
+
 if __name__ == "__main__":
     # Self-check against the licence strings that actually appear in batch 1
     # plus the wider admitted set. Prints the resolved deed table.
