@@ -119,6 +119,26 @@ def ensure_entry(index, folder, mission_id="", mission_name=""):
     return entry, True
 
 
+def unbacked_folders(created, applied):
+    """Folders this run created that no pick actually filled.
+
+    A new folder is only real once its pick has applied: an entry with no photo
+    and no ATTRIBUTIONS row reads as covered when it is not, and the portal
+    would resolve the mission to an empty directory. Callers drop these before
+    saving rather than persisting a hole.
+    """
+    return sorted(set(created) - set(applied))
+
+
+def drop_entries(index, folders):
+    """Remove entries for `folders` from `index` in place. Returns how many
+    went."""
+    drop = set(folders)
+    before = len(index)
+    index[:] = [e for e in index if folder_of(e) not in drop]
+    return before - len(index)
+
+
 def parse_new_specs(specs):
     """`--new folder=x missionID=1 missionName=Y` -> {folder: {...}}.
 

@@ -50,8 +50,9 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from index_utils import (UnsafeFolderName, ensure_entry, folder_of,  # noqa: E402
-                         load_index, parse_new_specs, save_index)
+from index_utils import (UnsafeFolderName, drop_entries, ensure_entry,  # noqa: E402
+                         folder_of, load_index, parse_new_specs, save_index,
+                         unbacked_folders)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
@@ -114,7 +115,10 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
     by_path = {r[0]: r for r in body}
     touched = 0
 
-    # A licensed clean render alone makes a valid folder — no SVG required.
+    # A licensed clean render alone makes a valid folder — no SVG required. The
+    # entry is built in memory only; nothing is persisted until the folder's
+    # pick has actually applied (CX P2).
+    created_folders = set()
     for folder, spec in (new_folders or {}).items():
         # Validated before anything touches the filesystem (see apply_picks).
         try:
@@ -123,12 +127,13 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
         except UnsafeFolderName as exc:
             sys.exit(f"REFUSED {exc}")
         by_folder[folder] = entry
-        if created and not dry_run:
-            (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)
-        print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry "
+        if created:
+            created_folders.add(folder)
+        print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry pending "
               f"(missionID {entry['missionID'] or '—'})"
               + ("  (dry run — not written)" if dry_run else ""))
 
+    applied, failed = set(), set()
     for folder, pick in picks.items():
         entry = by_folder.get(folder)
         if entry is None:
@@ -158,8 +163,16 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
             print("  (dry run — nothing written)")
             continue
 
+        # Fetch first, then create the directory and write: a failed download
+        # must not leave an empty folder behind.
+        try:
+            payload = fetch(url)
+        except Exception as exc:
+            print(f"  FAIL download failed ({exc}) — no file, no entry")
+            failed.add(folder)
+            continue
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(fetch(url))
+        dest.write_bytes(payload)
 
         derived = []
         for box in SIZES:
@@ -207,8 +220,22 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
                 body.append(row)
                 by_path[path] = row
         touched += 1
+        applied.add(folder)
 
-    if (touched or new_folders) and not dry_run:
+    # CX P2: a folder created by this run without an applied pick is dropped —
+    # an entry with no file and no ATTRIBUTIONS row reads as covered when it is
+    # not.
+    unbacked = unbacked_folders(created_folders, applied)
+    if unbacked:
+        drop_entries(index, unbacked)
+        for folder in unbacked:
+            why = "its pick failed" if folder in failed else \
+                  "no pick in this file matched it"
+            print(f"DROP {folder}: {why} — entry not written, no folder created")
+    if failed:
+        print(f"WARN {len(failed)} pick(s) failed: {', '.join(sorted(failed))}")
+
+    if (touched or (created_folders - set(unbacked))) and not dry_run:
         for e in index:
             e.setdefault("PhotoPath", "")
         save_index(index)

@@ -25,7 +25,8 @@ from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from index_utils import (UnsafeFolderName, check_folder_name,  # noqa: E402
-                         ensure_entry, new_entry, parse_new_specs)
+                         drop_entries, ensure_entry, new_entry,
+                         parse_new_specs, unbacked_folders)
 from licenses import permits_icon_derivation  # noqa: E402
 from process_photos import DEFAULT_MARGIN, process_folder  # noqa: E402
 
@@ -174,6 +175,47 @@ class FolderNameGateTests(unittest.TestCase):
                                 "missionName=RADARSAT-2"]])
         self.assertEqual(got, {"radarsat-2": {"missionID": "352",
                                               "missionName": "RADARSAT-2"}})
+
+
+class UnbackedFolderTests(unittest.TestCase):
+    """A folder created by an apply run is only real once its pick has applied.
+    An entry with no photo and no ATTRIBUTIONS row reads as covered when it is
+    not, and the portal would resolve the mission to an empty directory."""
+
+    def test_folder_with_no_matching_pick_is_unbacked(self):
+        self.assertEqual(unbacked_folders({"terra", "ghostsat"}, {"terra"}),
+                         ["ghostsat"])
+
+    def test_folder_whose_pick_failed_is_unbacked(self):
+        # the caller drops the folder from `applied` on a download failure
+        self.assertEqual(unbacked_folders({"pace"}, set()), ["pace"])
+
+    def test_every_folder_applied_leaves_nothing_to_drop(self):
+        self.assertEqual(unbacked_folders({"terra", "aqua"}, {"terra", "aqua"}), [])
+
+    def test_a_pre_existing_folder_is_never_dropped(self):
+        """Only folders this run CREATED are candidates. A pick that fails for
+        a folder already in the index must not delete that entry."""
+        self.assertEqual(unbacked_folders(set(), {"goes-16"}), [])
+
+    def test_drop_entries_removes_only_the_named_folders(self):
+        index = [{"folder": "terra"}, {"folder": "ghostsat"}, {"folder": "aqua"}]
+        removed = drop_entries(index, ["ghostsat"])
+        self.assertEqual(removed, 1)
+        self.assertEqual([e["folder"] for e in index], ["terra", "aqua"])
+
+    def test_drop_entries_matches_the_old_index_shape_too(self):
+        """folder_of() falls back to SVGColourPath, so a pre-migration row is
+        still addressable."""
+        index = [{"SVGColourPath": "satellites/ghostsat/ghostsat.svg"},
+                 {"folder": "terra"}]
+        self.assertEqual(drop_entries(index, ["ghostsat"]), 1)
+        self.assertEqual([e.get("folder") for e in index], ["terra"])
+
+    def test_drop_entries_is_a_no_op_for_an_unknown_folder(self):
+        index = [{"folder": "terra"}]
+        self.assertEqual(drop_entries(index, ["nosuch"]), 0)
+        self.assertEqual(len(index), 1)
 
 
 if __name__ == "__main__":

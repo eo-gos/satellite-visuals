@@ -25,8 +25,9 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from index_utils import (UnsafeFolderName, ensure_entry, folder_of,  # noqa: E402
-                         load_index, parse_new_specs, save_index)
+from index_utils import (UnsafeFolderName, drop_entries, ensure_entry,  # noqa: E402
+                         folder_of, load_index, parse_new_specs, save_index,
+                         unbacked_folders)
 
 REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
@@ -54,9 +55,12 @@ if isinstance(picks, dict) and ("photos" in picks or "esa_clean" in picks):
 index = load_index()
 by_folder = {folder_of(e): e for e in index if folder_of(e)}
 
-# A licensed photo alone makes a valid folder now — no SVG required. Create the
-# entry (and the directory) before the download loop so a pick for a brand-new
-# mission applies in one pass.
+# A licensed photo alone makes a valid folder now — no SVG required, so a pick
+# may create its folder. The entry is built in memory only: nothing is written
+# to disk, and no new entry is persisted, until that folder's pick has actually
+# applied. An entry with no photo and no ATTRIBUTIONS row is not a folder, it is
+# a hole in the index.
+created_folders = set()
 for folder, spec in new_folders.items():
     # Validated before anything touches the filesystem: a path-like value would
     # otherwise mkdir and write outside satellites/.
@@ -67,14 +71,15 @@ for folder, spec in new_folders.items():
         sys.exit(f"REFUSED {exc}")
     by_folder[folder] = entry
     if created:
-        (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)
-    print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry "
+        created_folders.add(folder)
+    print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry pending "
           f"(missionID {entry['missionID'] or '—'})")
 
 rows = list(csv.reader(open(REPO / "ATTRIBUTIONS.csv")))
 header, body = rows[0], rows[1:]
 by_path = {r[0]: r for r in body}
 
+applied, failed = set(), set()
 for folder, pick in picks.items():
     entry = by_folder.get(folder)
     if entry is None:
@@ -91,8 +96,17 @@ for folder, pick in picks.items():
     if ext not in ("jpg", "jpeg", "png", "gif", "webp", "tif", "tiff"):
         ext = "jpg"
     rel = f"satellites/{folder}/{folder}-photo.{ext}"
+    # Download into memory first, then create the directory and write. A failed
+    # download must not leave an empty folder behind.
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    (REPO / rel).write_bytes(urllib.request.urlopen(req, timeout=60).read())
+    try:
+        payload = urllib.request.urlopen(req, timeout=60).read()
+    except Exception as exc:
+        print(f"FAIL {folder}: download failed ({exc}) — no file, no entry")
+        failed.add(folder)
+        continue
+    (REPO / rel).parent.mkdir(parents=True, exist_ok=True)
+    (REPO / rel).write_bytes(payload)
 
     # rights_holder / credit, when the pick carries them, are the curated
     # values and win: a source's own metadata field is not always a credit
@@ -112,7 +126,18 @@ for folder, pick in picks.items():
     else:
         body.append(row)
         by_path[rel] = row
+    applied.add(folder)
     print(f"OK   {folder}: {rel} ({pick['licence']})")
+
+# CX P2: a folder this run created must have an applied pick, or it does not
+# get persisted. Drop the entry, leave the tree alone, and say so — a half-made
+# folder is worse than no folder, because it reads as covered.
+unbacked = unbacked_folders(created_folders, applied)
+if unbacked:
+    drop_entries(index, unbacked)
+    for folder in unbacked:
+        why = "its pick failed" if folder in failed else "no pick in this file matched it"
+        print(f"DROP {folder}: {why} — entry not written, no folder created")
 
 # keep every entry carrying the PhotoPath key so the schema stays uniform
 for e in index:
@@ -124,4 +149,8 @@ with open(REPO / "ATTRIBUTIONS.csv", "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(header)
     w.writerows(body)
-print("\nindex.json + ATTRIBUTIONS.csv updated — review `git diff`, commit on a branch.")
+print(f"\n{len(applied)} pick(s) applied"
+      + (f", {len(unbacked)} unbacked folder(s) dropped" if unbacked else "")
+      + ".\nindex.json + ATTRIBUTIONS.csv updated — review `git diff`, commit on a branch.")
+if failed:
+    sys.exit(f"{len(failed)} pick(s) failed: {', '.join(sorted(failed))}")
