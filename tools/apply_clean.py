@@ -123,7 +123,12 @@ def apply_esa_clean(picks, dry_run):
                   f"({', '.join(sorted(ALLOWED))})")
             continue
 
-        ext = pick.get("ext") or pick["url"].rsplit(".", 1)[-1].lower()
+        # a download URL may carry a tracking query whose last dot-segment is
+        # not a file extension — read the extension off the path, fetch clean
+        url = pick["url"].split("?")[0].split("#")[0]
+        ext = (pick.get("ext") or "").lower()
+        if ext not in EXTS:
+            ext = url.rsplit(".", 1)[-1].lower()
         if ext not in EXTS:
             ext = "jpg"
         rel = f"satellites/{folder}/{folder}-photo-clean.{ext}"
@@ -136,7 +141,7 @@ def apply_esa_clean(picks, dry_run):
             continue
 
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(fetch(pick["url"]))
+        dest.write_bytes(fetch(url))
 
         derived = []
         for box in SIZES:
@@ -148,10 +153,13 @@ def apply_esa_clean(picks, dry_run):
         entry["PhotoCleanPath"] = rel
         entry["PhotoClean1024Path"] = derived[0][0]
         entry["PhotoClean512Path"] = derived[1][0]
-        entry["imageSourceURL"] = pick.get("page") or pick["url"]
+        entry["imageSourceURL"] = pick.get("page") or url
         entry["imageRightsHolder"] = pick.get("rights_holder") or pick.get("credit", "")
         entry["imageLicense"] = licence
         entry["imageCredit"] = pick.get("credit", "")
+        # Tier B by definition: this lane is an agency multimedia page whose
+        # published terms permit the use (ASSET-LICENSING's tier vocabulary).
+        entry["imageSourceTier"] = pick.get("tier", "B")
         entry["imageStatus"] = pick.get("status", "licensed")
         if _norm(licence) == "esa standard licence":
             entry["licenceNoticeUrl"] = NOTICE_URL
