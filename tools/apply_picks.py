@@ -17,28 +17,69 @@ make_checker.py — whose sibling ``esa_clean`` block is a different lane and is
 ignored here (tools/apply_clean.py owns it, and would refuse to cut anyway).
 """
 
+import argparse
 import csv
 import json
 import sys
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import (UnsafeFolderName, drop_entries, ensure_entry,  # noqa: E402
+                         folder_of, load_index, parse_new_specs, save_index,
+                         unbacked_folders)
+
 REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
 
-picks = json.load(open(sys.argv[1]))
+_ap = argparse.ArgumentParser(description=__doc__)
+_ap.add_argument("picks", help="picks.json")
+_ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
+                 help="create a folder that has no index entry yet: "
+                      "--new folder=<name> missionID=<id> missionName=<name> "
+                      "(repeat the flag per folder)")
+_args = _ap.parse_args()
+
+picks = json.load(open(_args.picks))
+try:
+    new_folders = dict(parse_new_specs(_args.new))
+except UnsafeFolderName as exc:
+    sys.exit(f"REFUSED {exc}")
 if isinstance(picks, dict) and ("photos" in picks or "esa_clean" in picks):
     if picks.get("esa_clean"):
         print(f"NOTE {len(picks['esa_clean'])} esa_clean pick(s) in this file are not "
               f"this tool's lane — run tools/apply_clean.py for those.")
+    for folder, spec in (picks.get("new_folders") or {}).items():
+        new_folders.setdefault(folder, spec)
     picks = picks.get("photos", {})
-index = json.load(open(REPO / "index.json"))
-by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
+index = load_index()
+by_folder = {folder_of(e): e for e in index if folder_of(e)}
+
+# A licensed photo alone makes a valid folder now — no SVG required, so a pick
+# may create its folder. The entry is built in memory only: nothing is written
+# to disk, and no new entry is persisted, until that folder's pick has actually
+# applied. An entry with no photo and no ATTRIBUTIONS row is not a folder, it is
+# a hole in the index.
+created_folders = set()
+for folder, spec in new_folders.items():
+    # Validated before anything touches the filesystem: a path-like value would
+    # otherwise mkdir and write outside satellites/.
+    try:
+        entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                      spec.get("missionName", ""))
+    except UnsafeFolderName as exc:
+        sys.exit(f"REFUSED {exc}")
+    by_folder[folder] = entry
+    if created:
+        created_folders.add(folder)
+    print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry pending "
+          f"(missionID {entry['missionID'] or '—'})")
 
 rows = list(csv.reader(open(REPO / "ATTRIBUTIONS.csv")))
 header, body = rows[0], rows[1:]
 by_path = {r[0]: r for r in body}
 
+applied, failed = set(), set()
 for folder, pick in picks.items():
     entry = by_folder.get(folder)
     if entry is None:
@@ -55,8 +96,17 @@ for folder, pick in picks.items():
     if ext not in ("jpg", "jpeg", "png", "gif", "webp", "tif", "tiff"):
         ext = "jpg"
     rel = f"satellites/{folder}/{folder}-photo.{ext}"
+    # Download into memory first, then create the directory and write. A failed
+    # download must not leave an empty folder behind.
     req = urllib.request.Request(url, headers={"User-Agent": UA})
-    (REPO / rel).write_bytes(urllib.request.urlopen(req, timeout=60).read())
+    try:
+        payload = urllib.request.urlopen(req, timeout=60).read()
+    except Exception as exc:
+        print(f"FAIL {folder}: download failed ({exc}) — no file, no entry")
+        failed.add(folder)
+        continue
+    (REPO / rel).parent.mkdir(parents=True, exist_ok=True)
+    (REPO / rel).write_bytes(payload)
 
     # rights_holder / credit, when the pick carries them, are the curated
     # values and win: a source's own metadata field is not always a credit
@@ -76,17 +126,37 @@ for folder, pick in picks.items():
     else:
         body.append(row)
         by_path[rel] = row
+    applied.add(folder)
     print(f"OK   {folder}: {rel} ({pick['licence']})")
+
+# CX P2: a folder this run created must have an applied pick, or it does not
+# get persisted. Drop the entry, leave the tree alone, and say so — a half-made
+# folder is worse than no folder, because it reads as covered.
+unbacked = unbacked_folders(created_folders, applied)
+if unbacked:
+    drop_entries(index, unbacked)
+    for folder in unbacked:
+        why = "its pick failed" if folder in failed else "no pick in this file matched it"
+        print(f"DROP {folder}: {why} — entry not written, no folder created")
 
 # keep every entry carrying the PhotoPath key so the schema stays uniform
 for e in index:
     e.setdefault("PhotoPath", "")
 
-json.dump(index, open(REPO / "index.json", "w"), indent=2)
-open(REPO / "index.json", "a").write("\n")
+save_index(index)
 body.sort(key=lambda r: r[0])
 with open(REPO / "ATTRIBUTIONS.csv", "w", newline="") as f:
     w = csv.writer(f)
     w.writerow(header)
     w.writerows(body)
-print("\nindex.json + ATTRIBUTIONS.csv updated — review `git diff`, commit on a branch.")
+print(f"\n{len(applied)} pick(s) applied"
+      + (f", {len(unbacked)} unbacked folder(s) dropped" if unbacked else "")
+      + ".\nindex.json + ATTRIBUTIONS.csv updated — review `git diff`, commit on a branch.")
+# A requested folder that ends unbacked is a failed run, whether the download
+# broke or no pick ever named it. Cleanup happened above; the exit code is what
+# tells a caller (or apply_clean's subprocess) that the file did not fully
+# apply — printing DROP and exiting 0 reads as success.
+if unbacked or failed:
+    problems = sorted(set(unbacked) | failed)
+    sys.exit(f"{len(problems)} requested folder(s) did not apply: "
+             f"{', '.join(problems)}")

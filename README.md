@@ -15,9 +15,18 @@ satellites/<name>/
   <name>-photo.<ext>          raw sourced photo, bit-identical to source (evidence-grade)
   <name>-photo-cut-1024px.png  transparent cutout, natural aspect, max-dim 1024 (derived)
   <name>-photo-cut-512px.png   smaller cutout for cards (derived)
+  <name>-photo-clean.<ext>     rights holder's own clean render, as published
+  <name>-photo-clean-1024px.png  resize-only display copy (no background edits)
+  <name>-photo-clean-512px.png   resize-only display copy
 ```
 
 Lowercase matters: these paths are served from a case-sensitive Linux bind-mount.
+
+**Not every folder has every file.** A folder with a licensed photo and no house
+artwork is valid — the mission page shows the photo, and lists show an icon only
+if one exists. Each entry in `index.json` carries an explicit `folder` field as its
+identity; the path fields are optional content and may be `""`. See the photo-only
+lane in `TASKING.md`.
 
 ## Deriving photo cutouts
 

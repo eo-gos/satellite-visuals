@@ -113,6 +113,36 @@ def derivatives_refused(name):
     return _norm(name) == "esa standard licence"
 
 
+# Public domain / CC family only — the licences whose terms are explicit that a
+# derivative may be made and redistributed. Deliberately narrower than
+# permits_derivatives(): that gate passes anything not positively refused, which
+# is right for a cutout of an already-cleared photo but too loose for a *new
+# published asset*. NC/ND are excluded here as well as by permits_derivatives.
+_PD_OR_CC = re.compile(
+    r"^(public domain(\s*\(.*\))?|cc0(\s|$)|cc[ -]?by(?:[ -]?sa)?(?:[ -]|$))"
+)
+
+
+def permits_icon_derivation(name):
+    """True when a silhouette icon may be derived from a photo under this
+    licence (satellite-visuals photo-only lane).
+
+    An icon is a redistributed derivative work in its own right, so it needs a
+    stronger warrant than a cutout does: public domain or a CC licence that
+    allows adaptation. Everything else is refused — an ESA Standard Licence
+    image (background removal refused in writing, ESA HQ PHOTOS 20260819-0333),
+    an operator's media-terms photo (use as provided only), a trademark logo,
+    an NC/ND variant, or any licence string this module does not recognise.
+    Those folders simply have no icon; the mission page still shows the photo.
+    """
+    if derivatives_refused(name) or not permits_derivatives(name):
+        return False
+    key = _norm(name)
+    if any(tok in re.split(r"[ -]", key) for tok in ("nc", "nd")):
+        return False
+    return bool(_PD_OR_CC.match(key))
+
+
 if __name__ == "__main__":
     # Self-check against the licence strings that actually appear in batch 1
     # plus the wider admitted set. Prints the resolved deed table.

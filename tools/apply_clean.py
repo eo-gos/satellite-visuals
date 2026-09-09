@@ -50,6 +50,9 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import (UnsafeFolderName, drop_entries, ensure_entry,  # noqa: E402
+                         folder_of, load_index, parse_new_specs, save_index,
+                         unbacked_folders)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
@@ -105,17 +108,37 @@ def write_csv(header, body):
         w.writerows(body)
 
 
-def apply_esa_clean(picks, dry_run):
-    index = json.load(open(REPO / "index.json"))
-    by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
+def apply_esa_clean(picks, dry_run, new_folders=None):
+    index = load_index()
+    by_folder = {folder_of(e): e for e in index if folder_of(e)}
     header, body = load_csv()
     by_path = {r[0]: r for r in body}
     touched = 0
 
+    # A licensed clean render alone makes a valid folder — no SVG required. The
+    # entry is built in memory only; nothing is persisted until the folder's
+    # pick has actually applied (CX P2).
+    created_folders = set()
+    for folder, spec in (new_folders or {}).items():
+        # Validated before anything touches the filesystem (see apply_picks).
+        try:
+            entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                          spec.get("missionName", ""))
+        except UnsafeFolderName as exc:
+            sys.exit(f"REFUSED {exc}")
+        by_folder[folder] = entry
+        if created:
+            created_folders.add(folder)
+        print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry pending "
+              f"(missionID {entry['missionID'] or '—'})"
+              + ("  (dry run — not written)" if dry_run else ""))
+
+    applied, failed = set(), set()
     for folder, pick in picks.items():
         entry = by_folder.get(folder)
         if entry is None:
-            print(f"SKIP {folder}: no index.json entry")
+            print(f"SKIP {folder}: no index.json entry — pass "
+                  f"--new folder={folder} missionID=... to create one")
             continue
         licence = pick.get("licence", "")
         if _norm(licence) not in ALLOWED:
@@ -140,8 +163,16 @@ def apply_esa_clean(picks, dry_run):
             print("  (dry run — nothing written)")
             continue
 
+        # Fetch first, then create the directory and write: a failed download
+        # must not leave an empty folder behind.
+        try:
+            payload = fetch(url)
+        except Exception as exc:
+            print(f"  FAIL download failed ({exc}) — no file, no entry")
+            failed.add(folder)
+            continue
         dest.parent.mkdir(parents=True, exist_ok=True)
-        dest.write_bytes(fetch(url))
+        dest.write_bytes(payload)
 
         derived = []
         for box in SIZES:
@@ -189,33 +220,65 @@ def apply_esa_clean(picks, dry_run):
                 body.append(row)
                 by_path[path] = row
         touched += 1
+        applied.add(folder)
 
-    if touched and not dry_run:
+    # CX P2: a folder created by this run without an applied pick is dropped —
+    # an entry with no file and no ATTRIBUTIONS row reads as covered when it is
+    # not.
+    unbacked = unbacked_folders(created_folders, applied)
+    if unbacked:
+        drop_entries(index, unbacked)
+        for folder in unbacked:
+            why = "its pick failed" if folder in failed else \
+                  "no pick in this file matched it"
+            print(f"DROP {folder}: {why} — entry not written, no folder created")
+    if failed:
+        print(f"FAIL {len(failed)} clean pick(s) failed: {', '.join(sorted(failed))}")
+
+    if (touched or (created_folders - set(unbacked))) and not dry_run:
         for e in index:
             e.setdefault("PhotoPath", "")
-        json.dump(index, open(REPO / "index.json", "w"), indent=2)
-        open(REPO / "index.json", "a").write("\n")
+        save_index(index)
         write_csv(header, body)
-    return touched
+    # Hand the unbacked state back: main() decides the exit code, the same way
+    # apply_picks does for its own lane. Reporting a drop and returning a count
+    # that looks like success is how a failed download reads as a clean run.
+    return touched, set(unbacked), set(failed)
 
 
-def apply_photos(picks, src_path, dry_run):
-    """Hand the ordinary-photo block to apply_picks.py unchanged."""
+def apply_photos(picks, new_folders, dry_run):
+    """Hand the ordinary-photo block to apply_picks.py, WITH the new_folders
+    that belong to it — without them apply_picks skips every folder that does
+    not exist yet, which is the whole point of a photo-lane new folder."""
+    if not picks and not new_folders:
+        return 0, True
     if dry_run:
-        print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}")
-        return 0
+        print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}"
+              + (f" (creating {', '.join(sorted(new_folders))})" if new_folders else ""))
+        return 0, True
+    payload = {"schema": "satellite-visuals/picks/2", "photos": picks}
+    if new_folders:
+        payload["new_folders"] = new_folders
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-        json.dump(picks, f)
+        json.dump(payload, f)
         tmp = f.name
-    print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders)")
-    subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp], check=True)
-    return len(picks)
+    print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders"
+          + (f", {len(new_folders)} new" if new_folders else "") + ")")
+    result = subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp])
+    # apply_picks exits non-zero when a pick failed or a requested folder ended
+    # unbacked. Report that as a failed lane rather than raising
+    # CalledProcessError, which would bury the reason under a traceback.
+    return len(picks), result.returncode == 0
 
 
 def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("picks", help="picks.json exported by tools/make_checker.py")
     ap.add_argument("--dry-run", action="store_true", help="print the plan, write nothing")
+    ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
+                    help="create a folder that has no index entry yet: "
+                         "--new folder=<name> missionID=<id> missionName=<name> "
+                         "(repeat the flag per folder)")
     args = ap.parse_args()
 
     data = json.load(open(args.picks))
@@ -224,13 +287,51 @@ def main():
                  "folder->pick mapping is the older shape — feed it to "
                  "tools/apply_picks.py instead.")
 
-    n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run)
-    n_photo = apply_photos(data.get("photos", {}), args.picks, args.dry_run)
+    try:
+        new_folders = dict(parse_new_specs(args.new))
+    except UnsafeFolderName as exc:
+        sys.exit(f"REFUSED {exc}")
+    for folder, spec in (data.get("new_folders") or {}).items():
+        new_folders.setdefault(folder, spec)
 
-    print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s).")
+    # Route each new folder to the lane that actually holds its pick. Handing
+    # the whole block to the clean pass made it drop every photo-lane folder as
+    # unbacked, and the photos pass then never saw them — so a valid public
+    # domain photo for a folder that does not exist yet was silently skipped.
+    clean_picks = data.get("esa_clean", {})
+    photo_picks = data.get("photos", {})
+    clean_new = {f: s for f, s in new_folders.items() if f in clean_picks}
+    photo_new = {f: s for f, s in new_folders.items() if f in photo_picks}
+    orphans = sorted(set(new_folders) - set(clean_new) - set(photo_new))
+    for folder in orphans:
+        print(f"DROP {folder}: requested as a new folder but no pick in either "
+              f"lane names it — entry not written, no folder created")
+
+    n_clean, clean_unbacked, clean_failed = apply_esa_clean(
+        clean_picks, args.dry_run, clean_new)
+    n_photo, photos_ok = apply_photos(photo_picks, photo_new, args.dry_run)
+
+    dropped = sorted(set(orphans) | clean_unbacked)
+    print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s)."
+          + (f" {len(dropped)} unbacked new folder(s) dropped." if dropped else ""))
     if not args.dry_run:
         print("Next: python3 tools/check_index.py, then review `git diff` and commit "
               "on a branch.")
+
+    # Cleanup has already happened; the exit code is what tells a caller the
+    # file did not fully apply. Every lane reports, so a failure in either one
+    # fails the command.
+    problems = []
+    if dropped:
+        problems.append(f"{len(dropped)} requested folder(s) not created: "
+                        f"{', '.join(dropped)}")
+    if clean_failed:
+        problems.append(f"{len(clean_failed)} clean pick(s) failed: "
+                        f"{', '.join(sorted(clean_failed))}")
+    if not photos_ok:
+        problems.append("the photo lane reported failures (see above)")
+    if problems:
+        sys.exit("; ".join(problems))
 
 
 if __name__ == "__main__":

@@ -18,10 +18,12 @@ Input is tools/out/checker_data.json (gitignored, built per batch). Shape:
         "currentLicence": ..., "currentCredit": ..., "headline": ...,
         "noneReason": "why nothing was found (empty when there are candidates)",
         "extra": "row-level warning shown in a callout",
+        "new_folder"? {"missionID","missionName"},   # folder to be created
         "alts": [{"title","page","url","credit","artist","licence_text",
                   "dim","alpha","ext","img" (data URI),
                   "verdict": "recommend"|"alternate"|"reject", "note",
-                  "rights_holder"?, "credit_line"?, "notes"?}]}]}
+                  "rights_holder"?, "credit_line"?, "notes"?,
+                  "icon_img"? (data URI), "icon_note"?, "icon_allowed"? (bool)}]}]}
 
 ``rights_holder`` / ``credit_line`` override what the export writes as the
 rights holder and the credit line, and ``notes`` becomes the ATTRIBUTIONS notes
@@ -100,6 +102,16 @@ section.done { border-color:var(--ok); box-shadow:0 0 0 1px var(--ok); }
         background:#fff; }
 .card.sel { border-color:var(--ok); background:#f2fbf7; }
 .card.rejectable { opacity:.72; }
+.pair { display:flex; gap:10px; align-items:flex-start; }
+.pair .shot { flex:1 1 auto; min-width:0; }
+.iconbox { flex:0 0 108px; border:1px solid var(--line); border-radius:4px; padding:6px;
+           background:#fbfcfd; text-align:center; }
+.iconbox img { width:100%; height:88px; object-fit:contain; background:#fff;
+               border-radius:3px; }
+.iconbox .lab { font-size:10px; text-transform:uppercase; letter-spacing:.04em;
+                color:var(--muted); margin-top:5px; }
+.iconbox.blocked { background:#fdf3f3; border-color:#e6c9c9; }
+.iconbox .why { font-size:10.5px; color:var(--bad); line-height:1.3; }
 .card img { width:100%; background:
     repeating-conic-gradient(#e9ecef 0 25%, #fff 0 50%) 50%/18px 18px; border-radius:4px;
     display:block; }
@@ -142,10 +154,21 @@ def card_html(row, i, alt):
         paper.append(("licenceNoticeUrl", "set when the licence recorded is the ESA "
                                           "Standard Licence"))
     rows_html = "".join(f"<tr><th>{k}</th><td>{v}</td></tr>" for k, v in paper)
+    if alt.get("icon_img"):
+        icon_html = (f'<div class="iconbox"><img src="{alt["icon_img"]}" alt="silhouette">'
+                     f'<div class="lab">icon preview</div></div>')
+    elif alt.get("icon_note"):
+        icon_html = (f'<div class="iconbox blocked"><div class="lab">no icon</div>'
+                     f'<div class="why">{html.escape(alt["icon_note"])}</div></div>')
+    else:
+        icon_html = ""
     return f"""
       <div class="card {'rejectable' if alt['verdict'] == 'reject' else ''}"
-           data-folder="{html.escape(row['folder'])}" data-idx="{i}">
+           data-folder="{html.escape(row['folder'])}" data-idx="{i}"
+           data-icon="{'1' if alt.get('icon_img') else '0'}">
+        <div class="pair"><div class="shot">
         <img src="{alt['img']}" alt="{html.escape(alt['title'])}">
+        </div>{icon_html}</div>
         <h3>{html.escape(alt['title'])} <span class="v {alt['verdict']}">
             {'recommended' if alt['verdict'] == 'recommend' else alt['verdict']}</span></h3>
         <p class="note">{html.escape(alt['note'])}</p>
@@ -175,6 +198,9 @@ def section_html(row):
             f'<option value="{i}">{"Approve — " if a["verdict"] == "recommend" else f"Alternate {i} — "}'
             f'{html.escape(a["title"][:60])}</option>'
             for i, a in enumerate(row["alts"]) if a["verdict"] != "reject")
+        icon_ctl = ('<label title="Derive a mono silhouette from this photo\'s cutout">'
+                    '<input type="checkbox" class="icon" checked> Derive icon</label>'
+                    if any(a.get("icon_img") for a in row["alts"]) else "")
         lic = ""
         if "CC BY-SA 3.0 IGO" in " ".join(a.get("licence_text", "") for a in row["alts"]):
             lic = ('<label>Licence to record '
@@ -186,6 +212,7 @@ def section_html(row):
         <label><input type="radio" name="{html.escape(row['folder'])}" value="pick">
           <select class="pick">{opts}</select></label>
         {lic}
+        {icon_ctl}
         <span class="state">no pick</span>
       </div>""")
     return f"""
@@ -266,7 +293,11 @@ function refresh(section) {{
   section.classList.add('done');
   const card = section.querySelector(`.card[data-idx="${{i}}"]`);
   if (card) card.classList.add('sel');
-  if (state) state.textContent = 'will be written for ' + folder;
+  const box = section.querySelector('.icon');
+  const alt = DATA[folder].alts[i];
+  const withIcon = alt && alt.icon_img && box && box.checked;
+  if (state) state.textContent = 'will be written for ' + folder +
+    (withIcon ? ' + icon' : (alt && alt.icon_img ? ' (no icon)' : ''));
 }}
 
 document.querySelectorAll('section').forEach(s => {{
@@ -283,7 +314,7 @@ document.querySelectorAll('section').forEach(s => {{
 document.getElementById('export').onclick = () => {{
   const picks = {{schema: 'satellite-visuals/picks/2',
                  generated: new Date().toISOString(),
-                 esa_clean: {{}}, photos: {{}}}};
+                 new_folders: {{}}, esa_clean: {{}}, photos: {{}}}};
   document.querySelectorAll('section').forEach(s => {{
     const folder = s.dataset.folder;
     const sel = s.querySelector('input[type=radio]:checked');
@@ -307,6 +338,14 @@ document.getElementById('export').onclick = () => {{
                  credit: alt.credit_line || rights, rights_holder: rights,
                  licence: licence, status: 'licensed'}};
     if (alt.notes) rec.notes = alt.notes;
+    // A row for a folder that does not exist yet carries the mission mapping,
+    // so apply_picks --new can create the entry in the same pass.
+    const nf = DATA[folder].new_folder;
+    if (nf) picks.new_folders[folder] = nf;
+    // Icon is a separate approval: only set when this candidate can produce one
+    // (licence gate passed at build time) AND the reviewer left the box ticked.
+    const iconBox = s.querySelector('.icon');
+    rec.derive_icon = Boolean(alt.icon_img) && Boolean(iconBox && iconBox.checked);
     if (esa) {{
       if (licence === 'ESA Standard Licence') rec.licence_notice_url = NOTICE;
       picks.esa_clean[folder] = rec;

@@ -25,13 +25,16 @@ import shutil
 import sys
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import folder_of as _folder_of  # noqa: E402  (local sibling module)
+
 SIZE_TO_FIELD = {"1024": "PhotoCut1024Path", "512": "PhotoCut512Path"}
 
 
 def folder_of(entry: dict) -> str:
-    svg = entry.get("SVGColourPath") or ""
-    parts = svg.split("/")
-    return parts[1] if len(parts) > 1 else ""
+    """Explicit `folder` field first — a photo-only entry has no SVGColourPath
+    to derive one from."""
+    return _folder_of(entry)
 
 
 def main() -> int:
