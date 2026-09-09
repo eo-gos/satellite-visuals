@@ -16,7 +16,9 @@ except the happy path, which uses a source-alpha raw so rembg never loads.
     . .venv/bin/activate && python3 -m unittest tools.test_gates -v
 """
 
+import csv
 import json
+import shutil
 import subprocess
 import sys
 import tempfile
@@ -214,6 +216,108 @@ class ApplyLevelFolderNameTests(unittest.TestCase):
                 result = self._run({bad: {"missionID": "1", "missionName": "X"}})
                 self.assertNotEqual(result.returncode, 0)
                 self.assertIn("REFUSED", result.stdout + result.stderr)
+
+
+class ApplyCleanTwoLaneTests(unittest.TestCase):
+    """apply_clean.py is the one documented entry point, and a picks.json may
+    carry new folders for either lane. Batch B's shape is the sharp case: 14
+    photo-lane new folders and zero esa_clean. Handing every new folder to the
+    clean pass dropped them all as unbacked, and the photos pass never saw
+    them, so valid public-domain picks were silently skipped.
+
+    Runs against a temp tree with the tools copied in, so REPO resolves there
+    and the real repo is untouched. Downloads use file:// URLs — offline."""
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        (self.tmp / "satellites").mkdir()
+        (self.tmp / "index.json").write_text("[]\n")
+        with open(self.tmp / "ATTRIBUTIONS.csv", "w", newline="") as f:
+            csv.writer(f).writerow(
+                ["path", "title", "creator_or_rights_holder", "source_url",
+                 "original_license_or_terms", "license_url_or_notes"])
+        tools = self.tmp / "tools"
+        tools.mkdir()
+        for name in ("apply_clean.py", "apply_picks.py", "index_utils.py",
+                     "licenses.py"):
+            shutil.copy(Path(__file__).resolve().parent / name, tools / name)
+        self.tools = tools
+        # a tiny real PNG for each lane to "download"
+        from PIL import Image
+        self.src = {}
+        for name in ("photosat", "cleansat"):
+            p = self.tmp / f"{name}-source.png"
+            Image.new("RGBA", (40, 30), (10, 20, 30, 255)).save(p)
+            self.src[name] = p.as_uri()
+
+    def tearDown(self):
+        shutil.rmtree(self.tmp, ignore_errors=True)
+
+    def _picks(self):
+        return {
+            "schema": "satellite-visuals/picks/2",
+            "new_folders": {
+                "photosat": {"missionID": "101", "missionName": "PhotoSat"},
+                "cleansat": {"missionID": "102", "missionName": "CleanSat"},
+            },
+            "photos": {"photosat": {
+                "title": "PhotoSat render", "page": "https://example.org/photosat",
+                "url": self.src["photosat"], "ext": "png",
+                "licence": "Public domain", "rights_holder": "NASA",
+                "credit": "NASA", "artist": "NASA"}},
+            "esa_clean": {"cleansat": {
+                "title": "CleanSat render", "page": "https://example.org/cleansat",
+                "url": self.src["cleansat"], "ext": "png",
+                "licence": "CC BY-SA 3.0 IGO", "rights_holder": "ESA/ATG medialab",
+                "credit": "ESA/ATG medialab", "status": "licensed"}},
+        }
+
+    def test_both_lanes_create_their_new_folder(self):
+        picks = self.tmp / "picks.json"
+        picks.write_text(json.dumps(self._picks()))
+        result = subprocess.run(
+            [sys.executable, str(self.tools / "apply_clean.py"), str(picks)],
+            capture_output=True, text=True)
+        self.assertEqual(result.returncode, 0,
+                         f"apply_clean failed:\n{result.stdout}\n{result.stderr}")
+
+        # files on disk, both lanes
+        self.assertTrue((self.tmp / "satellites/photosat/photosat-photo.png").exists())
+        self.assertTrue((self.tmp / "satellites/cleansat/cleansat-photo-clean.png").exists())
+        for size in (1024, 512):
+            self.assertTrue(
+                (self.tmp / f"satellites/cleansat/cleansat-photo-clean-{size}px.png").exists())
+
+        # index entries, both lanes
+        index = json.load(open(self.tmp / "index.json"))
+        by_folder = {e["folder"]: e for e in index}
+        self.assertEqual(set(by_folder), {"photosat", "cleansat"})
+        self.assertEqual(by_folder["photosat"]["missionID"], "101")
+        self.assertEqual(by_folder["photosat"]["imageStatus"], "licensed")
+        self.assertEqual(by_folder["cleansat"]["missionID"], "102")
+        self.assertEqual(by_folder["cleansat"]["imageLicense"], "CC BY-SA 3.0 IGO")
+        # CC lane carries no notice URL — that belongs to the ESA Standard Licence
+        self.assertNotIn("licenceNoticeUrl", by_folder["cleansat"])
+
+        # attribution rows, both lanes
+        paths = {r[0] for r in csv.reader(open(self.tmp / "ATTRIBUTIONS.csv"))}
+        self.assertIn("satellites/photosat/photosat-photo.png", paths)
+        self.assertIn("satellites/cleansat/cleansat-photo-clean.png", paths)
+        self.assertIn("satellites/cleansat/cleansat-photo-clean-512px.png", paths)
+
+    def test_a_new_folder_with_no_pick_in_either_lane_is_dropped(self):
+        data = self._picks()
+        data["new_folders"]["ghostsat"] = {"missionID": "999", "missionName": "Ghost"}
+        picks = self.tmp / "picks.json"
+        picks.write_text(json.dumps(data))
+        result = subprocess.run(
+            [sys.executable, str(self.tools / "apply_clean.py"), str(picks)],
+            capture_output=True, text=True)
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("ghostsat", result.stdout + result.stderr)
+        self.assertFalse((self.tmp / "satellites/ghostsat").exists())
+        folders = {e["folder"] for e in json.load(open(self.tmp / "index.json"))}
+        self.assertEqual(folders, {"photosat", "cleansat"})
 
 
 class UnbackedFolderTests(unittest.TestCase):

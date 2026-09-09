@@ -243,15 +243,24 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
     return touched
 
 
-def apply_photos(picks, src_path, dry_run):
-    """Hand the ordinary-photo block to apply_picks.py unchanged."""
-    if dry_run:
-        print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}")
+def apply_photos(picks, new_folders, dry_run):
+    """Hand the ordinary-photo block to apply_picks.py, WITH the new_folders
+    that belong to it — without them apply_picks skips every folder that does
+    not exist yet, which is the whole point of a photo-lane new folder."""
+    if not picks and not new_folders:
         return 0
+    if dry_run:
+        print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}"
+              + (f" (creating {', '.join(sorted(new_folders))})" if new_folders else ""))
+        return 0
+    payload = {"schema": "satellite-visuals/picks/2", "photos": picks}
+    if new_folders:
+        payload["new_folders"] = new_folders
     with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
-        json.dump(picks, f)
+        json.dump(payload, f)
         tmp = f.name
-    print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders)")
+    print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders"
+          + (f", {len(new_folders)} new" if new_folders else "") + ")")
     subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp], check=True)
     return len(picks)
 
@@ -278,13 +287,31 @@ def main():
         sys.exit(f"REFUSED {exc}")
     for folder, spec in (data.get("new_folders") or {}).items():
         new_folders.setdefault(folder, spec)
-    n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run, new_folders)
-    n_photo = apply_photos(data.get("photos", {}), args.picks, args.dry_run)
 
-    print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s).")
+    # Route each new folder to the lane that actually holds its pick. Handing
+    # the whole block to the clean pass made it drop every photo-lane folder as
+    # unbacked, and the photos pass then never saw them — so a valid public
+    # domain photo for a folder that does not exist yet was silently skipped.
+    clean_picks = data.get("esa_clean", {})
+    photo_picks = data.get("photos", {})
+    clean_new = {f: s for f, s in new_folders.items() if f in clean_picks}
+    photo_new = {f: s for f, s in new_folders.items() if f in photo_picks}
+    orphans = sorted(set(new_folders) - set(clean_new) - set(photo_new))
+    for folder in orphans:
+        print(f"DROP {folder}: requested as a new folder but no pick in either "
+              f"lane names it — entry not written, no folder created")
+
+    n_clean = apply_esa_clean(clean_picks, args.dry_run, clean_new)
+    n_photo = apply_photos(photo_picks, photo_new, args.dry_run)
+
+    print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s)."
+          + (f" {len(orphans)} unbacked new folder(s) dropped." if orphans else ""))
     if not args.dry_run:
         print("Next: python3 tools/check_index.py, then review `git diff` and commit "
               "on a branch.")
+    if orphans:
+        sys.exit(f"{len(orphans)} requested folder(s) had no pick: "
+                 f"{', '.join(orphans)}")
 
 
 if __name__ == "__main__":
