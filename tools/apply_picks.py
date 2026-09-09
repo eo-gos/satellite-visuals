@@ -45,23 +45,32 @@ for folder, pick in picks.items():
         print(f"SKIP {folder}: no index.json entry")
         continue
 
-    ext = pick["url"].rsplit(".", 1)[-1].lower()
+    # Wikimedia download URLs carry a tracking query whose last dot-segment is
+    # not a file extension ("...png?utm_source=commons.wikimedia.org&...").
+    # Take the extension from the path and fetch the URL without the query.
+    url = pick["url"].split("?")[0].split("#")[0]
+    ext = (pick.get("ext") or "").lower()
+    if ext not in ("jpg", "jpeg", "png", "gif", "webp", "tif", "tiff"):
+        ext = url.rsplit(".", 1)[-1].lower()
     if ext not in ("jpg", "jpeg", "png", "gif", "webp", "tif", "tiff"):
         ext = "jpg"
     rel = f"satellites/{folder}/{folder}-photo.{ext}"
-    req = urllib.request.Request(pick["url"], headers={"User-Agent": UA})
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
     (REPO / rel).write_bytes(urllib.request.urlopen(req, timeout=60).read())
 
-    rights = pick.get("artist") or pick.get("credit") or ""
+    # rights_holder / credit, when the pick carries them, are the curated
+    # values and win: a source's own metadata field is not always a credit
+    # (Commons puts the Flickr photo title in "Credit").
+    rights = pick.get("rights_holder") or pick.get("artist") or pick.get("credit") or ""
     entry["PhotoPath"] = rel
-    entry["imageSourceURL"] = pick.get("page") or pick["url"]
+    entry["imageSourceURL"] = pick.get("page") or url
     entry["imageRightsHolder"] = rights or entry.get("imageRightsHolder", "")
     entry["imageLicense"] = pick["licence"]
     entry["imageCredit"] = pick.get("credit") or rights
-    entry["imageStatus"] = "licensed"
+    entry["imageStatus"] = pick.get("status", "licensed")
 
     row = [rel, pick.get("title", ""), rights, entry["imageSourceURL"],
-           pick["licence"], pick.get("page", "")]
+           pick["licence"], pick.get("notes") or pick.get("page", "")]
     if rel in by_path:
         by_path[rel][:] = row
     else:

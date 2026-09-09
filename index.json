@@ -354,13 +354,15 @@
     "SVGBlackPath": "satellites/goes-16/goes-16-icon.svg",
     "PNG1024Path": "satellites/goes-16/goes-16-1024px.png",
     "PNG512Path": "satellites/goes-16/goes-16-512px.png",
-    "imageSourceURL": "https://science.nasa.gov/wp-content/uploads/2023/10/GOES_R_3-sm.png?w=300",
-    "imageRightsHolder": "NOAA/NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:GOES-R_Spacecraft_Art_Front_Right_(14419889363).png",
+    "imageRightsHolder": "NOAA",
+    "imageLicense": "Public domain",
+    "imageCredit": "NOAA",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain",
-    "PhotoPath": ""
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/goes-16/goes-16-photo.png",
+    "PhotoCut512Path": "satellites/goes-16/goes-16-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/goes-16/goes-16-photo-cut-1024px.png"
   },
   {
     "missionID": "724",
@@ -369,13 +371,15 @@
     "SVGBlackPath": "satellites/goes-19/goes-19-icon.svg",
     "PNG1024Path": "satellites/goes-19/goes-19-1024px.png",
     "PNG512Path": "satellites/goes-19/goes-19-512px.png",
-    "imageSourceURL": "https://en.wikipedia.org/wiki/GOES-19#/media/File:GOES-U_night_(53390148447).png",
-    "imageRightsHolder": "NOAA/NASA",
-    "imageLicense": "",
-    "imageCredit": "",
+    "imageSourceURL": "https://commons.wikimedia.org/wiki/File:GOES-U_night_(53390148447).png",
+    "imageRightsHolder": "NOAA",
+    "imageLicense": "Public domain",
+    "imageCredit": "NOAA",
     "imageSourceTier": "A",
-    "imageStatus": "pending-public-domain",
-    "PhotoPath": ""
+    "imageStatus": "licensed",
+    "PhotoPath": "satellites/goes-19/goes-19-photo.png",
+    "PhotoCut512Path": "satellites/goes-19/goes-19-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/goes-19/goes-19-photo-cut-1024px.png"
   },
   {
     "missionID": "1086",

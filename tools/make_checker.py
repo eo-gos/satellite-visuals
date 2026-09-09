@@ -20,7 +20,14 @@ Input is tools/out/checker_data.json (gitignored, built per batch). Shape:
         "extra": "row-level warning shown in a callout",
         "alts": [{"title","page","url","credit","artist","licence_text",
                   "dim","alpha","ext","img" (data URI),
-                  "verdict": "recommend"|"alternate"|"reject", "note"}]}]}
+                  "verdict": "recommend"|"alternate"|"reject", "note",
+                  "rights_holder"?, "credit_line"?, "notes"?}]}]}
+
+``rights_holder`` / ``credit_line`` override what the export writes as the
+rights holder and the credit line, and ``notes`` becomes the ATTRIBUTIONS notes
+column. Set them whenever the source's own metadata is not a usable credit —
+Wikimedia Commons, for instance, puts the Flickr photo title in its "Credit"
+field, which is a caption, not a rights holder.
 
 Output is one self-contained HTML file — images are inlined as data URIs, so it
 works opened from disk with no server and no sibling files. The Export picks
@@ -286,10 +293,20 @@ document.getElementById('export').onclick = () => {{
     const esa = s.dataset.lane.startsWith('esa');
     const licence = esa ? (licSel ? licSel.value : 'ESA Standard Licence')
                         : (alt.licence_text || '');
-    const rights = alt.credit || alt.artist || '';
-    const rec = {{title: alt.title, page: alt.page, url: alt.url, ext: alt.ext,
-                 credit: rights, rights_holder: rights, licence: licence,
-                 status: 'licensed'}};
+    // Commons download URLs carry a utm query string, and its last dot-segment
+    // is not a file extension — take the extension from the path, and hand the
+    // apply step the URL without the tracking query.
+    const url = alt.url.split('?')[0].split('#')[0];
+    const ext = (alt.ext && !/[?&=]/.test(alt.ext))
+                ? alt.ext.toLowerCase()
+                : (url.split('/').pop().split('.').pop() || '').toLowerCase();
+    // rights_holder is the curated value; Commons' "Credit" field is often just
+    // the Flickr photo title, so it is the last resort, never the first.
+    const rights = alt.rights_holder || alt.artist || alt.credit || '';
+    const rec = {{title: alt.title, page: alt.page, url: url, ext: ext,
+                 credit: alt.credit_line || rights, rights_holder: rights,
+                 licence: licence, status: 'licensed'}};
+    if (alt.notes) rec.notes = alt.notes;
     if (esa) {{
       if (licence === 'ESA Standard Licence') rec.licence_notice_url = NOTICE;
       picks.esa_clean[folder] = rec;
