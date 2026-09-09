@@ -58,9 +58,12 @@ def new_entry(folder, mission_id="", mission_name=""):
     """A photo-only entry: identity and mission mapping set, every artwork path
     empty. The photo fields are filled in by whichever apply tool created it."""
     entry = collections.OrderedDict((k, "") for k in ENTRY_ORDER)
-    entry["folder"] = folder
-    entry["missionID"] = str(mission_id or "")
-    entry["missionName"] = mission_name or ""
+    # Strip on write. Mission names come from the CEOS database via the API
+    # snapshot and some carry trailing whitespace ("THEMIS "), which would
+    # otherwise be baked into index.json and every credit line derived from it.
+    entry["folder"] = folder.strip()
+    entry["missionID"] = str(mission_id or "").strip()
+    entry["missionName"] = (mission_name or "").strip()
     entry["imageSourceTier"] = "A"
     entry["imageStatus"] = "pending-public-domain"
     return entry
