@@ -39,13 +39,24 @@ class UnsafeFolderName(ValueError):
 
 
 def check_folder_name(folder):
-    """Validate a folder name, or raise UnsafeFolderName. Call this before
-    creating a directory or an index entry from curator-supplied input."""
+    """Validate a folder name and return THE canonical value, or raise
+    UnsafeFolderName.
+
+    Validates the value exactly as given — no stripping, no normalisation. A
+    folder name is used both as the index entry's identity and to build the
+    path `satellites/<folder>`, so silently accepting " terra" for one and
+    writing the other is how an entry ends up describing a directory that is
+    not the one on disk. Whitespace is not in the allowed character set, so a
+    padded value is rejected here rather than laundered into a valid one.
+
+    Callers must use the returned value everywhere, not the input they passed.
+    """
     if not isinstance(folder, str) or not SAFE_FOLDER.match(folder):
         raise UnsafeFolderName(
             f"{folder!r} is not a valid folder name: one lowercase segment of "
             f"letters, digits, '.' and '-', starting with a letter or digit "
-            f"(no path separators, no '.' or '..', no uppercase, no '_')")
+            f"(no path separators, no surrounding whitespace, no '.' or '..', "
+            f"no uppercase, no '_')")
     return folder
 
 # Field order for a new entry — matches the existing rows so a migrated file
@@ -87,12 +98,13 @@ def by_folder(index):
 def new_entry(folder, mission_id="", mission_name=""):
     """A photo-only entry: identity and mission mapping set, every artwork path
     empty. The photo fields are filled in by whichever apply tool created it."""
-    check_folder_name(folder.strip() if isinstance(folder, str) else folder)
+    folder = check_folder_name(folder)
     entry = collections.OrderedDict((k, "") for k in ENTRY_ORDER)
-    # Strip on write. Mission names come from the CEOS database via the API
+    # The folder is validated, never stripped (see check_folder_name). Mission
+    # names are a different case: they come from the CEOS database via the API
     # snapshot and some carry trailing whitespace ("THEMIS "), which would
     # otherwise be baked into index.json and every credit line derived from it.
-    entry["folder"] = folder.strip()
+    entry["folder"] = folder
     entry["missionID"] = str(mission_id or "").strip()
     entry["missionName"] = (mission_name or "").strip()
     entry["imageSourceTier"] = "A"
@@ -105,7 +117,7 @@ def ensure_entry(index, folder, mission_id="", mission_name=""):
     folder order when the folder is new, so the file stays sorted the way the
     existing rows are. Creating the directory on disk is the caller's job — it
     knows whether this is a dry run."""
-    folder = check_folder_name(folder.strip() if isinstance(folder, str) else folder)
+    folder = check_folder_name(folder)
     existing = by_folder(index)
     if folder in existing:
         return existing[folder], False
@@ -155,7 +167,7 @@ def parse_new_specs(specs):
         folder = fields.get("folder")
         if not folder:
             raise ValueError("--new needs folder=<name>")
-        check_folder_name(folder)
+        folder = check_folder_name(folder)
         out[folder] = {"missionID": fields.get("missionID", ""),
                        "missionName": fields.get("missionName", "")}
     return out

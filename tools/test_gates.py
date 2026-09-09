@@ -16,6 +16,8 @@ except the happy path, which uses a source-alpha raw so rembg never loads.
     . .venv/bin/activate && python3 -m unittest tools.test_gates -v
 """
 
+import json
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -175,6 +177,43 @@ class FolderNameGateTests(unittest.TestCase):
                                 "missionName=RADARSAT-2"]])
         self.assertEqual(got, {"radarsat-2": {"missionID": "352",
                                               "missionName": "RADARSAT-2"}})
+
+
+class ApplyLevelFolderNameTests(unittest.TestCase):
+    """The guard has to hold at the tool boundary, not just in the helper: the
+    apply tools take the folder name from a JSON key and use it BOTH as the
+    index identity and to build satellites/<folder>. A value that validates
+    only after stripping would write one path while the index records another.
+
+    These runs are expected to refuse before any write, so they are safe
+    against the real tree — a pass means nothing was created."""
+
+    TOOLS = Path(__file__).resolve().parent
+    REPO = TOOLS.parent
+
+    def _run(self, new_folders):
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump({"schema": "satellite-visuals/picks/2",
+                       "new_folders": new_folders, "photos": {}}, f)
+            picks = f.name
+        return subprocess.run([sys.executable, str(self.TOOLS / "apply_picks.py"), picks],
+                              capture_output=True, text=True)
+
+    def test_padded_json_key_is_refused_not_silently_trimmed(self):
+        before = len(json.load(open(self.REPO / "index.json")))
+        result = self._run({" terra": {"missionID": "204", "missionName": "Terra"}})
+        self.assertNotEqual(result.returncode, 0)
+        self.assertIn("REFUSED", result.stdout + result.stderr)
+        self.assertFalse((self.REPO / "satellites" / " terra").exists())
+        self.assertFalse((self.REPO / "satellites" / "terra").exists())
+        self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
+
+    def test_path_like_json_key_is_refused(self):
+        for bad in ("../escape", "a/b", "GOES-16"):
+            with self.subTest(folder=bad):
+                result = self._run({bad: {"missionID": "1", "missionName": "X"}})
+                self.assertNotEqual(result.returncode, 0)
+                self.assertIn("REFUSED", result.stdout + result.stderr)
 
 
 class UnbackedFolderTests(unittest.TestCase):
