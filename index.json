@@ -747,8 +747,8 @@
     "PhotoPath": ""
   },
   {
-    "missionID": "",
-    "missionName": "",
+    "missionID": "548",
+    "missionName": "Meteosat-12",
     "SVGColourPath": "satellites/mtg-i1/mtg-i1.svg",
     "SVGBlackPath": "satellites/mtg-i1/mtg-i1-icon.svg",
     "PNG1024Path": "satellites/mtg-i1/mtg-i1-1024px.png",
