@@ -99,7 +99,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/aqua/aqua-photo.png"
+    "PhotoPath": "satellites/aqua/aqua-photo.png",
+    "PhotoCut512Path": "satellites/aqua/aqua-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/aqua/aqua-photo-cut-1024px.png"
   },
   {
     "folder": "aura",
@@ -115,7 +117,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/aura/aura-photo.png"
+    "PhotoPath": "satellites/aura/aura-photo.png",
+    "PhotoCut512Path": "satellites/aura/aura-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/aura/aura-photo-cut-1024px.png"
   },
   {
     "folder": "aws",
@@ -500,7 +504,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/gpm-core/gpm-core-photo.png"
+    "PhotoPath": "satellites/gpm-core/gpm-core-photo.png",
+    "PhotoCut512Path": "satellites/gpm-core/gpm-core-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/gpm-core/gpm-core-photo-cut-1024px.png"
   },
   {
     "folder": "grace-fo",
@@ -516,7 +522,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/grace-fo/grace-fo-photo.jpg"
+    "PhotoPath": "satellites/grace-fo/grace-fo-photo.jpg",
+    "PhotoCut512Path": "satellites/grace-fo/grace-fo-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/grace-fo/grace-fo-photo-cut-1024px.png"
   },
   {
     "folder": "hotsat-1",
@@ -548,7 +556,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/ibex/ibex-photo.png"
+    "PhotoPath": "satellites/ibex/ibex-photo.png",
+    "PhotoCut512Path": "satellites/ibex/ibex-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/ibex/ibex-photo-cut-1024px.png"
   },
   {
     "folder": "icesat",
@@ -582,7 +592,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/iss/iss-photo.png"
+    "PhotoPath": "satellites/iss/iss-photo.png",
+    "PhotoCut512Path": "satellites/iss/iss-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/iss/iss-photo-cut-1024px.png"
   },
   {
     "folder": "jason-1",
@@ -720,7 +732,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/lageos-1/lageos-1-photo.jpg"
+    "PhotoPath": "satellites/lageos-1/lageos-1-photo.jpg",
+    "PhotoCut512Path": "satellites/lageos-1/lageos-1-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/lageos-1/lageos-1-photo-cut-1024px.png"
   },
   {
     "folder": "landsat-7",
@@ -937,7 +951,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/nisar/nisar-photo.png"
+    "PhotoPath": "satellites/nisar/nisar-photo.png",
+    "PhotoCut512Path": "satellites/nisar/nisar-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/nisar/nisar-photo-cut-1024px.png"
   },
   {
     "folder": "novasar-1",
@@ -1001,7 +1017,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/pace/pace-photo.jpg"
+    "PhotoPath": "satellites/pace/pace-photo.jpg",
+    "PhotoCut512Path": "satellites/pace/pace-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/pace/pace-photo-cut-1024px.png"
   },
   {
     "folder": "planet-dove",
@@ -1291,7 +1309,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/smap/smap-photo.png"
+    "PhotoPath": "satellites/smap/smap-photo.png",
+    "PhotoCut512Path": "satellites/smap/smap-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/smap/smap-photo-cut-1024px.png"
   },
   {
     "folder": "smos",
@@ -1345,7 +1365,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/suomi-npp/suomi-npp-photo.png"
+    "PhotoPath": "satellites/suomi-npp/suomi-npp-photo.png",
+    "PhotoCut512Path": "satellites/suomi-npp/suomi-npp-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/suomi-npp/suomi-npp-photo-cut-1024px.png"
   },
   {
     "folder": "swarm",
@@ -1399,7 +1421,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/terra/terra-photo.png"
+    "PhotoPath": "satellites/terra/terra-photo.png",
+    "PhotoCut512Path": "satellites/terra/terra-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/terra/terra-photo-cut-1024px.png"
   },
   {
     "folder": "terrasar-x",
@@ -1431,7 +1455,9 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/themis/themis-photo.png"
+    "PhotoPath": "satellites/themis/themis-photo.png",
+    "PhotoCut512Path": "satellites/themis/themis-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/themis/themis-photo-cut-1024px.png"
   },
   {
     "folder": "timed",
@@ -1465,6 +1491,8 @@
     "imageCredit": "NASA",
     "imageSourceTier": "A",
     "imageStatus": "licensed",
-    "PhotoPath": "satellites/wind/wind-photo.png"
+    "PhotoPath": "satellites/wind/wind-photo.png",
+    "PhotoCut512Path": "satellites/wind/wind-photo-cut-512px.png",
+    "PhotoCut1024Path": "satellites/wind/wind-photo-cut-1024px.png"
   }
 ]
