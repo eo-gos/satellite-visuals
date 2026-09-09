@@ -24,6 +24,9 @@ import urllib.parse
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import folder_of  # noqa: E402  (local sibling module)
+
 REPO = Path(__file__).resolve().parent.parent
 OUT = REPO / "tools" / "out"
 
@@ -164,7 +167,9 @@ def main() -> None:
     else:
         index = json.load(open(REPO / "index.json"))
         for entry in index:
-            folder = entry["SVGColourPath"].split("/")[1]
+            folder = folder_of(entry)
+            if not folder:
+                continue
             if args.folders and folder not in args.folders:
                 continue
             if not args.folders and not entry.get("imageStatus", "").startswith("pending"):

@@ -18,6 +18,7 @@ Input is tools/out/checker_data.json (gitignored, built per batch). Shape:
         "currentLicence": ..., "currentCredit": ..., "headline": ...,
         "noneReason": "why nothing was found (empty when there are candidates)",
         "extra": "row-level warning shown in a callout",
+        "new_folder"? {"missionID","missionName"},   # folder to be created
         "alts": [{"title","page","url","credit","artist","licence_text",
                   "dim","alpha","ext","img" (data URI),
                   "verdict": "recommend"|"alternate"|"reject", "note",
@@ -313,7 +314,7 @@ document.querySelectorAll('section').forEach(s => {{
 document.getElementById('export').onclick = () => {{
   const picks = {{schema: 'satellite-visuals/picks/2',
                  generated: new Date().toISOString(),
-                 esa_clean: {{}}, photos: {{}}}};
+                 new_folders: {{}}, esa_clean: {{}}, photos: {{}}}};
   document.querySelectorAll('section').forEach(s => {{
     const folder = s.dataset.folder;
     const sel = s.querySelector('input[type=radio]:checked');
@@ -337,6 +338,10 @@ document.getElementById('export').onclick = () => {{
                  credit: alt.credit_line || rights, rights_holder: rights,
                  licence: licence, status: 'licensed'}};
     if (alt.notes) rec.notes = alt.notes;
+    // A row for a folder that does not exist yet carries the mission mapping,
+    // so apply_picks --new can create the entry in the same pass.
+    const nf = DATA[folder].new_folder;
+    if (nf) picks.new_folders[folder] = nf;
     // Icon is a separate approval: only set when this candidate can produce one
     // (licence gate passed at build time) AND the reviewer left the box ticked.
     const iconBox = s.querySelector('.icon');

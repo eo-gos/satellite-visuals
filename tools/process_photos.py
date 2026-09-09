@@ -47,6 +47,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import folder_of  # noqa: E402  (local sibling module)
 from licenses import deed_url, derivatives_refused, permits_derivatives  # noqa: E402  (local sibling module)
 
 TOOLS = Path(__file__).resolve().parent
@@ -77,20 +78,20 @@ def load_index(root):
     if not path.exists():
         return [], {}
     index = json.load(open(path))
-    by_folder = {}
-    for e in index:
-        colour = e.get("SVGColourPath", "")
-        parts = colour.split("/")
-        if len(parts) >= 2:
-            by_folder[parts[1]] = e
+    # folder_of() reads the explicit `folder` field and falls back to deriving
+    # it from SVGColourPath: a photo-only entry has no SVG path to derive from,
+    # and deriving was the only lookup here until that lane existed.
+    by_folder = {folder_of(e): e for e in index if folder_of(e)}
     return index, by_folder
 
 
 def group_of(folder, entry, root):
-    """Which top-level group (satellites / other-spacecraft) a folder lives in."""
-    if entry:
-        parts = entry.get("SVGColourPath", "").split("/")
-        if len(parts) >= 2:
+    """Which top-level group (satellites / other-spacecraft) a folder lives in.
+    Read from any path the entry carries; a photo-only entry may have only a
+    PhotoPath, and a brand-new one none at all — then fall back to looking."""
+    for field in ("SVGColourPath", "PhotoPath", "PhotoCleanPath"):
+        parts = (entry or {}).get(field, "").split("/")
+        if len(parts) >= 2 and parts[0] in GROUPS:
             return parts[0]
     for g in GROUPS:
         if (root / g / folder).is_dir():
