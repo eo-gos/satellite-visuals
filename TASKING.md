@@ -13,7 +13,7 @@ The EO-GOS portal shows a page for every Earth-observation mission (~1,200 and g
 3. **Photos must be agency or manufacturer imagery.** Real photos and official 3D renders published by the operating agency, manufacturer, or a space agency's media outlet are in (NASA's "spacecraft model" renders are exactly right). Fan art and community-drawn illustrations are out, even when properly licensed — being on Commons doesn't make something agency imagery. Photos of physical models/mockups (museum or exhibition pieces) are case-by-case: ask George. Also check the file is what its extension says (batch 1 included an SVG mislabelled `.jpg`).
 4. **Every photo gets its paperwork before it gets committed:** `imageLicense`, `imageCredit`, `imageSourceURL` in `index.json`, plus a row in `ATTRIBUTIONS.csv`. No exceptions.
 5. **Commercial-operator renders (Tier D) are never taken without explicit permission.** The operators (Planet, ICEYE, Umbra, …) are people we work with; a licensing mistake costs trust, not just a takedown. Permission is often easier than it sounds — see the Tier D permission ladder under Task A. When in doubt: leave the SVG as the visual (`imageStatus: svg-fallback`) or ask George.
-6. **SVGs must be original depictions, not traces.** Drawing the satellite in our house style (using photos only as reference for what it looks like) is our own copyright. A 1:1 trace of one specific render copies that image's composition and is a derivative — don't do it, and flag any existing SVG that looks like one.
+6. **SVGs must be original depictions, not traces.** Drawing the satellite in our house style (using photos only as reference for what it looks like) is our own copyright. A 1:1 trace of one specific render copies that image's composition and is a derivative — don't do it, and flag any existing SVG that looks like one. This is why a folder never *needs* an SVG: a licensed photo is a better answer than a traced drawing. The one traced asset the repo does allow is the mono silhouette icon, and only from a public-domain or CC photo — see the photo-only lane below.
 7. **Logos are never redrawn** — official files only (see Task C).
 8. **All work on branches, PR per batch, never commit to `main`.** Keep commit messages plain (no generated-by/co-author trailers).
 
@@ -115,13 +115,67 @@ New asset class under `agencies/<acronym-lowercase>/`, same schema and paperwork
 - Priority: the ~35 CEOS member agencies first (ceos.org's member page is the reference for the *current* logo), then commercial providers (ICEYE, Umbra, iQPS, Planet, Capella, SatVu, Airbus…).
 - `tools/commons_gather.py --terms "ESA logo" --key esa-logo` reuses the *gather and gallery* steps for logo searches. `apply_picks.py` only handles satellite folders — for logos, download the picked file and do the paperwork (folder, index entry, `ATTRIBUTIONS.csv` row) by hand until a logo-aware apply tool exists.
 
-## Adding a brand-new satellite folder
+## The photo-only lane — what makes a valid folder
 
-1. Create `satellites/<name>/` — lowercase, matching the portal's naming (ask if unsure).
-2. Add `<name>.svg` (colour) and `<name>-icon.svg` (mono) — your original artwork.
-3. `cd tools && npm install && node render_pngs.mjs` regenerates the PNGs.
-4. Add the `index.json` entry (copy an existing one; missionID from George/the API).
-5. `ATTRIBUTIONS.csv` rows for the new files (repo maintainers, CC BY 4.0).
+**A licensed photo or render alone makes a valid folder. No SVG is required.** This is
+the current shape of the work: sourcing imagery, not drawing. House colour SVGs are a
+separate project for later, and the 72 folders that already have them keep them.
+
+What each asset does:
+
+| Asset | Where it shows | Required? |
+|---|---|---|
+| licensed photo + its cutout or clean render | the mission page | **yes** — this is the point |
+| `<name>-icon.svg` | mission lists, timelines, launch markers | no — lists just omit the icon |
+| `<name>.svg` colour vector + its PNG renders | fallback when there is no photo | no |
+
+`index.json` carries an explicit `folder` field on every entry — that is the entry's
+identity now that a folder can exist with no SVG to derive it from. The path fields
+(`SVGColourPath`, `PNG1024Path`, …) are optional content and may be `""`.
+`python3 tools/check_index.py` enforces this: `folder` present, lowercase, unique, and
+matching the directory of every non-empty path field.
+
+### Adding a brand-new folder
+
+The apply tools create the folder and its index entry for you:
+
+```bash
+# photo pick for a mission with no folder yet
+python3 tools/apply_picks.py ~/Downloads/picks.json \
+    --new folder=radarsat-2 missionID=352 missionName=RADARSAT-2
+
+# same flag on the clean-render lane
+python3 tools/apply_clean.py ~/Downloads/picks.json \
+    --new folder=radarsat-2 missionID=352 missionName=RADARSAT-2
+```
+
+A `new_folders` block in `picks.json` does the same thing without the flag. The entry
+lands in folder order with empty artwork paths, and the photo fields are filled from the
+pick. `missionID` comes from the CEOS database (George, or the API's mission snapshot);
+leave it `""` if unresolved — that is issue #99's queue, not a blocker.
+
+Doing it by hand instead: create `satellites/<name>/` (lowercase, matching the portal's
+naming — ask if unsure), add the entry with `folder` set, and add the `ATTRIBUTIONS.csv`
+rows. If you *do* draw artwork, `cd tools && npm install && node render_pngs.mjs`
+regenerates the PNGs, and the SVGs get maintainer/CC BY 4.0 rows.
+
+### Silhouette icons from photos
+
+Where a folder has a cutout and no icon, `tools/make_icon.py` can trace one from the
+cutout's alpha mask:
+
+```bash
+python3 tools/make_icon.py --all --dry-run     # what the licence gate allows
+python3 tools/make_icon.py radarsat-2          # write one icon + its ATTRIBUTIONS row
+```
+
+**The licence gate is the whole point of this tool.** An icon is a new published
+derivative, so only public domain and adaptation-permitting CC sources qualify. Every
+ESA Standard Licence photo is refused — ESA ruled background removal impermissible in
+writing — as is media-terms imagery, any NC/ND variant, and any licence string the
+tooling does not recognise. There is no override flag. Refused folders keep their photo
+and have no icon, which is a supported state, not a gap to fill. Existing hand-drawn
+icons are never overwritten: they are original artwork and outrank anything traced.
 
 ## Who decides what
 

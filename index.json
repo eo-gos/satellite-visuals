@@ -1,5 +1,6 @@
 [
   {
+    "folder": "ace",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/ace/ace.svg",
@@ -17,6 +18,7 @@
     "PhotoCut1024Path": "satellites/ace/ace-photo-cut-1024px.png"
   },
   {
+    "folder": "acrimsat",
     "missionID": "147",
     "missionName": "ACRIMSAT",
     "SVGColourPath": "satellites/acrimsat/acrimsat.svg",
@@ -34,6 +36,7 @@
     "PhotoCut1024Path": "satellites/acrimsat/acrimsat-photo-cut-1024px.png"
   },
   {
+    "folder": "alos-2",
     "missionID": "629",
     "missionName": "ALOS-2",
     "SVGColourPath": "satellites/alos-2/alos-2.svg",
@@ -49,6 +52,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "alos-4",
     "missionID": "861",
     "missionName": "ALOS-4",
     "SVGColourPath": "satellites/alos-4/alos-4.svg",
@@ -64,6 +68,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "amazonia-1",
     "missionID": "602",
     "missionName": "AMAZONIA-1",
     "SVGColourPath": "satellites/amazonia-1/amazonia-1.svg",
@@ -81,6 +86,7 @@
     "PhotoCut1024Path": "satellites/amazonia-1/amazonia-1-photo-cut-1024px.png"
   },
   {
+    "folder": "aws",
     "missionID": "986",
     "missionName": "AWS",
     "SVGColourPath": "satellites/aws/aws.svg",
@@ -97,6 +103,7 @@
     "PhotoPath": "satellites/aws/aws-photo.png"
   },
   {
+    "folder": "cfosat",
     "missionID": "723",
     "missionName": "CFOSAT",
     "SVGColourPath": "satellites/cfosat/cfosat.svg",
@@ -112,6 +119,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "cloudsat",
     "missionID": "347",
     "missionName": "CloudSat",
     "SVGColourPath": "satellites/cloudsat/cloudsat.svg",
@@ -129,6 +137,7 @@
     "PhotoCut1024Path": "satellites/cloudsat/cloudsat-photo-cut-1024px.png"
   },
   {
+    "folder": "cryosat-2",
     "missionID": "529",
     "missionName": "CryoSat-2",
     "SVGColourPath": "satellites/cryosat-2/cryosat-2.svg",
@@ -148,6 +157,7 @@
     "PhotoClean512Path": "satellites/cryosat-2/cryosat-2-photo-clean-512px.png"
   },
   {
+    "folder": "csg-2",
     "missionID": "635",
     "missionName": "CSG-2",
     "SVGColourPath": "satellites/csg-2/csg-2.svg",
@@ -163,6 +173,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "cygnss",
     "missionID": "740",
     "missionName": "CYGNSS",
     "SVGColourPath": "satellites/cygnss/cygnss.svg",
@@ -180,6 +191,7 @@
     "PhotoCut1024Path": "satellites/cygnss/cygnss-photo-cut-1024px.png"
   },
   {
+    "folder": "dscovr",
     "missionID": "350",
     "missionName": "DSCOVR",
     "SVGColourPath": "satellites/dscovr/dscovr.svg",
@@ -197,6 +209,7 @@
     "PhotoCut1024Path": "satellites/dscovr/dscovr-photo-cut-1024px.png"
   },
   {
+    "folder": "dubaisat-1",
     "missionID": "912",
     "missionName": "DubaiSat-1",
     "SVGColourPath": "satellites/dubaisat-1/dubaisat-1.svg",
@@ -214,6 +227,7 @@
     "PhotoCut1024Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-1024px.png"
   },
   {
+    "folder": "dubaisat-2",
     "missionID": "913",
     "missionName": "DubaiSat-2",
     "SVGColourPath": "satellites/dubaisat-2/dubaisat-2.svg",
@@ -231,6 +245,7 @@
     "PhotoCut1024Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-1024px.png"
   },
   {
+    "folder": "earthcare",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/earthcare/earthcare.svg",
@@ -250,6 +265,7 @@
     "PhotoClean512Path": "satellites/earthcare/earthcare-photo-clean-512px.png"
   },
   {
+    "folder": "earthdaily-constellation",
     "missionID": "1514",
     "missionName": "EarthDaily",
     "SVGColourPath": "satellites/earthdaily-constellation/earthdaily-constellation.svg",
@@ -265,6 +281,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "envisat",
     "missionID": "2",
     "missionName": "Envisat",
     "SVGColourPath": "satellites/envisat/envisat.svg",
@@ -284,6 +301,7 @@
     "PhotoClean512Path": "satellites/envisat/envisat-photo-clean-512px.png"
   },
   {
+    "folder": "epoponcassiope",
     "missionID": "730",
     "missionName": "ePOP on CASSIOPE",
     "SVGColourPath": "satellites/epoponcassiope/epoponcassiope.svg",
@@ -299,6 +317,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "fy-1",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/fy-1/fy-1.svg",
@@ -314,6 +333,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "fy-3c",
     "missionID": "368",
     "missionName": "FY-3C",
     "SVGColourPath": "satellites/fy-3c/fy-3c.svg",
@@ -329,6 +349,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "goce",
     "missionID": "376",
     "missionName": "GOCE",
     "SVGColourPath": "satellites/goce/goce.svg",
@@ -348,6 +369,7 @@
     "PhotoClean512Path": "satellites/goce/goce-photo-clean-512px.png"
   },
   {
+    "folder": "goes-16",
     "missionID": "470",
     "missionName": "GOES-16",
     "SVGColourPath": "satellites/goes-16/goes-16.svg",
@@ -365,6 +387,7 @@
     "PhotoCut1024Path": "satellites/goes-16/goes-16-photo-cut-1024px.png"
   },
   {
+    "folder": "goes-19",
     "missionID": "724",
     "missionName": "GOES-19",
     "SVGColourPath": "satellites/goes-19/goes-19.svg",
@@ -382,6 +405,7 @@
     "PhotoCut1024Path": "satellites/goes-19/goes-19-photo-cut-1024px.png"
   },
   {
+    "folder": "gold",
     "missionID": "1086",
     "missionName": "GOLD",
     "SVGColourPath": "satellites/gold/gold.svg",
@@ -399,6 +423,7 @@
     "PhotoCut1024Path": "satellites/gold/gold-photo-cut-1024px.png"
   },
   {
+    "folder": "gomx4",
     "missionID": "917",
     "missionName": "GOMX4",
     "SVGColourPath": "satellites/gomx4/gomx4.svg",
@@ -414,6 +439,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "gosat-gw",
     "missionID": "862",
     "missionName": "GOSAT-GW",
     "SVGColourPath": "satellites/gosat-gw/gosat-gw.svg",
@@ -429,6 +455,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "hotsat-1",
     "missionID": "1479",
     "missionName": "HotSat-1",
     "SVGColourPath": "satellites/hotsat-1/hotsat-1.svg",
@@ -444,6 +471,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "icesat",
     "missionID": "212",
     "missionName": "ICESat",
     "SVGColourPath": "satellites/icesat/icesat.svg",
@@ -461,6 +489,7 @@
     "PhotoCut1024Path": "satellites/icesat/icesat-photo-cut-1024px.png"
   },
   {
+    "folder": "jason-1",
     "missionID": "286",
     "missionName": "Jason-1",
     "SVGColourPath": "satellites/jason-1/jason-1.svg",
@@ -478,6 +507,7 @@
     "PhotoCut1024Path": "satellites/jason-1/jason-1-photo-cut-1024px.png"
   },
   {
+    "folder": "jason-2",
     "missionID": "419",
     "missionName": "OSTM (Jason-2)",
     "SVGColourPath": "satellites/jason-2/jason-2.svg",
@@ -495,6 +525,7 @@
     "PhotoCut1024Path": "satellites/jason-2/jason-2-photo-cut-1024px.png"
   },
   {
+    "folder": "jason-3",
     "missionID": "592",
     "missionName": "Jason-3",
     "SVGColourPath": "satellites/jason-3/jason-3.svg",
@@ -512,6 +543,7 @@
     "PhotoCut1024Path": "satellites/jason-3/jason-3-photo-cut-1024px.png"
   },
   {
+    "folder": "jpss-1",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/jpss-1/jpss-1.svg",
@@ -529,6 +561,7 @@
     "PhotoCut1024Path": "satellites/jpss-1/jpss-1-photo-cut-1024px.png"
   },
   {
+    "folder": "jpss-2",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/jpss-2/jpss-2.svg",
@@ -544,6 +577,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "kalpana-1",
     "missionID": "436",
     "missionName": "KALPANA-1",
     "SVGColourPath": "satellites/kalpana-1/kalpana-1.svg",
@@ -559,6 +593,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "khalifasat",
     "missionID": "914",
     "missionName": "KhalifaSat",
     "SVGColourPath": "satellites/khalifasat/khalifasat.svg",
@@ -576,6 +611,7 @@
     "PhotoCut1024Path": "satellites/khalifasat/khalifasat-photo-cut-1024px.png"
   },
   {
+    "folder": "landsat-7",
     "missionID": "349",
     "missionName": "Landsat 7",
     "SVGColourPath": "satellites/landsat-7/landsat-7.svg",
@@ -593,6 +629,7 @@
     "PhotoCut1024Path": "satellites/landsat-7/landsat-7-photo-cut-1024px.png"
   },
   {
+    "folder": "landsat-8",
     "missionID": "547",
     "missionName": "Landsat 8",
     "SVGColourPath": "satellites/landsat-8/landsat-8.svg",
@@ -610,6 +647,7 @@
     "PhotoCut1024Path": "satellites/landsat-8/landsat-8-photo-cut-1024px.png"
   },
   {
+    "folder": "landsat-9",
     "missionID": "772",
     "missionName": "Landsat 9",
     "SVGColourPath": "satellites/landsat-9/landsat-9.svg",
@@ -627,6 +665,7 @@
     "PhotoCut1024Path": "satellites/landsat-9/landsat-9-photo-cut-1024px.png"
   },
   {
+    "folder": "lares",
     "missionID": "19",
     "missionName": "LARES",
     "SVGColourPath": "satellites/lares/lares.svg",
@@ -642,6 +681,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "light-1",
     "missionID": "916",
     "missionName": "Light-1",
     "SVGColourPath": "satellites/light-1/light-1.svg",
@@ -657,6 +697,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "meteosat-10",
     "missionID": "260",
     "missionName": "Meteosat-10",
     "SVGColourPath": "satellites/meteosat-10/meteosat-10.svg",
@@ -672,6 +713,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "meteosat-11",
     "missionID": "451",
     "missionName": "Meteosat-11",
     "SVGColourPath": "satellites/meteosat-11/meteosat-11.svg",
@@ -687,6 +729,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "meteosat-3",
     "missionID": "32",
     "missionName": "Meteosat-3",
     "SVGColourPath": "satellites/meteosat-3/meteosat-3.svg",
@@ -702,6 +745,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "meteosat-9",
     "missionID": "259",
     "missionName": "Meteosat-9",
     "SVGColourPath": "satellites/meteosat-9/meteosat-9.svg",
@@ -717,6 +761,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "metop-b",
     "missionID": "230",
     "missionName": "Metop-B",
     "SVGColourPath": "satellites/metop-b/metop-b.svg",
@@ -732,6 +777,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "meznsat",
     "missionID": "915",
     "missionName": "MeznSat",
     "SVGColourPath": "satellites/meznsat/meznsat.svg",
@@ -747,6 +793,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "mtg-i1",
     "missionID": "548",
     "missionName": "Meteosat-12",
     "SVGColourPath": "satellites/mtg-i1/mtg-i1.svg",
@@ -765,6 +812,7 @@
     "PhotoClean512Path": "satellites/mtg-i1/mtg-i1-photo-clean-512px.png"
   },
   {
+    "folder": "novasar-1",
     "missionID": "856",
     "missionName": "NovaSAR-1",
     "SVGColourPath": "satellites/novasar-1/novasar-1.svg",
@@ -780,6 +828,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "npoess-2",
     "missionID": "264",
     "missionName": "NPOESS-2",
     "SVGColourPath": "satellites/npoess-2/npoess-2.svg",
@@ -795,6 +844,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "odin",
     "missionID": "388",
     "missionName": "Odin",
     "SVGColourPath": "satellites/odin/odin.svg",
@@ -810,6 +860,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "planet-dove",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/planet-dove/planet-dove.svg",
@@ -825,6 +876,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "pleiades-1b",
     "missionID": "479",
     "missionName": "Pleiades 1B",
     "SVGColourPath": "satellites/pleiades-1b/pleiades-1b.svg",
@@ -840,6 +892,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "prisma",
     "missionID": "396",
     "missionName": "PRISMA",
     "SVGColourPath": "satellites/prisma/prisma.svg",
@@ -855,6 +908,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "rapideye",
     "missionID": "469",
     "missionName": "RapidEye",
     "SVGColourPath": "satellites/rapideye/rapideye.svg",
@@ -870,6 +924,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "resurs-01-n2",
     "missionID": "135",
     "missionName": "Resurs-01 N2",
     "SVGColourPath": "satellites/resurs-01-n2/resurs-01-n2.svg",
@@ -885,6 +940,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "saocom-1a",
     "missionID": "405",
     "missionName": "SAOCOM 1A",
     "SVGColourPath": "satellites/saocom-1a/saocom-1a.svg",
@@ -900,6 +956,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "scisat-1",
     "missionID": "394",
     "missionName": "SCISAT-1",
     "SVGColourPath": "satellites/scisat-1/scisat-1.svg",
@@ -915,6 +972,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "sentinel-1",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/sentinel-1/sentinel-1.svg",
@@ -932,6 +990,7 @@
     "PhotoCut1024Path": "satellites/sentinel-1/sentinel-1-photo-cut-1024px.png"
   },
   {
+    "folder": "sentinel-1c",
     "missionID": "577",
     "missionName": "Sentinel-1 C",
     "SVGColourPath": "satellites/sentinel-1c/sentinel-1c.svg",
@@ -947,6 +1006,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "sentinel-2",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/sentinel-2/sentinel-2.svg",
@@ -963,6 +1023,7 @@
     "PhotoPath": "satellites/sentinel-2/sentinel-2-photo.jpg"
   },
   {
+    "folder": "sentinel-2c",
     "missionID": "578",
     "missionName": "Sentinel-2 C",
     "SVGColourPath": "satellites/sentinel-2c/sentinel-2c.svg",
@@ -978,6 +1039,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "sentinel-3",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/sentinel-3/sentinel-3.svg",
@@ -997,6 +1059,7 @@
     "PhotoClean512Path": "satellites/sentinel-3/sentinel-3-photo-clean-512px.png"
   },
   {
+    "folder": "sentinel-4",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/sentinel-4/sentinel-4.svg",
@@ -1014,6 +1077,7 @@
     "PhotoCut1024Path": "satellites/sentinel-4/sentinel-4-photo-cut-1024px.png"
   },
   {
+    "folder": "sentinel-5a",
     "missionID": "641",
     "missionName": "Sentinel-5 A",
     "SVGColourPath": "satellites/sentinel-5a/sentinel-5a.svg",
@@ -1032,6 +1096,7 @@
     "PhotoClean512Path": "satellites/sentinel-5a/sentinel-5a-photo-clean-512px.png"
   },
   {
+    "folder": "sentinel-5p",
     "missionID": "581",
     "missionName": "Sentinel-5 precursor",
     "SVGColourPath": "satellites/sentinel-5p/sentinel-5p.svg",
@@ -1051,6 +1116,7 @@
     "PhotoClean512Path": "satellites/sentinel-5p/sentinel-5p-photo-clean-512px.png"
   },
   {
+    "folder": "sentinel-6",
     "missionID": "",
     "missionName": "",
     "SVGColourPath": "satellites/sentinel-6/sentinel-6.svg",
@@ -1068,6 +1134,7 @@
     "PhotoCut1024Path": "satellites/sentinel-6/sentinel-6-photo-cut-1024px.png"
   },
   {
+    "folder": "smos",
     "missionID": "379",
     "missionName": "SMOS",
     "SVGColourPath": "satellites/smos/smos.svg",
@@ -1087,6 +1154,7 @@
     "PhotoClean512Path": "satellites/smos/smos-photo-clean-512px.png"
   },
   {
+    "folder": "sorce",
     "missionID": "346",
     "missionName": "SORCE",
     "SVGColourPath": "satellites/sorce/sorce.svg",
@@ -1104,6 +1172,7 @@
     "PhotoCut1024Path": "satellites/sorce/sorce-photo-cut-1024px.png"
   },
   {
+    "folder": "swarm",
     "missionID": "468",
     "missionName": "Swarm",
     "SVGColourPath": "satellites/swarm/swarm.svg",
@@ -1123,6 +1192,7 @@
     "PhotoClean512Path": "satellites/swarm/swarm-photo-clean-512px.png"
   },
   {
+    "folder": "swot",
     "missionID": "646",
     "missionName": "SWOT",
     "SVGColourPath": "satellites/swot/swot.svg",
@@ -1140,6 +1210,7 @@
     "PhotoCut1024Path": "satellites/swot/swot-photo-cut-1024px.png"
   },
   {
+    "folder": "terrasar-x",
     "missionID": "391",
     "missionName": "TerraSAR-X",
     "SVGColourPath": "satellites/terrasar-x/terrasar-x.svg",
@@ -1155,6 +1226,7 @@
     "PhotoPath": ""
   },
   {
+    "folder": "timed",
     "missionID": "462",
     "missionName": "TIMED",
     "SVGColourPath": "satellites/timed/timed.svg",

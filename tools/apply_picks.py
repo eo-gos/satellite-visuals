@@ -17,23 +17,51 @@ make_checker.py — whose sibling ``esa_clean`` block is a different lane and is
 ignored here (tools/apply_clean.py owns it, and would refuse to cut anyway).
 """
 
+import argparse
 import csv
 import json
 import sys
 import urllib.request
 from pathlib import Path
 
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import (ensure_entry, folder_of, load_index,  # noqa: E402
+                         parse_new_specs, save_index)
+
 REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
 
-picks = json.load(open(sys.argv[1]))
+_ap = argparse.ArgumentParser(description=__doc__)
+_ap.add_argument("picks", help="picks.json")
+_ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
+                 help="create a folder that has no index entry yet: "
+                      "--new folder=<name> missionID=<id> missionName=<name> "
+                      "(repeat the flag per folder)")
+_args = _ap.parse_args()
+
+picks = json.load(open(_args.picks))
+new_folders = dict(parse_new_specs(_args.new))
 if isinstance(picks, dict) and ("photos" in picks or "esa_clean" in picks):
     if picks.get("esa_clean"):
         print(f"NOTE {len(picks['esa_clean'])} esa_clean pick(s) in this file are not "
               f"this tool's lane — run tools/apply_clean.py for those.")
+    for folder, spec in (picks.get("new_folders") or {}).items():
+        new_folders.setdefault(folder, spec)
     picks = picks.get("photos", {})
-index = json.load(open(REPO / "index.json"))
-by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
+index = load_index()
+by_folder = {folder_of(e): e for e in index if folder_of(e)}
+
+# A licensed photo alone makes a valid folder now — no SVG required. Create the
+# entry (and the directory) before the download loop so a pick for a brand-new
+# mission applies in one pass.
+for folder, spec in new_folders.items():
+    entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                  spec.get("missionName", ""))
+    by_folder[folder] = entry
+    if created:
+        (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)
+    print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry "
+          f"(missionID {entry['missionID'] or '—'})")
 
 rows = list(csv.reader(open(REPO / "ATTRIBUTIONS.csv")))
 header, body = rows[0], rows[1:]
@@ -82,8 +110,7 @@ for folder, pick in picks.items():
 for e in index:
     e.setdefault("PhotoPath", "")
 
-json.dump(index, open(REPO / "index.json", "w"), indent=2)
-open(REPO / "index.json", "a").write("\n")
+save_index(index)
 body.sort(key=lambda r: r[0])
 with open(REPO / "ATTRIBUTIONS.csv", "w", newline="") as f:
     w = csv.writer(f)

@@ -1,5 +1,9 @@
 #!/usr/bin/env python3
-"""Regression tests for the licence gates in process_photos.process_folder.
+"""Regression tests for the repo's licence gates.
+
+Two gates are pinned here: the cut gate in process_photos.process_folder, and
+the icon gate in licenses.permits_icon_derivation, which decides whether a
+folder may publish a silhouette traced from its photo.
 
 The gates are the repo's legal enforcement point, so they get pinned:
 missing index metadata must skip (not sail through on empty strings),
@@ -18,6 +22,7 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from licenses import permits_icon_derivation  # noqa: E402
 from process_photos import DEFAULT_MARGIN, process_folder  # noqa: E402
 
 
@@ -79,6 +84,44 @@ class LicenceGateTests(unittest.TestCase):
         rec = run(self.root, entry)
         self.assertEqual(rec["status"], "ok")
         self.assertEqual(rec["method"], "source-alpha")
+
+
+class IconGateTests(unittest.TestCase):
+    """permits_icon_derivation() is deliberately narrower than the cut gate: an
+    icon is a new published derivative, so only public domain and
+    adaptation-permitting CC qualify. There is no override to test — by
+    design, the function takes only a licence name."""
+
+    def test_public_domain_and_cc_allowed(self):
+        for licence in ("Public domain", "Public domain (NASA)", "CC0", "CC0 1.0",
+                        "CC BY 4.0", "CC BY-SA 3.0", "CC BY-SA 3.0 igo"):
+            with self.subTest(licence=licence):
+                self.assertTrue(permits_icon_derivation(licence))
+
+    def test_esa_standard_licence_refused(self):
+        """ESA refused background removal in writing (ESA HQ PHOTOS
+        20260819-0333); a silhouette is exactly that. Never derivable."""
+        self.assertFalse(permits_icon_derivation("ESA Standard Licence"))
+        self.assertFalse(permits_icon_derivation("esa standard licence"))
+
+    def test_nonfree_and_unrecognised_refused(self):
+        for licence in ("media-terms", "trademark-editorial-use",
+                        "CC BY-NC 4.0", "CC BY-ND 4.0", "CC BY-NC-SA 4.0",
+                        "OGL v3", "All rights reserved", "", "Some New Licence"):
+            with self.subTest(licence=licence):
+                self.assertFalse(permits_icon_derivation(licence))
+
+    def test_gate_is_a_subset_of_the_cut_gate(self):
+        """Anything the icon gate allows, the cut gate must allow too — the
+        icon is derived from the cutout, so the looser gate cannot be the one
+        that blocks first."""
+        from licenses import derivatives_refused, permits_derivatives
+        for licence in ("Public domain", "CC0", "CC BY 4.0", "CC BY-SA 3.0 igo",
+                        "ESA Standard Licence", "media-terms", "CC BY-ND 4.0"):
+            with self.subTest(licence=licence):
+                if permits_icon_derivation(licence):
+                    self.assertTrue(permits_derivatives(licence))
+                    self.assertFalse(derivatives_refused(licence))
 
 
 if __name__ == "__main__":

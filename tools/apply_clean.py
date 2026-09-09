@@ -50,6 +50,8 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import (ensure_entry, folder_of, load_index,  # noqa: E402
+                         parse_new_specs, save_index)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
@@ -105,17 +107,29 @@ def write_csv(header, body):
         w.writerows(body)
 
 
-def apply_esa_clean(picks, dry_run):
-    index = json.load(open(REPO / "index.json"))
-    by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
+def apply_esa_clean(picks, dry_run, new_folders=None):
+    index = load_index()
+    by_folder = {folder_of(e): e for e in index if folder_of(e)}
     header, body = load_csv()
     by_path = {r[0]: r for r in body}
     touched = 0
 
+    # A licensed clean render alone makes a valid folder — no SVG required.
+    for folder, spec in (new_folders or {}).items():
+        entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                      spec.get("missionName", ""))
+        by_folder[folder] = entry
+        if created and not dry_run:
+            (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)
+        print(f"{'NEW ' if created else 'HAVE'} {folder}: photo-only entry "
+              f"(missionID {entry['missionID'] or '—'})"
+              + ("  (dry run — not written)" if dry_run else ""))
+
     for folder, pick in picks.items():
         entry = by_folder.get(folder)
         if entry is None:
-            print(f"SKIP {folder}: no index.json entry")
+            print(f"SKIP {folder}: no index.json entry — pass "
+                  f"--new folder={folder} missionID=... to create one")
             continue
         licence = pick.get("licence", "")
         if _norm(licence) not in ALLOWED:
@@ -190,11 +204,10 @@ def apply_esa_clean(picks, dry_run):
                 by_path[path] = row
         touched += 1
 
-    if touched and not dry_run:
+    if (touched or new_folders) and not dry_run:
         for e in index:
             e.setdefault("PhotoPath", "")
-        json.dump(index, open(REPO / "index.json", "w"), indent=2)
-        open(REPO / "index.json", "a").write("\n")
+        save_index(index)
         write_csv(header, body)
     return touched
 
@@ -216,6 +229,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("picks", help="picks.json exported by tools/make_checker.py")
     ap.add_argument("--dry-run", action="store_true", help="print the plan, write nothing")
+    ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
+                    help="create a folder that has no index entry yet: "
+                         "--new folder=<name> missionID=<id> missionName=<name> "
+                         "(repeat the flag per folder)")
     args = ap.parse_args()
 
     data = json.load(open(args.picks))
@@ -224,7 +241,10 @@ def main():
                  "folder->pick mapping is the older shape — feed it to "
                  "tools/apply_picks.py instead.")
 
-    n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run)
+    new_folders = dict(parse_new_specs(args.new))
+    for folder, spec in (data.get("new_folders") or {}).items():
+        new_folders.setdefault(folder, spec)
+    n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run, new_folders)
     n_photo = apply_photos(data.get("photos", {}), args.picks, args.dry_run)
 
     print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s).")
