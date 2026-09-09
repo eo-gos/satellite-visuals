@@ -10,3 +10,6 @@ cut_report.json
 venv/
 __pycache__/
 *.pyc
+
+# git worktrees for parallel sessions
+.claude/worktrees/

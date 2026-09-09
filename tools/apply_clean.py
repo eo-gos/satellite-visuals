@@ -1,0 +1,237 @@
+#!/usr/bin/env python3
+"""Apply reviewed picks: ESA clean renders (resize only) + ordinary photo picks.
+
+    python3 tools/apply_clean.py ~/Downloads/picks.json
+    python3 tools/apply_clean.py ~/Downloads/picks.json --dry-run
+
+Input is the picks.json exported by tools/make_checker.py:
+
+    {"schema": "satellite-visuals/picks/2",
+     "esa_clean": {"<folder>": {url, page, title, credit, rights_holder,
+                                licence, status, licence_notice_url?}},
+     "photos":    {"<folder>": {url, page, title, artist, credit, licence}}}
+
+The two blocks are different lanes and are handled differently.
+
+**esa_clean — ESA's own clean render.** ESA refused background removal in
+writing (ESA HQ PHOTOS 20260819-0333); the portal's cut-out slot is therefore
+filled from ESA's published clean version instead. This script downloads that
+file untouched as `<folder>-photo-clean.<ext>` and derives the display sizes
+`<folder>-photo-clean-1024px.png` / `-512px.png` by **scaling only** — Lanczos
+resample, alpha preserved, never upscaled, no crop, no matting, no compositing.
+There is deliberately no flag to make it do anything else: this file must never
+grow a background-removal path.
+
+Paperwork written per folder:
+  index.json   PhotoCleanPath / PhotoClean1024Path / PhotoClean512Path,
+               imageSourceURL, imageRightsHolder, imageLicense, imageCredit,
+               imageStatus, and licenceNoticeUrl **only** when the licence
+               recorded is the ESA Standard Licence (check_index.py enforces
+               that invariant in both directions).
+  ATTRIBUTIONS one row per file on disk; the two PNGs record "resize only".
+
+If a folder has no raw photo yet, the clean render simply becomes its only
+committed image — PhotoPath is left alone rather than duplicating the file.
+
+**photos — ordinary sourced photo.** Delegated unchanged to
+tools/apply_picks.py, which downloads the raw and writes its paperwork. Those
+files stay cuttable; the ESA prohibition does not apply to them.
+
+Afterwards: `python3 tools/check_index.py`, then review `git diff`.
+"""
+
+import argparse
+import csv
+import json
+import subprocess
+import sys
+import tempfile
+import urllib.request
+from pathlib import Path
+
+sys.path.insert(0, str(Path(__file__).resolve().parent))
+from licenses import _norm  # noqa: E402  (local sibling module)
+
+REPO = Path(__file__).resolve().parent.parent
+TOOLS = Path(__file__).resolve().parent
+UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
+NOTICE_URL = "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"
+SIZES = (1024, 512)
+
+# Licences a clean render may be recorded under. ESA image pages offer either
+# the Standard Licence or, on some pages, CC BY-SA 3.0 IGO; ASSET-LICENSING
+# prefers the CC option where a page offers both, so both are accepted here.
+ALLOWED = {"esa standard licence", "cc by-sa 3.0 igo"}
+EXTS = ("jpg", "jpeg", "png", "tif", "tiff", "webp")
+
+
+def fetch(url: str) -> bytes:
+    req = urllib.request.Request(url, headers={"User-Agent": UA})
+    with urllib.request.urlopen(req, timeout=180) as r:
+        return r.read()
+
+
+def resize_only(src: Path, dest: Path, box: int) -> str:
+    """Scale src to fit box on its long edge and save as PNG. Never upscales,
+    never crops, never touches pixels other than by resampling."""
+    from PIL import Image
+    im = Image.open(src)
+    if im.mode not in ("RGBA", "LA", "RGB", "L", "P"):
+        im = im.convert("RGBA")
+    if im.mode == "P":
+        im = im.convert("RGBA" if "transparency" in im.info else "RGB")
+    w, h = im.size
+    if max(w, h) > box:
+        scale = box / max(w, h)
+        im = im.resize((max(1, round(w * scale)), max(1, round(h * scale))),
+                       Image.LANCZOS)
+        how = f"scaled to {im.size[0]}x{im.size[1]}"
+    else:
+        how = f"kept at {w}x{h} (source smaller than {box}px; never upscaled)"
+    im.save(dest, "PNG")
+    return how
+
+
+def load_csv():
+    rows = list(csv.reader(open(REPO / "ATTRIBUTIONS.csv")))
+    return rows[0], rows[1:]
+
+
+def write_csv(header, body):
+    body.sort(key=lambda r: r[0])
+    with open(REPO / "ATTRIBUTIONS.csv", "w", newline="") as f:
+        w = csv.writer(f)
+        w.writerow(header)
+        w.writerows(body)
+
+
+def apply_esa_clean(picks, dry_run):
+    index = json.load(open(REPO / "index.json"))
+    by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
+    header, body = load_csv()
+    by_path = {r[0]: r for r in body}
+    touched = 0
+
+    for folder, pick in picks.items():
+        entry = by_folder.get(folder)
+        if entry is None:
+            print(f"SKIP {folder}: no index.json entry")
+            continue
+        licence = pick.get("licence", "")
+        if _norm(licence) not in ALLOWED:
+            print(f"SKIP {folder}: licence {licence!r} is not one this lane accepts "
+                  f"({', '.join(sorted(ALLOWED))})")
+            continue
+
+        # a download URL may carry a tracking query whose last dot-segment is
+        # not a file extension — read the extension off the path, fetch clean
+        url = pick["url"].split("?")[0].split("#")[0]
+        ext = (pick.get("ext") or "").lower()
+        if ext not in EXTS:
+            ext = url.rsplit(".", 1)[-1].lower()
+        if ext not in EXTS:
+            ext = "jpg"
+        rel = f"satellites/{folder}/{folder}-photo-clean.{ext}"
+        dest = REPO / rel
+        print(f"\n{folder}: {pick['title']}")
+        print(f"  licence  {licence}")
+        print(f"  archival {rel}")
+        if dry_run:
+            print("  (dry run — nothing written)")
+            continue
+
+        dest.parent.mkdir(parents=True, exist_ok=True)
+        dest.write_bytes(fetch(url))
+
+        derived = []
+        for box in SIZES:
+            drel = f"satellites/{folder}/{folder}-photo-clean-{box}px.png"
+            how = resize_only(dest, REPO / drel, box)
+            derived.append((drel, how))
+            print(f"  display  {drel}  ({how}, resize only)")
+
+        entry["PhotoCleanPath"] = rel
+        entry["PhotoClean1024Path"] = derived[0][0]
+        entry["PhotoClean512Path"] = derived[1][0]
+        entry["imageSourceURL"] = pick.get("page") or url
+        entry["imageRightsHolder"] = pick.get("rights_holder") or pick.get("credit", "")
+        entry["imageLicense"] = licence
+        entry["imageCredit"] = pick.get("credit", "")
+        # Tier B by definition: this lane is an agency multimedia page whose
+        # published terms permit the use (ASSET-LICENSING's tier vocabulary).
+        entry["imageSourceTier"] = pick.get("tier", "B")
+        entry["imageStatus"] = pick.get("status", "licensed")
+        if _norm(licence) == "esa standard licence":
+            entry["licenceNoticeUrl"] = NOTICE_URL
+        elif "licenceNoticeUrl" in entry:
+            # check_index.py fails if the notice field survives on a non-ESA
+            # licence, so dropping it is required, not tidying. Say so loudly:
+            # the raw photo in this folder may still be under the ESA Standard
+            # Licence, and its own ATTRIBUTIONS row keeps recording that.
+            del entry["licenceNoticeUrl"]
+            print("  NOTE   licenceNoticeUrl removed — this entry is now recorded under "
+                  f"{licence}. Check any raw photo in the same folder: its ATTRIBUTIONS "
+                  "row still carries its own licence, and the display layer reads the "
+                  "notice condition from index.json.")
+
+        note_base = (f"ESA official clean render, taken as published. "
+                     f"Source page: {entry['imageSourceURL']}")
+        rows = [(rel, note_base)]
+        rows += [(drel, f"resize only from {Path(rel).name} — {how}; no matting, no crop, "
+                        f"no background edits (tools/apply_clean.py)")
+                 for drel, how in derived]
+        for path, note in rows:
+            row = [path, pick.get("title", ""), entry["imageRightsHolder"],
+                   entry["imageSourceURL"], licence, note]
+            if path in by_path:
+                by_path[path][:] = row
+            else:
+                body.append(row)
+                by_path[path] = row
+        touched += 1
+
+    if touched and not dry_run:
+        for e in index:
+            e.setdefault("PhotoPath", "")
+        json.dump(index, open(REPO / "index.json", "w"), indent=2)
+        open(REPO / "index.json", "a").write("\n")
+        write_csv(header, body)
+    return touched
+
+
+def apply_photos(picks, src_path, dry_run):
+    """Hand the ordinary-photo block to apply_picks.py unchanged."""
+    if dry_run:
+        print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}")
+        return 0
+    with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+        json.dump(picks, f)
+        tmp = f.name
+    print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders)")
+    subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp], check=True)
+    return len(picks)
+
+
+def main():
+    ap = argparse.ArgumentParser()
+    ap.add_argument("picks", help="picks.json exported by tools/make_checker.py")
+    ap.add_argument("--dry-run", action="store_true", help="print the plan, write nothing")
+    args = ap.parse_args()
+
+    data = json.load(open(args.picks))
+    if "esa_clean" not in data and "photos" not in data:
+        sys.exit("This file has neither an esa_clean nor a photos block. A flat "
+                 "folder->pick mapping is the older shape — feed it to "
+                 "tools/apply_picks.py instead.")
+
+    n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run)
+    n_photo = apply_photos(data.get("photos", {}), args.picks, args.dry_run)
+
+    print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s).")
+    if not args.dry_run:
+        print("Next: python3 tools/check_index.py, then review `git diff` and commit "
+              "on a branch.")
+
+
+if __name__ == "__main__":
+    main()
