@@ -233,14 +233,17 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
                   "no pick in this file matched it"
             print(f"DROP {folder}: {why} — entry not written, no folder created")
     if failed:
-        print(f"WARN {len(failed)} pick(s) failed: {', '.join(sorted(failed))}")
+        print(f"FAIL {len(failed)} clean pick(s) failed: {', '.join(sorted(failed))}")
 
     if (touched or (created_folders - set(unbacked))) and not dry_run:
         for e in index:
             e.setdefault("PhotoPath", "")
         save_index(index)
         write_csv(header, body)
-    return touched
+    # Hand the unbacked state back: main() decides the exit code, the same way
+    # apply_picks does for its own lane. Reporting a drop and returning a count
+    # that looks like success is how a failed download reads as a clean run.
+    return touched, set(unbacked), set(failed)
 
 
 def apply_photos(picks, new_folders, dry_run):
@@ -248,11 +251,11 @@ def apply_photos(picks, new_folders, dry_run):
     that belong to it — without them apply_picks skips every folder that does
     not exist yet, which is the whole point of a photo-lane new folder."""
     if not picks and not new_folders:
-        return 0
+        return 0, True
     if dry_run:
         print(f"\n(dry run) would run apply_picks.py for: {', '.join(sorted(picks))}"
               + (f" (creating {', '.join(sorted(new_folders))})" if new_folders else ""))
-        return 0
+        return 0, True
     payload = {"schema": "satellite-visuals/picks/2", "photos": picks}
     if new_folders:
         payload["new_folders"] = new_folders
@@ -261,8 +264,11 @@ def apply_photos(picks, new_folders, dry_run):
         tmp = f.name
     print(f"\nphotos block -> tools/apply_picks.py ({len(picks)} folders"
           + (f", {len(new_folders)} new" if new_folders else "") + ")")
-    subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp], check=True)
-    return len(picks)
+    result = subprocess.run([sys.executable, str(TOOLS / "apply_picks.py"), tmp])
+    # apply_picks exits non-zero when a pick failed or a requested folder ended
+    # unbacked. Report that as a failed lane rather than raising
+    # CalledProcessError, which would bury the reason under a traceback.
+    return len(picks), result.returncode == 0
 
 
 def main():
@@ -301,17 +307,31 @@ def main():
         print(f"DROP {folder}: requested as a new folder but no pick in either "
               f"lane names it — entry not written, no folder created")
 
-    n_clean = apply_esa_clean(clean_picks, args.dry_run, clean_new)
-    n_photo = apply_photos(photo_picks, photo_new, args.dry_run)
+    n_clean, clean_unbacked, clean_failed = apply_esa_clean(
+        clean_picks, args.dry_run, clean_new)
+    n_photo, photos_ok = apply_photos(photo_picks, photo_new, args.dry_run)
 
+    dropped = sorted(set(orphans) | clean_unbacked)
     print(f"\n{n_clean} clean render(s), {n_photo} photo pick(s)."
-          + (f" {len(orphans)} unbacked new folder(s) dropped." if orphans else ""))
+          + (f" {len(dropped)} unbacked new folder(s) dropped." if dropped else ""))
     if not args.dry_run:
         print("Next: python3 tools/check_index.py, then review `git diff` and commit "
               "on a branch.")
-    if orphans:
-        sys.exit(f"{len(orphans)} requested folder(s) had no pick: "
-                 f"{', '.join(orphans)}")
+
+    # Cleanup has already happened; the exit code is what tells a caller the
+    # file did not fully apply. Every lane reports, so a failure in either one
+    # fails the command.
+    problems = []
+    if dropped:
+        problems.append(f"{len(dropped)} requested folder(s) not created: "
+                        f"{', '.join(dropped)}")
+    if clean_failed:
+        problems.append(f"{len(clean_failed)} clean pick(s) failed: "
+                        f"{', '.join(sorted(clean_failed))}")
+    if not photos_ok:
+        problems.append("the photo lane reported failures (see above)")
+    if problems:
+        sys.exit("; ".join(problems))
 
 
 if __name__ == "__main__":

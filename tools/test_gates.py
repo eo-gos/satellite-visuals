@@ -305,14 +305,48 @@ class ApplyCleanTwoLaneTests(unittest.TestCase):
         self.assertIn("satellites/cleansat/cleansat-photo-clean.png", paths)
         self.assertIn("satellites/cleansat/cleansat-photo-clean-512px.png", paths)
 
+    def _run_clean(self, data):
+        picks = self.tmp / "picks.json"
+        picks.write_text(json.dumps(data))
+        return subprocess.run(
+            [sys.executable, str(self.tools / "apply_clean.py"), str(picks)],
+            capture_output=True, text=True)
+
+    def test_clean_lane_download_failure_fails_the_run(self):
+        """A clean-lane new folder whose file will not fetch must fail the
+        command, not just print a warning and exit 0. Offline: the URL is a
+        file:// path that does not exist."""
+        data = self._picks()
+        data["esa_clean"]["cleansat"]["url"] = (self.tmp / "no-such-file.png").as_uri()
+        result = self._run_clean(data)
+        self.assertNotEqual(result.returncode, 0,
+                            f"expected non-zero:\n{result.stdout}\n{result.stderr}")
+        out = result.stdout + result.stderr
+        self.assertIn("cleansat", out)
+        self.assertFalse((self.tmp / "satellites/cleansat").exists())
+        folders = {e["folder"] for e in json.load(open(self.tmp / "index.json"))}
+        self.assertNotIn("cleansat", folders)
+        # the healthy photo lane still applied
+        self.assertIn("photosat", folders)
+        self.assertTrue((self.tmp / "satellites/photosat/photosat-photo.png").exists())
+
+    def test_clean_lane_refused_licence_fails_the_run(self):
+        """A licence the clean lane does not accept is a refusal, not a
+        no-op: the folder must not be created and the run must fail."""
+        data = self._picks()
+        data["esa_clean"]["cleansat"]["licence"] = "Public domain"
+        result = self._run_clean(data)
+        self.assertNotEqual(result.returncode, 0,
+                            f"expected non-zero:\n{result.stdout}\n{result.stderr}")
+        self.assertIn("cleansat", result.stdout + result.stderr)
+        self.assertFalse((self.tmp / "satellites/cleansat").exists())
+        folders = {e["folder"] for e in json.load(open(self.tmp / "index.json"))}
+        self.assertNotIn("cleansat", folders)
+
     def test_a_new_folder_with_no_pick_in_either_lane_is_dropped(self):
         data = self._picks()
         data["new_folders"]["ghostsat"] = {"missionID": "999", "missionName": "Ghost"}
-        picks = self.tmp / "picks.json"
-        picks.write_text(json.dumps(data))
-        result = subprocess.run(
-            [sys.executable, str(self.tools / "apply_clean.py"), str(picks)],
-            capture_output=True, text=True)
+        result = self._run_clean(data)
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("ghostsat", result.stdout + result.stderr)
         self.assertFalse((self.tmp / "satellites/ghostsat").exists())
