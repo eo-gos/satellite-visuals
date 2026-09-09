@@ -320,6 +320,40 @@ class ApplyCleanTwoLaneTests(unittest.TestCase):
         self.assertEqual(folders, {"photosat", "cleansat"})
 
 
+class ApplyPicksExitCodeTests(unittest.TestCase):
+    """A DROP that exits 0 reads as success — to a person skimming output and
+    to apply_clean, which runs this as a subprocess with check=True. Any
+    requested folder that ends unbacked must fail the run.
+
+    Refusal/no-op runs, so safe against the real tree."""
+
+    TOOLS = Path(__file__).resolve().parent
+    REPO = TOOLS.parent
+
+    def _run(self, payload):
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump(payload, f)
+            picks = f.name
+        return subprocess.run([sys.executable, str(self.TOOLS / "apply_picks.py"), picks],
+                              capture_output=True, text=True)
+
+    def test_new_folder_with_no_matching_pick_exits_non_zero(self):
+        before = len(json.load(open(self.REPO / "index.json")))
+        result = self._run({"schema": "satellite-visuals/picks/2",
+                            "new_folders": {"ghostsat": {"missionID": "999",
+                                                         "missionName": "Ghost"}},
+                            "photos": {}})
+        self.assertNotEqual(result.returncode, 0,
+                            "an unbacked new folder must fail the run, not print DROP and exit 0")
+        self.assertIn("ghostsat", result.stdout + result.stderr)
+        self.assertFalse((self.REPO / "satellites" / "ghostsat").exists())
+        self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
+
+    def test_no_new_folders_at_all_is_a_clean_no_op(self):
+        result = self._run({"schema": "satellite-visuals/picks/2", "photos": {}})
+        self.assertEqual(result.returncode, 0, result.stdout + result.stderr)
+
+
 class UnbackedFolderTests(unittest.TestCase):
     """A folder created by an apply run is only real once its pick has applied.
     An entry with no photo and no ATTRIBUTIONS row reads as covered when it is

@@ -152,5 +152,11 @@ with open(REPO / "ATTRIBUTIONS.csv", "w", newline="") as f:
 print(f"\n{len(applied)} pick(s) applied"
       + (f", {len(unbacked)} unbacked folder(s) dropped" if unbacked else "")
       + ".\nindex.json + ATTRIBUTIONS.csv updated — review `git diff`, commit on a branch.")
-if failed:
-    sys.exit(f"{len(failed)} pick(s) failed: {', '.join(sorted(failed))}")
+# A requested folder that ends unbacked is a failed run, whether the download
+# broke or no pick ever named it. Cleanup happened above; the exit code is what
+# tells a caller (or apply_clean's subprocess) that the file did not fully
+# apply — printing DROP and exiting 0 reads as success.
+if unbacked or failed:
+    problems = sorted(set(unbacked) | failed)
+    sys.exit(f"{len(problems)} requested folder(s) did not apply: "
+             f"{', '.join(problems)}")
