@@ -59,8 +59,9 @@ open tools/out/gallery.html
 3. **Pick.** This is the judgement step a script can't do: most search hits are the satellite's *data* (pretty pictures of Earth), not the satellite. Pick the best image *of the spacecraft* — official renders and pre-launch cleanroom photos both count (golden rule 3: agency/manufacturer imagery only). Between licence-equal candidates, prefer one where the spacecraft is fully in frame against an uncluttered background — after your batch merges, the maintainers derive transparent cutouts from these photos for the portal, and clean subjects cut best. Leave "none of these" selected if nothing shows the spacecraft. Click **Export picks** (downloads `picks.json`).
 
 ```bash
-# 4. Apply: downloads each pick and writes all the paperwork
-python3 tools/apply_picks.py ~/Downloads/picks.json
+# 4. Apply: downloads each pick and writes all the paperwork (one command,
+#    both lanes — see "Adding a brand-new folder" below)
+python3 tools/apply_clean.py ~/Downloads/picks.json
 
 # 5. Review what changed, then branch/commit/PR
 git diff
@@ -137,19 +138,26 @@ matching the directory of every non-empty path field.
 
 ### Adding a brand-new folder
 
-The apply tools create the folder and its index entry for you:
+**There is one apply command.** `apply_clean.py` reads the whole picks file, sends each
+pick to its lane — clean renders itself, ordinary photos to `apply_picks.py` — and
+creates any folder that does not exist yet:
 
 ```bash
-# photo pick for a mission with no folder yet
-python3 tools/apply_picks.py ~/Downloads/picks.json \
-    --new folder=radarsat-2 missionID=352 missionName=RADARSAT-2
+python3 tools/apply_clean.py ~/Downloads/picks.json
+python3 tools/check_index.py
+```
 
-# same flag on the clean-render lane
+The `new_folders` block that `make_checker.py` exports carries each folder's missionID
+and name, so a batch of brand-new folders applies in that one command. For a one-off
+without a checker export, the same thing as a flag:
+
+```bash
 python3 tools/apply_clean.py ~/Downloads/picks.json \
     --new folder=radarsat-2 missionID=352 missionName=RADARSAT-2
 ```
 
-A `new_folders` block in `picks.json` does the same thing without the flag. The entry
+`apply_picks.py` is the photo lane's implementation and takes the same arguments, but
+call `apply_clean.py` — it is the entry point that knows about both lanes. The entry
 lands in folder order with empty artwork paths, and the photo fields are filled from the
 pick. `missionID` comes from the CEOS database (George, or the API's mission snapshot);
 leave it `""` if unresolved — that is issue #99's queue, not a blocker.
