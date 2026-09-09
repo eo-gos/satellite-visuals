@@ -10,6 +10,11 @@ For every pick this script:
   3. adds/updates the file's row in ATTRIBUTIONS.csv
 
 Review the git diff, then commit on a branch and open a PR.
+
+Two input shapes are accepted: the flat ``{folder: pick}`` mapping exported by
+make_gallery.py, and the ``{"photos": {folder: pick}, ...}`` wrapper exported by
+make_checker.py — whose sibling ``esa_clean`` block is a different lane and is
+ignored here (tools/apply_clean.py owns it, and would refuse to cut anyway).
 """
 
 import csv
@@ -22,6 +27,11 @@ REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
 
 picks = json.load(open(sys.argv[1]))
+if isinstance(picks, dict) and ("photos" in picks or "esa_clean" in picks):
+    if picks.get("esa_clean"):
+        print(f"NOTE {len(picks['esa_clean'])} esa_clean pick(s) in this file are not "
+              f"this tool's lane — run tools/apply_clean.py for those.")
+    picks = picks.get("photos", {})
 index = json.load(open(REPO / "index.json"))
 by_folder = {e["SVGColourPath"].split("/")[1]: e for e in index}
 
