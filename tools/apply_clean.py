@@ -50,8 +50,8 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from index_utils import (ensure_entry, folder_of, load_index,  # noqa: E402
-                         parse_new_specs, save_index)
+from index_utils import (UnsafeFolderName, ensure_entry, folder_of,  # noqa: E402
+                         load_index, parse_new_specs, save_index)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
@@ -116,8 +116,12 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
 
     # A licensed clean render alone makes a valid folder — no SVG required.
     for folder, spec in (new_folders or {}).items():
-        entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
-                                      spec.get("missionName", ""))
+        # Validated before anything touches the filesystem (see apply_picks).
+        try:
+            entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                          spec.get("missionName", ""))
+        except UnsafeFolderName as exc:
+            sys.exit(f"REFUSED {exc}")
         by_folder[folder] = entry
         if created and not dry_run:
             (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)
@@ -241,7 +245,10 @@ def main():
                  "folder->pick mapping is the older shape — feed it to "
                  "tools/apply_picks.py instead.")
 
-    new_folders = dict(parse_new_specs(args.new))
+    try:
+        new_folders = dict(parse_new_specs(args.new))
+    except UnsafeFolderName as exc:
+        sys.exit(f"REFUSED {exc}")
     for folder, spec in (data.get("new_folders") or {}).items():
         new_folders.setdefault(folder, spec)
     n_clean = apply_esa_clean(data.get("esa_clean", {}), args.dry_run, new_folders)

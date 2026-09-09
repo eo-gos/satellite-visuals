@@ -25,8 +25,8 @@ import urllib.request
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
-from index_utils import (ensure_entry, folder_of, load_index,  # noqa: E402
-                         parse_new_specs, save_index)
+from index_utils import (UnsafeFolderName, ensure_entry, folder_of,  # noqa: E402
+                         load_index, parse_new_specs, save_index)
 
 REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
@@ -40,7 +40,10 @@ _ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
 _args = _ap.parse_args()
 
 picks = json.load(open(_args.picks))
-new_folders = dict(parse_new_specs(_args.new))
+try:
+    new_folders = dict(parse_new_specs(_args.new))
+except UnsafeFolderName as exc:
+    sys.exit(f"REFUSED {exc}")
 if isinstance(picks, dict) and ("photos" in picks or "esa_clean" in picks):
     if picks.get("esa_clean"):
         print(f"NOTE {len(picks['esa_clean'])} esa_clean pick(s) in this file are not "
@@ -55,8 +58,13 @@ by_folder = {folder_of(e): e for e in index if folder_of(e)}
 # entry (and the directory) before the download loop so a pick for a brand-new
 # mission applies in one pass.
 for folder, spec in new_folders.items():
-    entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
-                                  spec.get("missionName", ""))
+    # Validated before anything touches the filesystem: a path-like value would
+    # otherwise mkdir and write outside satellites/.
+    try:
+        entry, created = ensure_entry(index, folder, spec.get("missionID", ""),
+                                      spec.get("missionName", ""))
+    except UnsafeFolderName as exc:
+        sys.exit(f"REFUSED {exc}")
     by_folder[folder] = entry
     if created:
         (REPO / "satellites" / folder).mkdir(parents=True, exist_ok=True)

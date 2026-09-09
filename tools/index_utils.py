@@ -14,9 +14,39 @@ create one.
 
 import collections
 import json
+import re
 from pathlib import Path
 
 REPO = Path(__file__).resolve().parent.parent
+
+# A folder name is ONE safe path segment. This is the security boundary, not a
+# style preference: these tools mkdir and write files under satellites/<folder>,
+# so "../escape", "a/b", "." and ".." must never reach the filesystem.
+#
+# Underscore: deliberately NOT allowed. No folder in the repo uses one — every
+# folder is lowercase letters, digits and hyphens — and the naming policy
+# (PR #103) is hyphens. The API's own _SAFE_FOLDER guard currently allows "_"
+# as well; that is safe there because the API only reads, but the two should be
+# made identical by dropping "_" on the API side, which is a one-line follow-up
+# to eogos-api#98. This side is the stricter of the two, which is the right way
+# round for the side that creates directories.
+SAFE_FOLDER = re.compile(r"^[a-z0-9][a-z0-9.-]*$")
+
+
+class UnsafeFolderName(ValueError):
+    """Raised before any filesystem write when a folder name is not one safe
+    lowercase segment."""
+
+
+def check_folder_name(folder):
+    """Validate a folder name, or raise UnsafeFolderName. Call this before
+    creating a directory or an index entry from curator-supplied input."""
+    if not isinstance(folder, str) or not SAFE_FOLDER.match(folder):
+        raise UnsafeFolderName(
+            f"{folder!r} is not a valid folder name: one lowercase segment of "
+            f"letters, digits, '.' and '-', starting with a letter or digit "
+            f"(no path separators, no '.' or '..', no uppercase, no '_')")
+    return folder
 
 # Field order for a new entry — matches the existing rows so a migrated file
 # and a freshly written one are diff-comparable.
@@ -57,6 +87,7 @@ def by_folder(index):
 def new_entry(folder, mission_id="", mission_name=""):
     """A photo-only entry: identity and mission mapping set, every artwork path
     empty. The photo fields are filled in by whichever apply tool created it."""
+    check_folder_name(folder.strip() if isinstance(folder, str) else folder)
     entry = collections.OrderedDict((k, "") for k in ENTRY_ORDER)
     # Strip on write. Mission names come from the CEOS database via the API
     # snapshot and some carry trailing whitespace ("THEMIS "), which would
@@ -74,6 +105,7 @@ def ensure_entry(index, folder, mission_id="", mission_name=""):
     folder order when the folder is new, so the file stays sorted the way the
     existing rows are. Creating the directory on disk is the caller's job — it
     knows whether this is a dry run."""
+    folder = check_folder_name(folder.strip() if isinstance(folder, str) else folder)
     existing = by_folder(index)
     if folder in existing:
         return existing[folder], False
@@ -103,6 +135,7 @@ def parse_new_specs(specs):
         folder = fields.get("folder")
         if not folder:
             raise ValueError("--new needs folder=<name>")
+        check_folder_name(folder)
         out[folder] = {"missionID": fields.get("missionID", ""),
                        "missionName": fields.get("missionName", "")}
     return out

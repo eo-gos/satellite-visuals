@@ -37,6 +37,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import SAFE_FOLDER  # noqa: E402  (local sibling module)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
@@ -45,8 +46,6 @@ REPO = Path(__file__).resolve().parent.parent
 NOTICE_REQUIRED = {
     "esa standard licence": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
 }
-
-FOLDER_RE = re.compile(r"^[a-z0-9][a-z0-9.-]*$")
 
 # Every field whose value is a repo-relative path to one of the entry's files.
 PATH_FIELDS = (
@@ -70,7 +69,7 @@ def main():
             problems.append(f"{name}: missing `folder` — every entry needs one, it is "
                             f"the entry's identity now that path fields may be empty")
         else:
-            if not FOLDER_RE.match(folder):
+            if not SAFE_FOLDER.match(folder):
                 problems.append(f"{folder}: `folder` must be lowercase "
                                 f"[a-z0-9][a-z0-9.-]* (naming policy, PR #103)")
             if folder in seen_folders:

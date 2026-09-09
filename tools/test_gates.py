@@ -1,9 +1,11 @@
 #!/usr/bin/env python3
-"""Regression tests for the repo's licence gates.
+"""Regression tests for the repo's gates.
 
-Two gates are pinned here: the cut gate in process_photos.process_folder, and
-the icon gate in licenses.permits_icon_derivation, which decides whether a
-folder may publish a silhouette traced from its photo.
+Three gates are pinned here: the cut gate in process_photos.process_folder, the
+icon gate in licenses.permits_icon_derivation (may a silhouette be published
+from this photo?), and the folder-name gate in index_utils, which is a security
+boundary — the apply tools mkdir and write under satellites/<folder>, so a
+path-like value must be refused before it reaches the filesystem.
 
 The gates are the repo's legal enforcement point, so they get pinned:
 missing index metadata must skip (not sail through on empty strings),
@@ -22,6 +24,8 @@ from pathlib import Path
 from PIL import Image
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from index_utils import (UnsafeFolderName, check_folder_name,  # noqa: E402
+                         ensure_entry, new_entry, parse_new_specs)
 from licenses import permits_icon_derivation  # noqa: E402
 from process_photos import DEFAULT_MARGIN, process_folder  # noqa: E402
 
@@ -122,6 +126,54 @@ class IconGateTests(unittest.TestCase):
                 if permits_icon_derivation(licence):
                     self.assertTrue(permits_derivatives(licence))
                     self.assertFalse(derivatives_refused(licence))
+
+
+class FolderNameGateTests(unittest.TestCase):
+    """check_folder_name() is the write-side guard. It runs before any mkdir or
+    file write, so every rejection here is a directory that never gets created
+    outside satellites/."""
+
+    UNSAFE = ["../escape", "a/b", "GOES-16", ".", "..", "", "./x", "..",
+              ".hidden", "x_y", "sat/../..", "Terra", " terra", "terra/"]
+    VALID = ["goes-16", "sentinel-2c", "resurs-01-n2", "iss", "terra",
+             "suomi-npp", "lageos-1", "a", "9lives", "fy-3c"]
+
+    def test_unsafe_names_refused(self):
+        for name in self.UNSAFE:
+            with self.subTest(name=name):
+                with self.assertRaises(UnsafeFolderName):
+                    check_folder_name(name)
+
+    def test_valid_names_accepted(self):
+        for name in self.VALID:
+            with self.subTest(name=name):
+                self.assertEqual(check_folder_name(name), name)
+
+    def test_non_string_refused(self):
+        for value in (None, 5, ["terra"], {"folder": "terra"}):
+            with self.subTest(value=value):
+                with self.assertRaises(UnsafeFolderName):
+                    check_folder_name(value)
+
+    def test_new_entry_refuses_before_building_a_row(self):
+        with self.assertRaises(UnsafeFolderName):
+            new_entry("../escape", "1", "Escape")
+
+    def test_ensure_entry_refuses_and_leaves_the_index_alone(self):
+        index = []
+        with self.assertRaises(UnsafeFolderName):
+            ensure_entry(index, "a/b", "1", "Bad")
+        self.assertEqual(index, [])
+
+    def test_cli_new_spec_refuses(self):
+        with self.assertRaises(UnsafeFolderName):
+            parse_new_specs([["folder=../escape", "missionID=1"]])
+
+    def test_cli_new_spec_accepts_a_valid_folder(self):
+        got = parse_new_specs([["folder=radarsat-2", "missionID=352",
+                                "missionName=RADARSAT-2"]])
+        self.assertEqual(got, {"radarsat-2": {"missionID": "352",
+                                              "missionName": "RADARSAT-2"}})
 
 
 if __name__ == "__main__":
