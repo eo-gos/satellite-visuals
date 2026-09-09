@@ -201,13 +201,22 @@ class ApplyLevelFolderNameTests(unittest.TestCase):
         return subprocess.run([sys.executable, str(self.TOOLS / "apply_picks.py"), picks],
                               capture_output=True, text=True)
 
+    # A name no real batch will ever use, so the assertions below stay true
+    # whatever folders the repo gains. Naming a real mission here couples the
+    # test to repo state: it passed until a batch legitimately created that
+    # folder, and then failed for a reason that had nothing to do with the
+    # guard it is meant to pin.
+    PADDED = " zzz-guard-probe"
+
     def test_padded_json_key_is_refused_not_silently_trimmed(self):
         before = len(json.load(open(self.REPO / "index.json")))
-        result = self._run({" terra": {"missionID": "204", "missionName": "Terra"}})
+        result = self._run({self.PADDED: {"missionID": "204", "missionName": "Probe"}})
         self.assertNotEqual(result.returncode, 0)
         self.assertIn("REFUSED", result.stdout + result.stderr)
-        self.assertFalse((self.REPO / "satellites" / " terra").exists())
-        self.assertFalse((self.REPO / "satellites" / "terra").exists())
+        satellites = self.REPO / "satellites"
+        self.assertFalse((satellites / self.PADDED).exists())
+        self.assertFalse((satellites / self.PADDED.strip()).exists(),
+                         "the padded key was trimmed into a real directory")
         self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
 
     def test_path_like_json_key_is_refused(self):

@@ -31,6 +31,18 @@ no system package, so the venv is the whole dependency.
 
 Existing icons are never overwritten unless --force is given: the hand-drawn
 ones are original artwork and outrank anything traced.
+
+**--fill-holes.** Some spacecraft are see-through where they should read as
+solid: a mesh reflector, an open truss, a gapped solar array. The publisher's
+alpha is correct — you really can see space through a mesh dish — but traced
+straight it leaves a hollow ring that reads as a broken shape at 16px. With
+--fill-holes, any fully enclosed transparent region is filled before tracing:
+a flood fill from the border marks everything reachable from outside, and what
+it cannot reach was a hole. Deliberately opt-in and per folder, because it is
+wrong as a default — the gap between a bus and its solar wing is enclosed in
+some poses too, and filling that would fuse them into a blob. Also readable
+per folder from a picks file (--picks), where a photos row may carry
+"fill_holes": true.
 """
 
 import argparse
@@ -50,6 +62,41 @@ REPO = Path(__file__).resolve().parent.parent
 TRACE_LONG_EDGE = 512
 ALPHA_THRESHOLD = 128       # alpha >= this counts as "spacecraft"
 COORD_DP = 1                # decimal places in the emitted path data
+
+
+def _fill_enclosed(mask):
+    """Fill transparent regions the outside cannot reach.
+
+    Flood the background inwards from the frame border, four-connected, until
+    it stops growing; whatever it never reaches was enclosed by the shape, so
+    it is a hole rather than sky. Conservative by construction — a region
+    touching any edge of the frame is never filled.
+
+    Done with numpy shifts rather than PIL's ImageDraw.floodfill, which is a
+    no-op on an "L" image here, and rather than scipy, which the repo does not
+    depend on.
+    """
+    import numpy as np
+
+    background = ~mask
+    reached = np.zeros_like(background)
+    # seed: every background pixel on the frame edge
+    reached[0, :] = background[0, :]
+    reached[-1, :] = background[-1, :]
+    reached[:, 0] = background[:, 0]
+    reached[:, -1] = background[:, -1]
+    while True:
+        grown = reached.copy()
+        grown[1:, :] |= reached[:-1, :]      # down
+        grown[:-1, :] |= reached[1:, :]      # up
+        grown[:, 1:] |= reached[:, :-1]      # right
+        grown[:, :-1] |= reached[:, 1:]      # left
+        grown &= background
+        if np.array_equal(grown, reached):
+            break
+        reached = grown
+    holes = background & ~reached
+    return mask | holes, int(holes.sum())
 
 
 def _load_mask(png_path):
@@ -104,8 +151,12 @@ def _trace(mask):
     return "".join(parts), w, h
 
 
-def build_svg(png_path, title):
-    data, w, h = _trace(_load_mask(png_path))
+def build_svg(png_path, title, fill_holes=False):
+    mask = _load_mask(png_path)
+    filled = 0
+    if fill_holes:
+        mask, filled = _fill_enclosed(mask)
+    data, w, h = _trace(mask)
     return (
         '<?xml version="1.0" encoding="UTF-8" standalone="no"?>\n'
         f'<svg xmlns="http://www.w3.org/2000/svg" version="1.1" '
@@ -113,7 +164,7 @@ def build_svg(png_path, title):
         f'  <title>{title}</title>\n'
         f'  <path style="fill:currentColor" fill-rule="evenodd" d="{data}"/>\n'
         '</svg>\n'
-    ), (w, h)
+    ), (w, h), filled
 
 
 def source_cut(folder_dir, folder):
@@ -137,7 +188,19 @@ def main():
     ap.add_argument("--force", action="store_true",
                     help="overwrite an existing icon (hand-drawn icons outrank traced ones)")
     ap.add_argument("--dry-run", action="store_true", help="report the gate, write nothing")
+    ap.add_argument("--fill-holes", action="store_true",
+                    help="fill fully enclosed transparent regions before tracing "
+                         "(mesh antennas, open trusses that should read solid at 16px)")
+    ap.add_argument("--picks", help="picks.json; a photos row may carry "
+                                    "\"fill_holes\": true to set it per folder")
     args = ap.parse_args()
+
+    per_folder_fill = {}
+    if args.picks:
+        picks = json.load(open(Path(args.picks).expanduser()))
+        for folder, pick in (picks.get("photos") or picks).items():
+            if isinstance(pick, dict) and pick.get("fill_holes"):
+                per_folder_fill[folder] = True
 
     index = json.load(open(REPO / "index.json"))
     by_folder = {e.get("folder") or e["SVGColourPath"].split("/")[1]: e for e in index}
@@ -187,16 +250,21 @@ def main():
             made += 1
             continue
 
-        svg, (w, h) = build_svg(cut, f"{folder} icon")
+        fill = args.fill_holes or per_folder_fill.get(folder, False)
+        svg, (w, h), filled = build_svg(cut, f"{folder} icon", fill_holes=fill)
         icon_path.write_text(svg)
         print(f"OK   {folder}: {cut.name} -> {icon_path.name} "
-              f"({w}x{h}, {len(svg) // 1024 or 1} kB)")
+              f"({w}x{h}, {len(svg) // 1024 or 1} kB"
+              + (f", {filled} px of enclosed holes filled" if fill else "") + ")")
         made += 1
         if not out_dir:
             rel = f"satellites/{folder}/{folder}-icon.svg"
             deed = deed_url(licence)
             note = (f"silhouette derived from {cut.name} — alpha mask thresholded at "
-                    f"{ALPHA_THRESHOLD}/255, outline traced with potracer "
+                    f"{ALPHA_THRESHOLD}/255"
+                    + (f", fully enclosed transparent regions filled before tracing "
+                       f"(--fill-holes; {filled} px)" if fill else "")
+                    + f", outline traced with potracer "
                     f"(tools/make_icon.py); no new rights added, source licence flows "
                     f"through" + (f"; licence deed: {deed}" if deed else ""))
             rows.append([rel, entry.get("imageCredit") or entry.get("imageRightsHolder", ""),

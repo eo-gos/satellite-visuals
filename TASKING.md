@@ -175,7 +175,19 @@ cutout's alpha mask:
 ```bash
 python3 tools/make_icon.py --all --dry-run     # what the licence gate allows
 python3 tools/make_icon.py radarsat-2          # write one icon + its ATTRIBUTIONS row
+python3 tools/make_icon.py smap --fill-holes --force   # see below
 ```
+
+**`--fill-holes`, for see-through structures.** Some spacecraft are transparent where
+they should read as solid: a mesh reflector, an open truss, a gapped array. The
+publisher's alpha is right — you really can see space through a mesh dish — but traced
+straight it leaves a hollow wireframe that falls apart at 16px. `--fill-holes` fills any
+*fully enclosed* transparent region before tracing, so the dish becomes a disc while
+anything open to the edge of the frame stays open. SMAP's reflector is the case it was
+written for. Use it when a silhouette looks like a wireframe rather than a shape; do not
+use it by default, because the gap between a bus and its solar wing is enclosed in some
+poses too, and filling that fuses them into a blob. A picks row may also carry
+`"fill_holes": true`, applied with `--picks`.
 
 **The licence gate is the whole point of this tool.** An icon is a new published
 derivative, so only public domain and adaptation-permitting CC sources qualify. Every
