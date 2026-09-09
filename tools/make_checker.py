@@ -37,7 +37,8 @@ button downloads picks.json for tools/apply_clean.py.
 
 Lanes decide the paperwork the page promises:
   esa / esa-eum  ESA Standard Licence (or CC BY-SA 3.0 IGO where the ESA page
-                 offers it) -> clean render, resize only, licenceNoticeUrl set.
+                 offers it) -> clean render, crop + resize only,
+                 licenceNoticeUrl set.
                  Never cut: ESA refused background removal in writing.
   pd / cc        ordinary sourced photo -> raw file, cuttable later.
 """
@@ -183,10 +184,12 @@ def section_html(row):
     pieces = []
     takeable = any(a["verdict"] != "reject" for a in row["alts"])
     if lane.startswith("esa") and takeable:
-        pieces.append('<div class="esa-marker"><b>ESA clean render, resize only, notice URL '
-                      'will be set.</b> No background removal, no cropping, no compositing — '
-                      'the archival file is stored as published and the 1024px/512px display '
-                      'PNGs are scaled from it (alpha preserved where present).</div>')
+        pieces.append('<div class="esa-marker"><b>ESA clean render, crop and resize only, notice '
+                      'URL will be set.</b> No background removal, no compositing — the '
+                      'archival file is stored exactly as published, and the 1024px/512px '
+                      'display copies are cropped (where a crop box is given) and scaled from '
+                      'it, alpha preserved. ESA permits cropping and resizing and refuses only '
+                      'background removal.</div>')
     if row.get("extra"):
         pieces.append(f'<div class="callout">{html.escape(row["extra"])}</div>')
     if row.get("noneReason"):

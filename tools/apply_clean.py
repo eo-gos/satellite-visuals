@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Apply reviewed picks: ESA clean renders (resize only) + ordinary photo picks.
+"""Apply reviewed picks: ESA clean renders (crop + resize) + ordinary photo picks.
 
     python3 tools/apply_clean.py ~/Downloads/picks.json
     python3 tools/apply_clean.py ~/Downloads/picks.json --dry-run
@@ -17,9 +17,14 @@ The two blocks are different lanes and are handled differently.
 writing (ESA HQ PHOTOS 20260819-0333); the portal's cut-out slot is therefore
 filled from ESA's published clean version instead. This script downloads that
 file untouched as `<folder>-photo-clean.<ext>` and derives the display sizes
-`<folder>-photo-clean-1024px.png` / `-512px.png` by **scaling only** — Lanczos
-resample, alpha preserved, never upscaled, no crop, no matting, no compositing.
-There is deliberately no flag to make it do anything else: this file must never
+`<folder>-photo-clean-1024px.png` / `-512px.png` by **cropping and scaling
+only** — Lanczos resample, alpha preserved, never upscaled, no matting, no
+compositing. ESA's ruling permits cropping, aspect-ratio change and resizing
+and refuses only background removal, so an optional `crop` is allowed: give a
+pick a `"crop": [x, y, w, h]` in pixels of the archival original (or
+`--crop <folder>=x,y,w,h`) and the display PNGs are cut from that box before
+scaling. The archival file is always stored exactly as published. There is
+deliberately no flag for anything beyond crop and scale: this file must never
 grow a background-removal path.
 
 Paperwork written per folder:
@@ -28,7 +33,8 @@ Paperwork written per folder:
                imageStatus, and licenceNoticeUrl **only** when the licence
                recorded is the ESA Standard Licence (check_index.py enforces
                that invariant in both directions).
-  ATTRIBUTIONS one row per file on disk; the two PNGs record "resize only".
+  ATTRIBUTIONS one row per file on disk; the two PNGs record the crop box
+               (when there is one) and the scale.
 
 If a folder has no raw photo yet, the clean render simply becomes its only
 committed image — PhotoPath is left alone rather than duplicating the file.
@@ -74,23 +80,52 @@ def fetch(url: str) -> bytes:
         return r.read()
 
 
-def resize_only(src: Path, dest: Path, box: int) -> str:
-    """Scale src to fit box on its long edge and save as PNG. Never upscales,
-    never crops, never touches pixels other than by resampling."""
+def crop_box_of(pick, size):
+    """Validate a pick's crop box against the original's (width, height).
+    Returns (x, y, w, h) or None. Raises ValueError if the box leaves the image
+    — silently clamping would ship a different crop than the reviewer
+    approved. Checked before anything is written, so a bad box leaves no
+    archival file and no folder behind."""
+    crop = pick.get("crop")
+    if not crop:
+        return None
+    try:
+        x, y, w, h = (int(v) for v in crop)
+    except (TypeError, ValueError):
+        raise ValueError(f"crop must be four integers [x, y, w, h], got {crop!r}")
+    if w <= 0 or h <= 0:
+        raise ValueError(f"crop width and height must be positive, got {w}x{h}")
+    iw, ih = size
+    if x < 0 or y < 0 or x + w > iw or y + h > ih:
+        raise ValueError(f"crop [{x}, {y}, {w}, {h}] extends outside the "
+                         f"{iw}x{ih} original")
+    return x, y, w, h
+
+
+def resize_only(src: Path, dest: Path, box: int, crop=None) -> str:
+    """Crop (optional) then scale src to fit box on its long edge, save as PNG.
+    Never upscales, never mattes, never touches pixels other than by cropping
+    and resampling."""
     from PIL import Image
     im = Image.open(src)
     if im.mode not in ("RGBA", "LA", "RGB", "L", "P"):
         im = im.convert("RGBA")
     if im.mode == "P":
         im = im.convert("RGBA" if "transparency" in im.info else "RGB")
+    cropped = ""
+    if crop:
+        cx, cy, cw, ch = crop
+        im = im.crop((cx, cy, cx + cw, cy + ch))
+        cropped = f"cropped to {cx},{cy},{cw},{ch} of the original, then "
     w, h = im.size
     if max(w, h) > box:
         scale = box / max(w, h)
         im = im.resize((max(1, round(w * scale)), max(1, round(h * scale))),
                        Image.LANCZOS)
-        how = f"scaled to {im.size[0]}x{im.size[1]}"
+        how = f"{cropped}scaled to {im.size[0]}x{im.size[1]}"
     else:
-        how = f"kept at {w}x{h} (source smaller than {box}px; never upscaled)"
+        how = (f"{cropped}kept at {w}x{h} "
+               f"(source smaller than {box}px; never upscaled)")
     im.save(dest, "PNG")
     return how
 
@@ -171,15 +206,28 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
             print(f"  FAIL download failed ({exc}) — no file, no entry")
             failed.add(folder)
             continue
+
+        # Validate the crop against the bytes in hand, before anything reaches
+        # the filesystem: a bad box must not leave an archival file or a folder.
+        try:
+            import io as _io
+            from PIL import Image as _Image
+            with _Image.open(_io.BytesIO(payload)) as probe:
+                crop = crop_box_of(pick, probe.size)
+        except ValueError as exc:
+            print(f"  FAIL {exc} — nothing written")
+            failed.add(folder)
+            continue
+
         dest.parent.mkdir(parents=True, exist_ok=True)
         dest.write_bytes(payload)
 
         derived = []
         for box in SIZES:
             drel = f"satellites/{folder}/{folder}-photo-clean-{box}px.png"
-            how = resize_only(dest, REPO / drel, box)
+            how = resize_only(dest, REPO / drel, box, crop)
             derived.append((drel, how))
-            print(f"  display  {drel}  ({how}, resize only)")
+            print(f"  display  {drel}  ({how})")
 
         entry["PhotoCleanPath"] = rel
         entry["PhotoClean1024Path"] = derived[0][0]
@@ -208,8 +256,9 @@ def apply_esa_clean(picks, dry_run, new_folders=None):
         note_base = (f"ESA official clean render, taken as published. "
                      f"Source page: {entry['imageSourceURL']}")
         rows = [(rel, note_base)]
-        rows += [(drel, f"resize only from {Path(rel).name} — {how}; no matting, no crop, "
-                        f"no background edits (tools/apply_clean.py)")
+        rows += [(drel, f"display copy of {Path(rel).name} — {how}; "
+                        f"no other change: no matting, no background edits "
+                        f"(tools/apply_clean.py)")
                  for drel, how in derived]
         for path, note in rows:
             row = [path, pick.get("title", ""), entry["imageRightsHolder"],
@@ -275,6 +324,10 @@ def main():
     ap = argparse.ArgumentParser()
     ap.add_argument("picks", help="picks.json exported by tools/make_checker.py")
     ap.add_argument("--dry-run", action="store_true", help="print the plan, write nothing")
+    ap.add_argument("--crop", action="append", metavar="FOLDER=X,Y,W,H",
+                    help="crop the display copies to this box of the archival "
+                         "original before scaling (ESA permits cropping); the "
+                         "archival file is always stored unmodified")
     ap.add_argument("--new", nargs="+", action="append", metavar="KEY=VALUE",
                     help="create a folder that has no index entry yet: "
                          "--new folder=<name> missionID=<id> missionName=<name> "
@@ -298,6 +351,14 @@ def main():
     # the whole block to the clean pass made it drop every photo-lane folder as
     # unbacked, and the photos pass then never saw them — so a valid public
     # domain photo for a folder that does not exist yet was silently skipped.
+    for spec in (args.crop or []):
+        folder, _, box = spec.partition("=")
+        try:
+            data.setdefault("esa_clean", {}).setdefault(folder, {})["crop"] = \
+                [int(v) for v in box.split(",")]
+        except ValueError:
+            sys.exit(f"REFUSED --crop expects FOLDER=x,y,w,h, got {spec!r}")
+
     clean_picks = data.get("esa_clean", {})
     photo_picks = data.get("photos", {})
     clean_new = {f: s for f, s in new_folders.items() if f in clean_picks}

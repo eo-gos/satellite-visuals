@@ -16,8 +16,8 @@ satellites/<name>/
   <name>-photo-cut-1024px.png  transparent cutout, natural aspect, max-dim 1024 (derived)
   <name>-photo-cut-512px.png   smaller cutout for cards (derived)
   <name>-photo-clean.<ext>     rights holder's own clean render, as published
-  <name>-photo-clean-1024px.png  resize-only display copy (no background edits)
-  <name>-photo-clean-512px.png   resize-only display copy
+  <name>-photo-clean-1024px.png  display copy: crop + resize only, no background edits
+  <name>-photo-clean-512px.png   display copy: crop + resize only
 ```
 
 Lowercase matters: these paths are served from a case-sensitive Linux bind-mount.
