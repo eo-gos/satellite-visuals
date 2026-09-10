@@ -85,14 +85,29 @@ def crop_box_of(pick, size):
     Returns (x, y, w, h) or None. Raises ValueError if the box leaves the image
     — silently clamping would ship a different crop than the reviewer
     approved. Checked before anything is written, so a bad box leaves no
-    archival file and no folder behind."""
-    crop = pick.get("crop")
-    if not crop:
+    archival file and no folder behind.
+
+    Same contract as process_photos.photo_crop_of, deliberately: the two lanes
+    read a crop box out of different places, but a box that one lane refuses
+    must not be one the other accepts.
+    """
+    # Only an absent key or None means "no crop". A supplied-but-falsy value —
+    # False, [], "", 0 — is a curation error, not a silent opt-out: treating it
+    # as absent is how a malformed box skips validation entirely.
+    if "crop" not in pick:
         return None
-    try:
-        x, y, w, h = (int(v) for v in crop)
-    except (TypeError, ValueError):
-        raise ValueError(f"crop must be four integers [x, y, w, h], got {crop!r}")
+    crop = pick["crop"]
+    if crop is None:
+        return None
+    # Real integers only. int(0.9) is 0 and int("12") is 12, so coercing first
+    # would silently crop to a different box than the one written down, and the
+    # ATTRIBUTIONS note would then record that different box as if approved.
+    # bool is an int subclass, so it is excluded explicitly.
+    if (not isinstance(crop, (list, tuple)) or len(crop) != 4
+            or any(isinstance(v, bool) or not isinstance(v, int) for v in crop)):
+        raise ValueError(f"crop must be a list of four integers [x, y, w, h], "
+                         f"got {crop!r}")
+    x, y, w, h = crop
     if w <= 0 or h <= 0:
         raise ValueError(f"crop width and height must be positive, got {w}x{h}")
     iw, ih = size
@@ -113,7 +128,7 @@ def resize_only(src: Path, dest: Path, box: int, crop=None) -> str:
     if im.mode == "P":
         im = im.convert("RGBA" if "transparency" in im.info else "RGB")
     cropped = ""
-    if crop:
+    if crop is not None:
         cx, cy, cw, ch = crop
         im = im.crop((cx, cy, cx + cw, cy + ch))
         cropped = f"cropped to {cx},{cy},{cw},{ch} of the original, then "

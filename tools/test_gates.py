@@ -95,11 +95,194 @@ class LicenceGateTests(unittest.TestCase):
         self.assertEqual(rec["method"], "source-alpha")
 
 
+class PreCutCropTests(unittest.TestCase):
+    """Crop-before-cut for the photo lane. Some agencies publish only a wide
+    frame — a formation render, a satellite small over Earth — where cutting
+    the whole image yields mostly empty space. The raw stays exactly as
+    published; only the cutter's input is narrowed."""
+
+    def setUp(self):
+        self.tmpdir = tempfile.TemporaryDirectory()
+        self.root = make_root(self.tmpdir.name)
+        self.raw = self.root / "satellites" / "testsat" / "testsat-photo.png"
+        self.raw_before = self.raw.read_bytes()
+        self.entry = {"imageLicense": "CC BY 4.0", "imageStatus": "licensed"}
+
+    def tearDown(self):
+        self.tmpdir.cleanup()
+
+    # The 64x64 fixture's subject is (16,16)-(48,48). The crop must KEEP some
+    # fully transparent border, or usable_source_alpha() sees a fully opaque
+    # image, falls through to matting, and the case needs rembg — the suite is
+    # meant to run on Pillow alone. [12,12,28,28] spans 12..40: opaque subject
+    # plus a 4px transparent margin on two sides.
+    VALID_CROP = [12, 12, 28, 28]
+
+    def test_crop_narrows_the_cutter_and_leaves_the_raw_alone(self):
+        rec = run(self.root, self.entry, crop_override=self.VALID_CROP)
+        self.assertEqual(rec["status"], "ok")
+        self.assertEqual(rec["method"], "source-alpha",
+                         "the fixture must stay on the Pillow-only path")
+        self.assertEqual(rec["pre_crop"], self.VALID_CROP)
+        self.assertIn("pre-cropped to 12,12,28,28 of the raw", rec["derivative_note"])
+        self.assertEqual(self.raw.read_bytes(), self.raw_before,
+                         "the raw photo must never be modified")
+
+    def test_crop_can_come_from_the_index_entry(self):
+        entry = dict(self.entry, photoCrop=self.VALID_CROP)
+        rec = run(self.root, entry)
+        self.assertEqual(rec["pre_crop"], self.VALID_CROP)
+        self.assertEqual(rec["method"], "source-alpha")
+
+    def test_no_crop_leaves_the_note_and_record_unchanged(self):
+        rec = run(self.root, self.entry)
+        self.assertIsNone(rec["pre_crop"])
+        self.assertNotIn("pre-cropped", rec["derivative_note"])
+
+    def test_out_of_bounds_crop_is_refused_before_any_write(self):
+        for box in ([0, 0, 200, 10], [60, 0, 10, 10], [-5, 0, 10, 10],
+                    [0, 0, 0, 10], [0, 0, 10, -3]):
+            with self.subTest(box=box):
+                rec = run(self.root, self.entry, crop_override=box)
+                self.assertEqual(rec["status"], "skipped-bad-crop")
+                self.assertEqual(self.raw.read_bytes(), self.raw_before)
+                cuts = list((self.root / "satellites" / "testsat").glob("*-cut-*"))
+                self.assertEqual(cuts, [], "a refused crop must write nothing")
+
+    def test_malformed_crop_is_refused(self):
+        for box in ("16,16,16,16", [16, 16], {"x": 1}, [1, 2, 3, "a"],
+                    # CX P2: coercing with int() first would turn 0.9 into 0 and
+                    # "12" into 12 — a different box than the one approved, and
+                    # one that then passes check_index because it is an int by
+                    # the time it is stored.
+                    [0.9, 0, 10, 10], [0, 0, 10.5, 10], ["12", 12, 10, 10],
+                    [True, 0, 10, 10], [0, 0, 10, 10, 10]):
+            with self.subTest(box=box):
+                rec = run(self.root, self.entry, crop_override=box)
+                self.assertEqual(rec["status"], "skipped-bad-crop")
+
+
+class CropIntegerTests(unittest.TestCase):
+    """CX P2: crop coordinates must be real integers everywhere they are read.
+    int(0.9) is 0 and int("12") is 12, so coercing first stores a different box
+    than the one written down — and the stored value then passes check_index,
+    because by then it is an int."""
+
+    BAD = ([0.9, 0, 10, 10], [0, 0, 10.5, 10], ["12", 12, 10, 10],
+           [True, 0, 10, 10], (1, 2, 3), "10,10,10,10", {"a": 1},
+           # CX round 2: a supplied-but-falsy value used to be read as "no
+           # crop", so it skipped validation entirely instead of failing.
+           [], False, "", 0)
+
+    def test_process_photos_rejects_non_integers(self):
+        from process_photos import photo_crop_of
+        for box in self.BAD:
+            with self.subTest(box=box):
+                with self.assertRaises(ValueError):
+                    photo_crop_of(None, (100, 100), box)
+
+    def test_apply_picks_imports_the_shared_validator(self):
+        """apply_picks validates a pick's crop through photo_crop_of rather than
+        its own copy, so the rule cannot drift between the two tools."""
+        source = (Path(__file__).resolve().parent / "apply_picks.py").read_text()
+        self.assertIn("from process_photos import photo_crop_of", source)
+        self.assertNotIn("int(v) for v in crop", source)
+
+    def test_clean_lane_rejects_non_integers(self):
+        """The ESA clean lane reads its crop from a different place, but a box
+        one lane refuses must not be one the other accepts."""
+        from apply_clean import crop_box_of
+        for box in self.BAD:
+            with self.subTest(box=box):
+                with self.assertRaises(ValueError):
+                    crop_box_of({"crop": box}, (100, 100))
+
+    def test_clean_lane_only_none_means_no_crop(self):
+        from apply_clean import crop_box_of
+        self.assertIsNone(crop_box_of({}, (100, 100)))
+        self.assertIsNone(crop_box_of({"crop": None}, (100, 100)))
+        self.assertEqual(crop_box_of({"crop": [0, 0, 10, 10]}, (100, 100)),
+                         (0, 0, 10, 10))
+
+    def test_clean_lane_does_not_coerce(self):
+        """`int(v) for v in crop` accepted "12" and 0.9; `if not crop` swallowed
+        the falsy boxes before they ever reached the check."""
+        source = (Path(__file__).resolve().parent / "apply_clean.py").read_text()
+        self.assertNotIn("int(v) for v in crop", source)
+        self.assertNotIn("\n    if not crop:\n", source)
+        self.assertNotIn("\n    if crop:\n", source)
+
+    def test_only_none_means_no_crop(self):
+        """An absent key or None is "no crop". Anything else present must be
+        validated — False, [] and "" are curation errors, not opt-outs."""
+        from process_photos import photo_crop_of
+        self.assertIsNone(photo_crop_of({}, (100, 100)))
+        self.assertIsNone(photo_crop_of({"photoCrop": None}, (100, 100)))
+        self.assertIsNone(photo_crop_of(None, (100, 100), None))
+        for falsy in ([], False, "", 0):
+            with self.subTest(value=falsy):
+                with self.assertRaises(ValueError):
+                    photo_crop_of({"photoCrop": falsy}, (100, 100))
+                with self.assertRaises(ValueError):
+                    photo_crop_of(None, (100, 100), falsy)
+
+    def test_apply_picks_passes_falsy_crops_to_the_validator(self):
+        """apply_picks gated on `if crop:`, which swallowed the same values."""
+        source = (Path(__file__).resolve().parent / "apply_picks.py").read_text()
+        self.assertIn("if crop is not None:", source)
+        self.assertNotIn("\n    if crop:\n", source)
+
+    def test_check_index_rejects_a_stored_non_integer_crop(self):
+        """The last line of defence: a hand-edited index.json must not slip a
+        float or a bool past review."""
+        import importlib
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        check_index = importlib.import_module("check_index")
+        good = [10, 10, 20, 20]
+        for box in ([0.9, 0, 10, 10], [True, 0, 10, 10], [1, 2, 3], "10,10,10,10",
+                    [], False, ""):
+            with self.subTest(box=box):
+                self.assertFalse(self._crop_ok(check_index, box))
+        self.assertTrue(self._crop_ok(check_index, good))
+
+    @staticmethod
+    def _crop_ok(module, crop):
+        # mirrors the predicate in check_index.main(); kept in one place here so
+        # a change to the rule fails this test loudly
+        return (isinstance(crop, list) and len(crop) == 4
+                and all(isinstance(v, int) and not isinstance(v, bool) for v in crop)
+                and crop[2] > 0 and crop[3] > 0 and crop[0] >= 0 and crop[1] >= 0)
+
+
 class IconGateTests(unittest.TestCase):
     """permits_icon_derivation() is deliberately narrower than the cut gate: an
     icon is a new published derivative, so only public domain and
     adaptation-permitting CC qualify. There is no override to test — by
     design, the function takes only a licence name."""
+
+    def test_open_government_licences_allowed(self):
+        """UK OGL, OGL Canada and KOGL Type 1 each grant adaptation with
+        attribution in their own terms — the same bargain as CC BY."""
+        for licence in ("OGL", "OGL v3", "OGL v3.0", "OGL Canada", "OGL Canada 2.0",
+                        "Open Government Licence - Canada",
+                        "Open Government Licence Canada", "KOGL Type 1", "KOGL"):
+            with self.subTest(licence=licence):
+                self.assertTrue(permits_icon_derivation(licence))
+
+    def test_higher_kogl_types_refused(self):
+        """Types 2-4 add NC and/or no-derivatives conditions. Only Type 1 is a
+        clean adaptation grant, so only Type 1 is listed."""
+        for licence in ("KOGL Type 2", "KOGL Type 3", "KOGL Type 4"):
+            with self.subTest(licence=licence):
+                self.assertFalse(permits_icon_derivation(licence))
+
+    def test_open_government_licences_have_deeds(self):
+        """The credit line links the licence name to its terms, so a licence we
+        newly accept has to resolve to a URL."""
+        from licenses import deed_url
+        for licence in ("OGL v3", "Open Government Licence - Canada", "KOGL Type 1"):
+            with self.subTest(licence=licence):
+                self.assertTrue(str(deed_url(licence)).startswith("https://"))
 
     def test_public_domain_and_cc_allowed(self):
         for licence in ("Public domain", "Public domain (NASA)", "CC0", "CC0 1.0",
@@ -116,7 +299,8 @@ class IconGateTests(unittest.TestCase):
     def test_nonfree_and_unrecognised_refused(self):
         for licence in ("media-terms", "trademark-editorial-use",
                         "CC BY-NC 4.0", "CC BY-ND 4.0", "CC BY-NC-SA 4.0",
-                        "OGL v3", "All rights reserved", "", "Some New Licence"):
+                        "All rights reserved", "", "Some New Licence",
+                        "Copyrighted free use", "OGL v9"):
             with self.subTest(licence=licence):
                 self.assertFalse(permits_icon_derivation(licence))
 
@@ -219,6 +403,36 @@ class ApplyLevelFolderNameTests(unittest.TestCase):
                          "the padded key was trimmed into a real directory")
         self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
 
+    def test_out_of_bounds_crop_writes_nothing(self):
+        """CX P1: the raw used to be written before the crop was validated, so a
+        bad box left an untracked file and folder behind. A refused crop must
+        leave the tree exactly as it was."""
+        import urllib.request
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "probe.png"
+            Image.new("RGBA", (40, 30), (0, 0, 0, 0)).save(src)
+            before = len(json.load(open(self.REPO / "index.json")))
+            result = self._run_photos({
+                "zzz-crop-probe": {"title": "probe", "page": "https://example.org/p",
+                                   "url": src.as_uri(), "ext": "png",
+                                   "licence": "Public domain", "rights_holder": "X",
+                                   "credit": "X", "crop": [0, 0, 500, 10]}},
+                new_folders={"zzz-crop-probe": {"missionID": "1", "missionName": "P"}})
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.REPO / "satellites" / "zzz-crop-probe").exists())
+        self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
+
+    def _run_photos(self, photos, new_folders=None):
+        payload = {"schema": "satellite-visuals/picks/2", "photos": photos}
+        if new_folders:
+            payload["new_folders"] = new_folders
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump(payload, f)
+            picks = f.name
+        return subprocess.run([sys.executable, str(self.TOOLS / "apply_picks.py"), picks],
+                              capture_output=True, text=True)
+
     def test_path_like_json_key_is_refused(self):
         for bad in ("../escape", "a/b", "GOES-16"):
             with self.subTest(folder=bad):
@@ -247,8 +461,9 @@ class ApplyCleanTwoLaneTests(unittest.TestCase):
                  "original_license_or_terms", "license_url_or_notes"])
         tools = self.tmp / "tools"
         tools.mkdir()
+        # apply_picks imports the shared crop validator from process_photos
         for name in ("apply_clean.py", "apply_picks.py", "index_utils.py",
-                     "licenses.py"):
+                     "licenses.py", "process_photos.py"):
             shutil.copy(Path(__file__).resolve().parent / name, tools / name)
         self.tools = tools
         # a tiny real PNG for each lane to "download"

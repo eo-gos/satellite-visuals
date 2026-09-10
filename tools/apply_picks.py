@@ -28,6 +28,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 from index_utils import (UnsafeFolderName, drop_entries, ensure_entry,  # noqa: E402
                          folder_of, load_index, parse_new_specs, save_index,
                          unbacked_folders)
+from process_photos import photo_crop_of  # noqa: E402  (shared crop validator)
 
 REPO = Path(__file__).resolve().parent.parent
 UA = "satellite-visuals-curation/1.0 (https://github.com/eo-gos/satellite-visuals)"
@@ -105,6 +106,25 @@ for folder, pick in picks.items():
         print(f"FAIL {folder}: download failed ({exc}) — no file, no entry")
         failed.add(folder)
         continue
+    # Validate the crop against the decoded bytes BEFORE anything reaches the
+    # filesystem. Writing first and validating after leaves an untracked raw
+    # behind when the box is bad — the folder then looks half-made on disk
+    # while the index says nothing about it.
+    # Only an absent key or None means "no crop" (see photo_crop_of): a
+    # supplied-but-falsy value must reach the validator and be refused.
+    crop = pick.get("crop")
+    crop_value = None
+    if crop is not None:
+        import io as _io
+        from PIL import Image as _Image
+        try:
+            with _Image.open(_io.BytesIO(payload)) as probe:
+                crop_value = list(photo_crop_of(None, probe.size, crop))
+        except Exception as exc:
+            print(f"FAIL {folder}: {exc} — no file, no entry")
+            failed.add(folder)
+            continue
+
     (REPO / rel).parent.mkdir(parents=True, exist_ok=True)
     (REPO / rel).write_bytes(payload)
 
@@ -118,6 +138,13 @@ for folder, pick in picks.items():
     entry["imageLicense"] = pick["licence"]
     entry["imageCredit"] = pick.get("credit") or rights
     entry["imageStatus"] = pick.get("status", "licensed")
+    # A pre-cut crop box travels with the entry so the cut pass can honour it.
+    # The raw file above is stored exactly as published; this only narrows what
+    # the cutter looks at. Already validated, above, before any write.
+    if crop_value is not None:
+        entry["photoCrop"] = crop_value
+    elif "photoCrop" in entry:
+        del entry["photoCrop"]
 
     row = [rel, pick.get("title", ""), rights, entry["imageSourceURL"],
            pick["licence"], pick.get("notes") or pick.get("page", "")]
