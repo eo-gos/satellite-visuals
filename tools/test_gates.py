@@ -111,20 +111,28 @@ class PreCutCropTests(unittest.TestCase):
     def tearDown(self):
         self.tmpdir.cleanup()
 
+    # The 64x64 fixture's subject is (16,16)-(48,48). The crop must KEEP some
+    # fully transparent border, or usable_source_alpha() sees a fully opaque
+    # image, falls through to matting, and the case needs rembg — the suite is
+    # meant to run on Pillow alone. [12,12,28,28] spans 12..40: opaque subject
+    # plus a 4px transparent margin on two sides.
+    VALID_CROP = [12, 12, 28, 28]
+
     def test_crop_narrows_the_cutter_and_leaves_the_raw_alone(self):
-        # the 64x64 fixture has its subject at (16,16)-(48,48); crop to its
-        # top-left quadrant and the resulting bbox must be smaller
-        rec = run(self.root, self.entry, crop_override=[16, 16, 16, 16])
+        rec = run(self.root, self.entry, crop_override=self.VALID_CROP)
         self.assertEqual(rec["status"], "ok")
-        self.assertEqual(rec["pre_crop"], [16, 16, 16, 16])
-        self.assertIn("pre-cropped to 16,16,16,16 of the raw", rec["derivative_note"])
+        self.assertEqual(rec["method"], "source-alpha",
+                         "the fixture must stay on the Pillow-only path")
+        self.assertEqual(rec["pre_crop"], self.VALID_CROP)
+        self.assertIn("pre-cropped to 12,12,28,28 of the raw", rec["derivative_note"])
         self.assertEqual(self.raw.read_bytes(), self.raw_before,
                          "the raw photo must never be modified")
 
     def test_crop_can_come_from_the_index_entry(self):
-        entry = dict(self.entry, photoCrop=[16, 16, 16, 16])
+        entry = dict(self.entry, photoCrop=self.VALID_CROP)
         rec = run(self.root, entry)
-        self.assertEqual(rec["pre_crop"], [16, 16, 16, 16])
+        self.assertEqual(rec["pre_crop"], self.VALID_CROP)
+        self.assertEqual(rec["method"], "source-alpha")
 
     def test_no_crop_leaves_the_note_and_record_unchanged(self):
         rec = run(self.root, self.entry)
