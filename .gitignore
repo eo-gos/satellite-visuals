@@ -5,6 +5,11 @@
 cut_gallery.html
 cut_report.json
 
+# house-artwork working directory: candidate drawings under review and the
+# reference images they were written from. Reference imagery is consulted but
+# never stored in this repository — only its URLs, in index.json `references`.
+tools/out/
+
 # local tooling envs
 .venv/
 venv/

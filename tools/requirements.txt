@@ -8,3 +8,11 @@ Pillow==10.4.0
 onnxruntime==1.19.2
 numpy==1.26.4
 potracer==0.0.4
+
+# tools/house_art (the house-artwork lane) adds NO new dependency: the kit, the
+# schema validator and the two build checks are pure Python, and the projection
+# check plus the originality scorer use Pillow alone (no numpy) so the gate suite
+# runs on a Pillow-only venv:
+#   python3 -m venv .venv && . .venv/bin/activate && pip install Pillow==10.4.0
+#   python3 -m unittest tools.test_house_art
+# Keep it that way. Anything this lane needs must be pure Python or Pillow.
