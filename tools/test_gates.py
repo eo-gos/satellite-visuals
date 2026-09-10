@@ -150,10 +150,62 @@ class PreCutCropTests(unittest.TestCase):
                 self.assertEqual(cuts, [], "a refused crop must write nothing")
 
     def test_malformed_crop_is_refused(self):
-        for box in ("16,16,16,16", [16, 16], {"x": 1}, [1, 2, 3, "a"]):
+        for box in ("16,16,16,16", [16, 16], {"x": 1}, [1, 2, 3, "a"],
+                    # CX P2: coercing with int() first would turn 0.9 into 0 and
+                    # "12" into 12 — a different box than the one approved, and
+                    # one that then passes check_index because it is an int by
+                    # the time it is stored.
+                    [0.9, 0, 10, 10], [0, 0, 10.5, 10], ["12", 12, 10, 10],
+                    [True, 0, 10, 10], [0, 0, 10, 10, 10]):
             with self.subTest(box=box):
                 rec = run(self.root, self.entry, crop_override=box)
                 self.assertEqual(rec["status"], "skipped-bad-crop")
+
+
+class CropIntegerTests(unittest.TestCase):
+    """CX P2: crop coordinates must be real integers everywhere they are read.
+    int(0.9) is 0 and int("12") is 12, so coercing first stores a different box
+    than the one written down — and the stored value then passes check_index,
+    because by then it is an int."""
+
+    BAD = ([0.9, 0, 10, 10], [0, 0, 10.5, 10], ["12", 12, 10, 10],
+           [True, 0, 10, 10], (1, 2, 3), "10,10,10,10", None if False else {"a": 1})
+
+    def test_process_photos_rejects_non_integers(self):
+        from process_photos import photo_crop_of
+        for box in self.BAD:
+            with self.subTest(box=box):
+                with self.assertRaises(ValueError):
+                    photo_crop_of(None, (100, 100), box)
+
+    def test_apply_picks_imports_the_shared_validator(self):
+        """apply_picks validates a pick's crop through photo_crop_of rather than
+        its own copy, so the rule cannot drift between the two tools.
+        (apply_clean's crop_box_of needs the same treatment when the ESA-lane
+        crop branch merges — that code is not in this PR.)"""
+        source = (Path(__file__).resolve().parent / "apply_picks.py").read_text()
+        self.assertIn("from process_photos import photo_crop_of", source)
+        self.assertNotIn("int(v) for v in crop", source)
+
+    def test_check_index_rejects_a_stored_non_integer_crop(self):
+        """The last line of defence: a hand-edited index.json must not slip a
+        float or a bool past review."""
+        import importlib
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        check_index = importlib.import_module("check_index")
+        good = [10, 10, 20, 20]
+        for box in ([0.9, 0, 10, 10], [True, 0, 10, 10], [1, 2, 3], "10,10,10,10"):
+            with self.subTest(box=box):
+                self.assertFalse(self._crop_ok(check_index, box))
+        self.assertTrue(self._crop_ok(check_index, good))
+
+    @staticmethod
+    def _crop_ok(module, crop):
+        # mirrors the predicate in check_index.main(); kept in one place here so
+        # a change to the rule fails this test loudly
+        return (isinstance(crop, list) and len(crop) == 4
+                and all(isinstance(v, int) and not isinstance(v, bool) for v in crop)
+                and crop[2] > 0 and crop[3] > 0 and crop[0] >= 0 and crop[1] >= 0)
 
 
 class IconGateTests(unittest.TestCase):

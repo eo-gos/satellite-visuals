@@ -91,8 +91,10 @@ def main():
 
         crop = e.get("photoCrop")
         if crop is not None:
+            # bool is an int subclass; a JSON true would otherwise read as 1
             ok = (isinstance(crop, list) and len(crop) == 4
-                  and all(isinstance(v, int) for v in crop)
+                  and all(isinstance(v, int) and not isinstance(v, bool)
+                          for v in crop)
                   and crop[2] > 0 and crop[3] > 0
                   and crop[0] >= 0 and crop[1] >= 0)
             if not ok:

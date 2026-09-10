@@ -168,10 +168,16 @@ def photo_crop_of(entry, size, override=None):
     crop = override if override is not None else (entry or {}).get("photoCrop")
     if not crop:
         return None
-    try:
-        x, y, w, h = (int(v) for v in crop)
-    except (TypeError, ValueError):
-        raise ValueError(f"photoCrop must be four integers [x, y, w, h], got {crop!r}")
+    # Real integers only. int(0.9) is 0 and int("12") is 12, so coercing first
+    # would silently accept a fractional or string coordinate and then store a
+    # different box than the one written down — and the stored value would pass
+    # check_index, because by then it is an int. bool is an int subclass, so it
+    # is excluded explicitly.
+    if (not isinstance(crop, (list, tuple)) or len(crop) != 4
+            or any(isinstance(v, bool) or not isinstance(v, int) for v in crop)):
+        raise ValueError(f"photoCrop must be a list of four integers [x, y, w, h], "
+                         f"got {crop!r}")
+    x, y, w, h = crop
     if w <= 0 or h <= 0:
         raise ValueError(f"photoCrop width and height must be positive, got {w}x{h}")
     iw, ih = size
