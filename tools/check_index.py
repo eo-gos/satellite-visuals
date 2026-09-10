@@ -23,6 +23,12 @@ Checks:
   - `folder` matches the directory component of every non-empty path field, so
     an entry can never point at another folder's files;
   - `missionID` is a run of digits or "" (blank = not yet mapped, issue #99);
+  - `artStatus`, when present, is one of the known values, and a
+    `house-generated` entry carries both a colour SVG and a non-empty
+    `references` list of URLs — a generated drawing without the record of what
+    was looked at cannot be reviewed against golden rule 6;
+  - `references` are URLs and never repo paths: reference imagery is consulted,
+    never stored (see "House artwork lane" in TASKING.md);
   - every entry with imageLicense "ESA Standard Licence" carries
     licenceNoticeUrl with exactly the required URL;
   - licenceNoticeUrl never appears on a non-ESA entry (it is the marker of a
@@ -41,6 +47,12 @@ from index_utils import SAFE_FOLDER  # noqa: E402  (local sibling module)
 from licenses import _norm  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
+
+# How a folder's artwork came to exist. Absent means the question has not been
+# asked of that entry — the 72 pre-existing hand-drawn SVGs are not retro-labelled.
+#   hand-drawn       drawn by a person, the original 72
+#   house-generated  written from a structured description by tools/house_art
+ART_STATUS = ("hand-drawn", "house-generated")
 
 # licence (normalised) -> the exact notice URL the rights holder requires
 NOTICE_REQUIRED = {
@@ -89,6 +101,33 @@ def main():
                     problems.append(f"{folder}: {field} points into another folder: "
                                     f"{value!r}")
 
+        # --- house artwork lane --------------------------------------------
+        art_status = e.get("artStatus")
+        refs = e.get("references")
+        if art_status is not None and art_status not in ART_STATUS:
+            problems.append(f"{name}: artStatus must be one of {ART_STATUS}, "
+                            f"found {art_status!r}")
+        if refs is not None:
+            if not isinstance(refs, list) or not refs:
+                problems.append(f"{name}: references must be a non-empty list of URLs")
+            else:
+                for r in refs:
+                    if not isinstance(r, str) or not r.startswith(("https://", "http://")):
+                        problems.append(f"{name}: references entries must be URLs, "
+                                        f"found {r!r} — reference imagery is consulted, "
+                                        f"never stored in this repository")
+        if art_status == "house-generated":
+            if not e.get("SVGColourPath"):
+                problems.append(f"{name}: artStatus house-generated needs a "
+                                f"SVGColourPath — the drawing is the point of the entry")
+            if not refs:
+                problems.append(f"{name}: artStatus house-generated needs a non-empty "
+                                f"`references` list — an original depiction must record "
+                                f"which pages it was drawn from (golden rule 6)")
+        if refs and art_status is None:
+            problems.append(f"{name}: `references` present without artStatus — set "
+                            f"artStatus so the lane is explicit")
+
         crop = e.get("photoCrop")
         if crop is not None:
             # bool is an int subclass; a JSON true would otherwise read as 1
@@ -123,8 +162,9 @@ def main():
     for p in problems:
         print(f"FAIL {p}")
     if not problems:
+        house = sum(1 for e in entries if e.get("artStatus") == "house-generated")
         print(f"OK   {len(entries)} entries; folders unique and consistent, "
-              f"notice conditions consistent")
+              f"notice conditions consistent, {house} house-generated")
     return 1 if problems else 0
 
 
