@@ -183,12 +183,34 @@ class CropIntegerTests(unittest.TestCase):
 
     def test_apply_picks_imports_the_shared_validator(self):
         """apply_picks validates a pick's crop through photo_crop_of rather than
-        its own copy, so the rule cannot drift between the two tools.
-        (apply_clean's crop_box_of needs the same treatment when the ESA-lane
-        crop branch merges — that code is not in this PR.)"""
+        its own copy, so the rule cannot drift between the two tools."""
         source = (Path(__file__).resolve().parent / "apply_picks.py").read_text()
         self.assertIn("from process_photos import photo_crop_of", source)
         self.assertNotIn("int(v) for v in crop", source)
+
+    def test_clean_lane_rejects_non_integers(self):
+        """The ESA clean lane reads its crop from a different place, but a box
+        one lane refuses must not be one the other accepts."""
+        from apply_clean import crop_box_of
+        for box in self.BAD:
+            with self.subTest(box=box):
+                with self.assertRaises(ValueError):
+                    crop_box_of({"crop": box}, (100, 100))
+
+    def test_clean_lane_only_none_means_no_crop(self):
+        from apply_clean import crop_box_of
+        self.assertIsNone(crop_box_of({}, (100, 100)))
+        self.assertIsNone(crop_box_of({"crop": None}, (100, 100)))
+        self.assertEqual(crop_box_of({"crop": [0, 0, 10, 10]}, (100, 100)),
+                         (0, 0, 10, 10))
+
+    def test_clean_lane_does_not_coerce(self):
+        """`int(v) for v in crop` accepted "12" and 0.9; `if not crop` swallowed
+        the falsy boxes before they ever reached the check."""
+        source = (Path(__file__).resolve().parent / "apply_clean.py").read_text()
+        self.assertNotIn("int(v) for v in crop", source)
+        self.assertNotIn("\n    if not crop:\n", source)
+        self.assertNotIn("\n    if crop:\n", source)
 
     def test_only_none_means_no_crop(self):
         """An absent key or None is "no crop". Anything else present must be

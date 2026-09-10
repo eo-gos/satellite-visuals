@@ -62,6 +62,9 @@ mostly empty space. Give the pick a `"crop": [x, y, w, h]` in pixels of the raw 
 `--crop <folder>=x,y,w,h` on `process_photos.py`) and the cutter works on that box
 instead. The raw `-photo.<ext>` is still stored exactly as published; only the cutter's
 input is narrowed, and the cutout's `ATTRIBUTIONS.csv` note records the box.
+Both lanes validate a box the same way: four real integers, inside the image, and
+only an absent key or `null` means "no crop" — a box given as `[]`, `false` or a
+string is a curation error and is refused rather than quietly ignored.
 
 3. **Pick.** This is the judgement step a script can't do: most search hits are the satellite's *data* (pretty pictures of Earth), not the satellite. Pick the best image *of the spacecraft* — official renders and pre-launch cleanroom photos both count (golden rule 3: agency/manufacturer imagery only). Between licence-equal candidates, prefer one where the spacecraft is fully in frame against an uncluttered background — after your batch merges, the maintainers derive transparent cutouts from these photos for the portal, and clean subjects cut best. Leave "none of these" selected if nothing shows the spacecraft. Click **Export picks** (downloads `picks.json`).
 
