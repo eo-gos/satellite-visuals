@@ -297,6 +297,36 @@ class ApplyLevelFolderNameTests(unittest.TestCase):
                          "the padded key was trimmed into a real directory")
         self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
 
+    def test_out_of_bounds_crop_writes_nothing(self):
+        """CX P1: the raw used to be written before the crop was validated, so a
+        bad box left an untracked file and folder behind. A refused crop must
+        leave the tree exactly as it was."""
+        import urllib.request
+        from PIL import Image
+        with tempfile.TemporaryDirectory() as tmp:
+            src = Path(tmp) / "probe.png"
+            Image.new("RGBA", (40, 30), (0, 0, 0, 0)).save(src)
+            before = len(json.load(open(self.REPO / "index.json")))
+            result = self._run_photos({
+                "zzz-crop-probe": {"title": "probe", "page": "https://example.org/p",
+                                   "url": src.as_uri(), "ext": "png",
+                                   "licence": "Public domain", "rights_holder": "X",
+                                   "credit": "X", "crop": [0, 0, 500, 10]}},
+                new_folders={"zzz-crop-probe": {"missionID": "1", "missionName": "P"}})
+        self.assertNotEqual(result.returncode, 0)
+        self.assertFalse((self.REPO / "satellites" / "zzz-crop-probe").exists())
+        self.assertEqual(len(json.load(open(self.REPO / "index.json"))), before)
+
+    def _run_photos(self, photos, new_folders=None):
+        payload = {"schema": "satellite-visuals/picks/2", "photos": photos}
+        if new_folders:
+            payload["new_folders"] = new_folders
+        with tempfile.NamedTemporaryFile("w", suffix=".json", delete=False) as f:
+            json.dump(payload, f)
+            picks = f.name
+        return subprocess.run([sys.executable, str(self.TOOLS / "apply_picks.py"), picks],
+                              capture_output=True, text=True)
+
     def test_path_like_json_key_is_refused(self):
         for bad in ("../escape", "a/b", "GOES-16"):
             with self.subTest(folder=bad):
@@ -325,8 +355,9 @@ class ApplyCleanTwoLaneTests(unittest.TestCase):
                  "original_license_or_terms", "license_url_or_notes"])
         tools = self.tmp / "tools"
         tools.mkdir()
+        # apply_picks imports the shared crop validator from process_photos
         for name in ("apply_clean.py", "apply_picks.py", "index_utils.py",
-                     "licenses.py"):
+                     "licenses.py", "process_photos.py"):
             shutil.copy(Path(__file__).resolve().parent / name, tools / name)
         self.tools = tools
         # a tiny real PNG for each lane to "download"
