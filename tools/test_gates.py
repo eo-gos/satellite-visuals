@@ -169,7 +169,10 @@ class CropIntegerTests(unittest.TestCase):
     because by then it is an int."""
 
     BAD = ([0.9, 0, 10, 10], [0, 0, 10.5, 10], ["12", 12, 10, 10],
-           [True, 0, 10, 10], (1, 2, 3), "10,10,10,10", None if False else {"a": 1})
+           [True, 0, 10, 10], (1, 2, 3), "10,10,10,10", {"a": 1},
+           # CX round 2: a supplied-but-falsy value used to be read as "no
+           # crop", so it skipped validation entirely instead of failing.
+           [], False, "", 0)
 
     def test_process_photos_rejects_non_integers(self):
         from process_photos import photo_crop_of
@@ -187,6 +190,26 @@ class CropIntegerTests(unittest.TestCase):
         self.assertIn("from process_photos import photo_crop_of", source)
         self.assertNotIn("int(v) for v in crop", source)
 
+    def test_only_none_means_no_crop(self):
+        """An absent key or None is "no crop". Anything else present must be
+        validated — False, [] and "" are curation errors, not opt-outs."""
+        from process_photos import photo_crop_of
+        self.assertIsNone(photo_crop_of({}, (100, 100)))
+        self.assertIsNone(photo_crop_of({"photoCrop": None}, (100, 100)))
+        self.assertIsNone(photo_crop_of(None, (100, 100), None))
+        for falsy in ([], False, "", 0):
+            with self.subTest(value=falsy):
+                with self.assertRaises(ValueError):
+                    photo_crop_of({"photoCrop": falsy}, (100, 100))
+                with self.assertRaises(ValueError):
+                    photo_crop_of(None, (100, 100), falsy)
+
+    def test_apply_picks_passes_falsy_crops_to_the_validator(self):
+        """apply_picks gated on `if crop:`, which swallowed the same values."""
+        source = (Path(__file__).resolve().parent / "apply_picks.py").read_text()
+        self.assertIn("if crop is not None:", source)
+        self.assertNotIn("\n    if crop:\n", source)
+
     def test_check_index_rejects_a_stored_non_integer_crop(self):
         """The last line of defence: a hand-edited index.json must not slip a
         float or a bool past review."""
@@ -194,7 +217,8 @@ class CropIntegerTests(unittest.TestCase):
         sys.path.insert(0, str(Path(__file__).resolve().parent))
         check_index = importlib.import_module("check_index")
         good = [10, 10, 20, 20]
-        for box in ([0.9, 0, 10, 10], [True, 0, 10, 10], [1, 2, 3], "10,10,10,10"):
+        for box in ([0.9, 0, 10, 10], [True, 0, 10, 10], [1, 2, 3], "10,10,10,10",
+                    [], False, ""):
             with self.subTest(box=box):
                 self.assertFalse(self._crop_ok(check_index, box))
         self.assertTrue(self._crop_ok(check_index, good))

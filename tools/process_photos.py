@@ -165,8 +165,17 @@ def photo_crop_of(entry, size, override=None):
     the image: clamping would silently cut something other than what was
     approved.
     """
-    crop = override if override is not None else (entry or {}).get("photoCrop")
-    if not crop:
+    if override is not None:
+        crop = override
+    else:
+        entry = entry or {}
+        if "photoCrop" not in entry:
+            return None
+        crop = entry["photoCrop"]
+    # Only an absent key or None means "no crop". A supplied-but-falsy value —
+    # False, [], "", 0 — is a curation error, not a silent opt-out: treating it
+    # as absent is how a malformed box skips validation entirely.
+    if crop is None:
         return None
     # Real integers only. int(0.9) is 0 and int("12") is 12, so coercing first
     # would silently accept a fractional or string coordinate and then store a

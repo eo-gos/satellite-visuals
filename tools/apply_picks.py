@@ -110,9 +110,11 @@ for folder, pick in picks.items():
     # filesystem. Writing first and validating after leaves an untracked raw
     # behind when the box is bad — the folder then looks half-made on disk
     # while the index says nothing about it.
+    # Only an absent key or None means "no crop" (see photo_crop_of): a
+    # supplied-but-falsy value must reach the validator and be refused.
     crop = pick.get("crop")
     crop_value = None
-    if crop:
+    if crop is not None:
         import io as _io
         from PIL import Image as _Image
         try:
@@ -139,7 +141,7 @@ for folder, pick in picks.items():
     # A pre-cut crop box travels with the entry so the cut pass can honour it.
     # The raw file above is stored exactly as published; this only narrows what
     # the cutter looks at. Already validated, above, before any write.
-    if crop_value:
+    if crop_value is not None:
         entry["photoCrop"] = crop_value
     elif "photoCrop" in entry:
         del entry["photoCrop"]
