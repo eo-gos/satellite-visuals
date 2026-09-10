@@ -31,6 +31,14 @@ LICENSE_DEEDS = {
     "ogl": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
     "ogl v3": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
     "ogl v3.0": "https://www.nationalarchives.gov.uk/doc/open-government-licence/version/3/",
+    # Government open licences that explicitly permit adaptation with
+    # attribution — the same bargain as CC BY, in each government's own words.
+    "ogl canada": "https://open.canada.ca/en/open-government-licence-canada",
+    "ogl canada 2.0": "https://open.canada.ca/en/open-government-licence-canada",
+    "open government licence - canada": "https://open.canada.ca/en/open-government-licence-canada",
+    "open government licence canada": "https://open.canada.ca/en/open-government-licence-canada",
+    "kogl type 1": "https://www.kogl.or.kr/info/license.do",
+    "kogl": "https://www.kogl.or.kr/info/license.do",
     "media-terms": None,
     "trademark-editorial-use": None,
     # ESA's copyright notice page. ESA's standing condition (ESA HQ PHOTOS
@@ -113,8 +121,8 @@ def derivatives_refused(name):
     return _norm(name) == "esa standard licence"
 
 
-# Public domain / CC family only — the licences whose terms are explicit that a
-# derivative may be made and redistributed. Deliberately narrower than
+# Licences whose terms are explicit that a derivative may be made and
+# redistributed with attribution. Deliberately narrower than
 # permits_derivatives(): that gate passes anything not positively refused, which
 # is right for a cutout of an already-cleared photo but too loose for a *new
 # published asset*. NC/ND are excluded here as well as by permits_derivatives.
@@ -122,24 +130,43 @@ _PD_OR_CC = re.compile(
     r"^(public domain(\s*\(.*\))?|cc0(\s|$)|cc[ -]?by(?:[ -]?sa)?(?:[ -]|$))"
 )
 
+# Government open licences that grant adaptation on the same terms as CC BY:
+# the UK OGL ("adapt the Information"), the Open Government Licence Canada
+# ("adapt the Information"), and Korea's KOGL Type 1 ("change or modify"). Each
+# is an explicit adaptation grant with attribution, so an icon derived from such
+# a photo is squarely inside the licence. Higher KOGL types add NC or
+# no-derivatives conditions and are NOT listed.
+_OPEN_GOV_ADAPTABLE = {
+    "ogl", "ogl v3", "ogl v3.0",
+    "ogl canada", "ogl canada 2.0",
+    "open government licence - canada", "open government licence canada",
+    "kogl type 1", "kogl",
+}
+
 
 def permits_icon_derivation(name):
     """True when a silhouette icon may be derived from a photo under this
     licence (satellite-visuals photo-only lane).
 
     An icon is a redistributed derivative work in its own right, so it needs a
-    stronger warrant than a cutout does: public domain or a CC licence that
-    allows adaptation. Everything else is refused — an ESA Standard Licence
-    image (background removal refused in writing, ESA HQ PHOTOS 20260819-0333),
-    an operator's media-terms photo (use as provided only), a trademark logo,
-    an NC/ND variant, or any licence string this module does not recognise.
-    Those folders simply have no icon; the mission page still shows the photo.
+    stronger warrant than a cutout does: an explicit grant to adapt. That means
+    public domain, a CC licence that allows adaptation, or a government open
+    licence that says so in its own terms (UK OGL, OGL Canada, KOGL Type 1).
+
+    Everything else is refused — an ESA Standard Licence image (background
+    removal refused in writing, ESA HQ PHOTOS 20260819-0333), an operator's
+    media-terms photo (use as provided only), a trademark logo, an NC/ND
+    variant, a higher KOGL type, or any licence string this module does not
+    recognise. Those folders simply have no icon; the mission page still shows
+    the photo.
     """
     if derivatives_refused(name) or not permits_derivatives(name):
         return False
     key = _norm(name)
     if any(tok in re.split(r"[ -]", key) for tok in ("nc", "nd")):
         return False
+    if key in _OPEN_GOV_ADAPTABLE:
+        return True
     return bool(_PD_OR_CC.match(key))
 
 

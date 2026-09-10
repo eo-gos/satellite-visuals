@@ -56,6 +56,13 @@ python3 tools/make_gallery.py
 open tools/out/gallery.html
 ```
 
+**Wide frames: crop before cutting.** Some agencies publish only a wide shot — two
+satellites in formation, one small over Earth — where cutting the whole frame leaves
+mostly empty space. Give the pick a `"crop": [x, y, w, h]` in pixels of the raw (or
+`--crop <folder>=x,y,w,h` on `process_photos.py`) and the cutter works on that box
+instead. The raw `-photo.<ext>` is still stored exactly as published; only the cutter's
+input is narrowed, and the cutout's `ATTRIBUTIONS.csv` note records the box.
+
 3. **Pick.** This is the judgement step a script can't do: most search hits are the satellite's *data* (pretty pictures of Earth), not the satellite. Pick the best image *of the spacecraft* — official renders and pre-launch cleanroom photos both count (golden rule 3: agency/manufacturer imagery only). Between licence-equal candidates, prefer one where the spacecraft is fully in frame against an uncluttered background — after your batch merges, the maintainers derive transparent cutouts from these photos for the portal, and clean subjects cut best. Leave "none of these" selected if nothing shows the spacecraft. Click **Export picks** (downloads `picks.json`).
 
 ```bash
@@ -190,10 +197,12 @@ poses too, and filling that fuses them into a blob. A picks row may also carry
 `"fill_holes": true`, applied with `--picks`.
 
 **The licence gate is the whole point of this tool.** An icon is a new published
-derivative, so only public domain and adaptation-permitting CC sources qualify. Every
-ESA Standard Licence photo is refused — ESA ruled background removal impermissible in
-writing — as is media-terms imagery, any NC/ND variant, and any licence string the
-tooling does not recognise. There is no override flag. Refused folders keep their photo
+derivative, so the source needs an explicit grant to adapt: public domain, an
+adaptation-permitting CC licence, or a government open licence that says so in its own
+terms (UK OGL v3, OGL Canada, KOGL Type 1). Every ESA Standard Licence photo is refused
+— ESA ruled background removal impermissible in writing — as is media-terms imagery, any
+NC/ND variant, higher KOGL types, and any licence string the tooling does not
+recognise. There is no override flag. Refused folders keep their photo
 and have no icon, which is a supported state, not a gap to fill. Existing hand-drawn
 icons are never overwritten: they are original artwork and outrank anything traced.
 

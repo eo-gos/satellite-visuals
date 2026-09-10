@@ -152,8 +152,37 @@ def scaled_to_max(img, max_dim):
     )
 
 
+def photo_crop_of(entry, size, override=None):
+    """The pre-cut crop box for a folder, validated against the raw's (w, h).
+
+    Some agencies publish only a wide frame — a formation render, a satellite
+    small over Earth — where cutting the whole image yields mostly empty space.
+    Cropping first fixes it. The raw stays exactly as published; only the
+    cutter's input is narrowed.
+
+    Source is the entry's `photoCrop` field (written by apply_picks from a
+    pick's `crop`) or an explicit override. Raises ValueError if the box leaves
+    the image: clamping would silently cut something other than what was
+    approved.
+    """
+    crop = override if override is not None else (entry or {}).get("photoCrop")
+    if not crop:
+        return None
+    try:
+        x, y, w, h = (int(v) for v in crop)
+    except (TypeError, ValueError):
+        raise ValueError(f"photoCrop must be four integers [x, y, w, h], got {crop!r}")
+    if w <= 0 or h <= 0:
+        raise ValueError(f"photoCrop width and height must be positive, got {w}x{h}")
+    iw, ih = size
+    if x < 0 or y < 0 or x + w > iw or y + h > ih:
+        raise ValueError(f"photoCrop [{x}, {y}, {w}, {h}] extends outside the {iw}x{ih} raw")
+    return x, y, w, h
+
+
 def process_folder(folder, entry, root, out_base, get_session, model_name, sizes,
-                   margin, force, allow_nonderiv=False, force_matting=False):
+                   margin, force, allow_nonderiv=False, force_matting=False,
+                   crop_override=None):
     group = group_of(folder, entry, root)
     raw = find_raw(root, group, folder, entry)
     if raw is None:
@@ -230,6 +259,18 @@ def process_folder(folder, entry, root, out_base, get_session, model_name, sizes
     except Exception as exc:  # noqa: BLE001  (bad/mislabelled raster, decode error)
         print(f"FAIL {folder}: cannot load raw ({type(exc).__name__}: {exc})")
         return {**base_rec, "status": "failed-load", "error": f"{type(exc).__name__}: {exc}"}
+
+    # Pre-cut crop, validated before anything is written. The raw on disk is
+    # untouched — only the cutter's input is narrowed.
+    try:
+        pre_crop = photo_crop_of(entry, (src_w, src_h), crop_override)
+    except ValueError as exc:
+        print(f"SKIP {folder}: {exc}")
+        return {**base_rec, "status": "skipped-bad-crop", "error": str(exc)}
+    if pre_crop:
+        cx, cy, cw, ch = pre_crop
+        rgba = rgba.crop((cx, cy, cx + cw, cy + ch))
+
     if not force_matting and usable_source_alpha(rgba):
         # the publisher already cut this one out — their alpha is ground truth,
         # and matting over it can only lose structure (issue #115)
@@ -257,16 +298,20 @@ def process_folder(folder, entry, root, out_base, get_session, model_name, sizes
     dt = time.perf_counter() - t0
 
     dims = "/".join(f"{written[str(s)]['width']}x{written[str(s)]['height']}" for s in sizes)
-    print(f"OK   {folder}: {src_w}x{src_h} -> {method} -> bbox {bbox} -> {dims}  ({dt:.1f}s)")
+    pre = f" -> pre-crop {pre_crop}" if pre_crop else ""
+    print(f"OK   {folder}: {src_w}x{src_h}{pre} -> {method} -> bbox {bbox} -> {dims}  ({dt:.1f}s)")
 
     entry = entry or {}
     rv = rembg_version()
+    pre_note = (f"pre-cropped to {pre_crop[0]},{pre_crop[1]},{pre_crop[2]},{pre_crop[3]} "
+                f"of the raw, then " if pre_crop else "")
     if method == "source-alpha":
-        note = (f"derivative of {raw.name} — cropped; alpha taken from the source "
-                f"file's own channel (tools/process_photos.py, no matting)")
+        note = (f"derivative of {raw.name} — {pre_note}cropped to the subject; alpha "
+                f"taken from the source file's own channel (tools/process_photos.py, "
+                f"no matting)")
     else:
-        note = (f"derivative of {raw.name} — cropped, background removed "
-                f"(tools/process_photos.py, rembg {rv} {model_name})")
+        note = (f"derivative of {raw.name} — {pre_note}cropped to the subject, "
+                f"background removed (tools/process_photos.py, rembg {rv} {model_name})")
     return {
         **base_rec,
         "source_size": [src_w, src_h],
@@ -274,6 +319,7 @@ def process_folder(folder, entry, root, out_base, get_session, model_name, sizes
         "rembg_version": rv if method == "matting" else None,
         "rembg_model": model_name if method == "matting" else None,
         "margin": margin,
+        "pre_crop": list(pre_crop) if pre_crop else None,
         "alpha_bbox": list(raw_bbox),
         "alpha_bbox_padded": list(bbox),
         "outputs": written,
@@ -460,6 +506,9 @@ def main():
                          "(default is to trust a source alpha — it's ground truth)")
     ap.add_argument("--gallery", action="store_true",
                     help="also write cut_gallery.html (before/after approval review)")
+    ap.add_argument("--crop", action="append", metavar="FOLDER=X,Y,W,H",
+                    help="crop the raw to this box before cutting (the raw file "
+                         "itself is never modified); overrides the entry's photoCrop")
     ap.add_argument("--force", action="store_true", help="rebuild cutouts even if they exist")
     ap.add_argument("--allow-nonderiv", action="store_true",
                     help="override the flow-down guard and derive from media-terms/ND "
@@ -505,11 +554,20 @@ def main():
         "generated_at": time.strftime("%Y-%m-%dT%H:%M:%SZ", time.gmtime()),
         "photos": [],
     }
+    crop_overrides = {}
+    for spec in (args.crop or []):
+        folder, _, box = spec.partition("=")
+        try:
+            crop_overrides[folder] = [int(v) for v in box.split(",")]
+        except ValueError:
+            sys.exit(f"REFUSED --crop expects FOLDER=x,y,w,h, got {spec!r}")
+
     t_all = time.perf_counter()
     for folder in folders:
         rec = process_folder(folder, by_folder.get(folder), root, out_base,
                              get_session, args.model, sizes, args.margin, args.force,
-                             args.allow_nonderiv, args.force_matting)
+                             args.allow_nonderiv, args.force_matting,
+                             crop_overrides.get(folder))
         if rec:
             report["photos"].append(rec)
     total = time.perf_counter() - t_all

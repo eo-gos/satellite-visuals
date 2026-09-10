@@ -95,11 +95,88 @@ class LicenceGateTests(unittest.TestCase):
         self.assertEqual(rec["method"], "source-alpha")
 
 
+class PreCutCropTests(unittest.TestCase):
+    """Crop-before-cut for the photo lane. Some agencies publish only a wide
+    frame — a formation render, a satellite small over Earth — where cutting
+    the whole image yields mostly empty space. The raw stays exactly as
+    published; only the cutter's input is narrowed."""
+
+    def setUp(self):
+        self.tmpdir = tempfile.TemporaryDirectory()
+        self.root = make_root(self.tmpdir.name)
+        self.raw = self.root / "satellites" / "testsat" / "testsat-photo.png"
+        self.raw_before = self.raw.read_bytes()
+        self.entry = {"imageLicense": "CC BY 4.0", "imageStatus": "licensed"}
+
+    def tearDown(self):
+        self.tmpdir.cleanup()
+
+    def test_crop_narrows_the_cutter_and_leaves_the_raw_alone(self):
+        # the 64x64 fixture has its subject at (16,16)-(48,48); crop to its
+        # top-left quadrant and the resulting bbox must be smaller
+        rec = run(self.root, self.entry, crop_override=[16, 16, 16, 16])
+        self.assertEqual(rec["status"], "ok")
+        self.assertEqual(rec["pre_crop"], [16, 16, 16, 16])
+        self.assertIn("pre-cropped to 16,16,16,16 of the raw", rec["derivative_note"])
+        self.assertEqual(self.raw.read_bytes(), self.raw_before,
+                         "the raw photo must never be modified")
+
+    def test_crop_can_come_from_the_index_entry(self):
+        entry = dict(self.entry, photoCrop=[16, 16, 16, 16])
+        rec = run(self.root, entry)
+        self.assertEqual(rec["pre_crop"], [16, 16, 16, 16])
+
+    def test_no_crop_leaves_the_note_and_record_unchanged(self):
+        rec = run(self.root, self.entry)
+        self.assertIsNone(rec["pre_crop"])
+        self.assertNotIn("pre-cropped", rec["derivative_note"])
+
+    def test_out_of_bounds_crop_is_refused_before_any_write(self):
+        for box in ([0, 0, 200, 10], [60, 0, 10, 10], [-5, 0, 10, 10],
+                    [0, 0, 0, 10], [0, 0, 10, -3]):
+            with self.subTest(box=box):
+                rec = run(self.root, self.entry, crop_override=box)
+                self.assertEqual(rec["status"], "skipped-bad-crop")
+                self.assertEqual(self.raw.read_bytes(), self.raw_before)
+                cuts = list((self.root / "satellites" / "testsat").glob("*-cut-*"))
+                self.assertEqual(cuts, [], "a refused crop must write nothing")
+
+    def test_malformed_crop_is_refused(self):
+        for box in ("16,16,16,16", [16, 16], {"x": 1}, [1, 2, 3, "a"]):
+            with self.subTest(box=box):
+                rec = run(self.root, self.entry, crop_override=box)
+                self.assertEqual(rec["status"], "skipped-bad-crop")
+
+
 class IconGateTests(unittest.TestCase):
     """permits_icon_derivation() is deliberately narrower than the cut gate: an
     icon is a new published derivative, so only public domain and
     adaptation-permitting CC qualify. There is no override to test — by
     design, the function takes only a licence name."""
+
+    def test_open_government_licences_allowed(self):
+        """UK OGL, OGL Canada and KOGL Type 1 each grant adaptation with
+        attribution in their own terms — the same bargain as CC BY."""
+        for licence in ("OGL", "OGL v3", "OGL v3.0", "OGL Canada", "OGL Canada 2.0",
+                        "Open Government Licence - Canada",
+                        "Open Government Licence Canada", "KOGL Type 1", "KOGL"):
+            with self.subTest(licence=licence):
+                self.assertTrue(permits_icon_derivation(licence))
+
+    def test_higher_kogl_types_refused(self):
+        """Types 2-4 add NC and/or no-derivatives conditions. Only Type 1 is a
+        clean adaptation grant, so only Type 1 is listed."""
+        for licence in ("KOGL Type 2", "KOGL Type 3", "KOGL Type 4"):
+            with self.subTest(licence=licence):
+                self.assertFalse(permits_icon_derivation(licence))
+
+    def test_open_government_licences_have_deeds(self):
+        """The credit line links the licence name to its terms, so a licence we
+        newly accept has to resolve to a URL."""
+        from licenses import deed_url
+        for licence in ("OGL v3", "Open Government Licence - Canada", "KOGL Type 1"):
+            with self.subTest(licence=licence):
+                self.assertTrue(str(deed_url(licence)).startswith("https://"))
 
     def test_public_domain_and_cc_allowed(self):
         for licence in ("Public domain", "Public domain (NASA)", "CC0", "CC0 1.0",
@@ -116,7 +193,8 @@ class IconGateTests(unittest.TestCase):
     def test_nonfree_and_unrecognised_refused(self):
         for licence in ("media-terms", "trademark-editorial-use",
                         "CC BY-NC 4.0", "CC BY-ND 4.0", "CC BY-NC-SA 4.0",
-                        "OGL v3", "All rights reserved", "", "Some New Licence"):
+                        "All rights reserved", "", "Some New Licence",
+                        "Copyrighted free use", "OGL v9"):
             with self.subTest(licence=licence):
                 self.assertFalse(permits_icon_derivation(licence))
 

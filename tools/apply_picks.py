@@ -118,6 +118,21 @@ for folder, pick in picks.items():
     entry["imageLicense"] = pick["licence"]
     entry["imageCredit"] = pick.get("credit") or rights
     entry["imageStatus"] = pick.get("status", "licensed")
+    # A pre-cut crop box travels with the entry so the cut pass can honour it.
+    # The raw file above is stored exactly as published; this only narrows what
+    # the cutter looks at. Validated against the bytes just downloaded, so a bad
+    # box is refused before it can be recorded.
+    crop = pick.get("crop")
+    if crop:
+        import io as _io
+        from PIL import Image as _Image
+        sys.path.insert(0, str(Path(__file__).resolve().parent))
+        from process_photos import photo_crop_of
+        with _Image.open(_io.BytesIO(payload)) as probe:
+            photo_crop_of(None, probe.size, crop)      # raises if out of bounds
+        entry["photoCrop"] = [int(v) for v in crop]
+    elif "photoCrop" in entry:
+        del entry["photoCrop"]
 
     row = [rel, pick.get("title", ""), rights, entry["imageSourceURL"],
            pick["licence"], pick.get("notes") or pick.get("page", "")]
