@@ -321,6 +321,40 @@ class ApplyCleanTwoLaneTests(unittest.TestCase):
             [sys.executable, str(self.tools / "apply_clean.py"), str(picks)],
             capture_output=True, text=True)
 
+    def test_crop_applies_to_display_copies_only(self):
+        """ESA permits cropping, so the display copies may be cut from a box —
+        but the archival original is what ESA published and must be stored
+        untouched."""
+        from PIL import Image
+        data = self._picks()
+        data["esa_clean"]["cleansat"]["crop"] = [10, 5, 20, 15]
+        result = self._run_clean(data)
+        self.assertEqual(result.returncode, 0,
+                         f"{result.stdout}\n{result.stderr}")
+        d = self.tmp / "satellites/cleansat"
+        with Image.open(d / "cleansat-photo-clean.png") as archival:
+            self.assertEqual(archival.size, (40, 30), "archival must be unmodified")
+        for size in (1024, 512):
+            with Image.open(d / f"cleansat-photo-clean-{size}px.png") as disp:
+                # 20x15 crop, never upscaled
+                self.assertEqual(disp.size, (20, 15))
+        note = [r[5] for r in csv.reader(open(self.tmp / "ATTRIBUTIONS.csv"))
+                if r and r[0].endswith("cleansat-photo-clean-512px.png")][0]
+        self.assertIn("cropped to 10,5,20,15 of the original", note)
+        self.assertIn("no matting", note)
+
+    def test_crop_outside_the_image_is_refused(self):
+        """Clamping silently would ship a different crop than the reviewer
+        approved, so an out-of-bounds box fails the folder outright."""
+        for box in ([0, 0, 500, 10], [35, 0, 10, 10], [-5, 0, 10, 10],
+                    [0, 0, 0, 10]):
+            with self.subTest(box=box):
+                data = self._picks()
+                data["esa_clean"]["cleansat"]["crop"] = box
+                result = self._run_clean(data)
+                self.assertNotEqual(result.returncode, 0)
+                self.assertFalse((self.tmp / "satellites/cleansat").exists())
+
     def test_clean_lane_download_failure_fails_the_run(self):
         """A clean-lane new folder whose file will not fetch must fail the
         command, not just print a warning and exit 0. Offline: the URL is a
