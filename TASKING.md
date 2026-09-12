@@ -209,6 +209,149 @@ recognise. There is no override flag. Refused folders keep their photo
 and have no icon, which is a supported state, not a gap to fill. Existing hand-drawn
 icons are never overwritten: they are original artwork and outrank anything traced.
 
+## House artwork lane (generated)
+
+**This lane exists for folders that can never have a photograph.** After the
+open-licence batches and the agency replies, roughly 60 operational missions
+belong to owners who refuse derivatives or will not answer (Roskosmos, CNSA,
+CMA, NSOAS) plus 15 to GHGSat. An original depiction is the only legal route to
+a visual for those. It is also the only route to an *icon* for the eleven ESA
+folders, because ESA refused background removal in writing and
+`make_icon.py` therefore refuses to trace their photos — see the ESA rules above.
+
+### The legal frame, in full
+
+Golden rule 6 is the whole basis of this lane, so read it as a rule about
+process, not about output:
+
+- **A photograph may be looked at. It may never be traced.** Drawing the
+  spacecraft in our house style, using photographs only as reference for what it
+  looks like, is our own copyright. A 1:1 trace of one specific render copies
+  that image's composition and is a derivative of it.
+- **The tooling makes tracing impossible by construction, not by discipline.**
+  `tools/house_art/kit.py` takes numbers and returns polygons. It has no image
+  input and no code path that could acquire one. What a person looks at while
+  writing `description.json` never reaches the drawing.
+- **Reference images are never stored in this repository.** They are fetched to
+  `tools/out/` (gitignored) so a person can look at them while writing the
+  description and while reviewing the result. Looking is not reuse; hosting is.
+  What the repository keeps is the URL list, in the entry's `references` field.
+  `check_index.py` enforces that those are URLs.
+- **This is the one place the strict sourcing rule does not apply.** Golden rule
+  2 bans general web search *for images we intend to host*. Nothing here is
+  hosted, so any source may be consulted — agency pages, eoPortal, Gunter's
+  Space Page, Wikipedia. `commons_gather.py` remains the strict tool for the
+  photo lane; `house_art/refs.py` is the permissive one for this lane.
+- **The icon comes from our own SVG.** `<folder>-icon.svg` is the union
+  silhouette of the colour drawing's structural shapes, re-emitted in
+  `fill:currentColor`. It is never derived from a photograph. The photo-derived
+  icon lane is `make_icon.py` and keeps its own, stricter licence gate.
+
+### When to use it
+
+Use it when: the owner's licence refuses derivatives or no licence is
+obtainable; or the folder has an ESA Standard Licence photo and therefore cannot
+have a traced icon.
+
+Do **not** use it to replace any of the 72 existing hand-drawn SVGs. Those are
+original artwork and outrank anything generated. Do not use it where a licensed
+photograph is obtainable — golden rule 6's own reasoning is that a licensed
+photo is a better answer than a drawing.
+
+### Evidence grades
+
+Every description carries a grade, and the review page shows it:
+
+| Grade | Meaning |
+|---|---|
+| A | agency render plus photographs |
+| B | one clear image of the spacecraft |
+| C | thin: a single diagram, or only imagery of a sibling vehicle |
+
+Grade C is legitimate — for several of these owners it is all that exists — but
+it is where a wrong drawing is most likely to pass unnoticed, so batch the C
+rows small and give them more review attention. A reference that turns out to
+show a different vehicle, or the mission's data rather than its hardware, stays
+in the list marked `used_for_geometry: false` and is shown greyed out on the
+review page. It is not quietly dropped: what was rejected is part of the record.
+
+### The workflow
+
+```bash
+# 1. Generate candidates into the gitignored working directory. Each folder gets
+#    description.json, <folder>.svg, <folder>-icon.svg, renders, checks.json and
+#    originality.json under tools/out/house_art/<folder>/.
+#    The build runs two gates and fails loudly:
+#      - description <-> drawing: every solid is tagged with the element it
+#        depicts, and the two sets must match. A part in the artwork that is in
+#        no description is refused.
+#      - projected geometry: assertions on the 2D result after occlusion. An
+#        element that is correct in 3D and invisible on screen is refused, as is
+#        a masted antenna that reads as detached.
+
+# 2. Build the review page and review it.
+python3 tools/make_art_checker.py
+open tools/out/art_checker.html          # Approve / Regenerate / Reject, Export
+
+# 3. Apply the approved picks.
+python3 tools/apply_art.py ~/Downloads/art-picks.json
+cd tools && npm install && node render_pngs.mjs
+python3 tools/check_index.py
+git diff                                  # then branch, commit, PR
+```
+
+`apply_art.py` writes `<folder>.svg`, `<folder>-icon.svg`, the index entry
+(`artStatus: house-generated`, `references`, artwork paths) and the
+ATTRIBUTIONS rows (repo maintainers, CC BY 4.0, with the method recorded). It
+refuses a folder whose description has no reference URLs, and goes through the
+shared folder-name guard in `index_utils` before anything touches the filesystem.
+
+### Originality scoring, and why the raw number is not the answer
+
+Each drawing is scored by edge overlap against its own references — and against
+a **control**: the same drawing scored the same way against every *other*
+mission's references. Measured over a 20-target batch, drawings scored a mean
+0.20 against their own references and 0.19 against unrelated ones: the same
+distribution. Any two spacecraft share body-plus-wings edge structure, so a raw
+score means very little.
+
+**Read the margin over the control's 95th percentile, not the raw score.** A
+drawing that scores no higher against its own references than against strangers'
+is not copying anything. When the margin does run high, open the edge overlay:
+it shows whether the resemblance is "same spacecraft" or "same picture". A body
+of revolution seen near side-on will always score high against another near
+side-on view; the fix is to change our camera, not to argue with the number.
+
+### Budget two review rounds
+
+Both pilots produced real corrections in round one that no automated check would
+have found: an antenna that read as a drinking straw, a mast that read as a
+chimney, a dish that looked detached, umbrella spokes that read inconsistently
+around the canopy. These are drawing-*reading* problems and they need a person.
+Plan for two rounds per batch rather than hoping for one. Roughly a third of a
+first batch comes back; under a tenth of the second.
+
+### Open: the 16 px icon question — George decides
+
+Some spacecraft do not survive 16 px. Widely spaced arrays on outrigger booms
+break into three disconnected blobs; very long thin wings become a hairline.
+This is a property of the vehicle, not a defect in the drawing, and no amount of
+redrawing fixes it without making the artwork wrong.
+
+`house_art.checks.icon_legibility()` flags these, and the review page offers
+**icon: keep / icon: drop** on the affected rows. **The policy is not decided.**
+The options are:
+
+1. ship the honest icon and accept that it is mush at 16 px;
+2. drop the icon for those folders — a supported state, lists simply omit it;
+3. draw a separate 16 px variant with the arrays pulled in — accurate at a
+   glance, wrong in detail, and a second asset to keep in step.
+
+Until George decides, `apply_art.py` honours the per-row choice from the review
+page and neither option is the default. Do not settle this by convention in a
+batch PR.
+
+
 ## Who decides what
 
 - Image is right/wrong, licence reads OK → you decide, PR review catches mistakes.
