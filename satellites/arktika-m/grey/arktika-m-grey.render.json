@@ -1,0 +1,9 @@
+{
+  "source": "satellites/arktika-m/grey/arktika-m-grey.svg",
+  "svg_sha256": "055551ddbe4cedcf51e395ab95b138663b5137fdee489887415e2eafef5aa874",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "arktika-m-grey-1024px.png": "ef178c322695f08eb857ecbb3315c5ab7412e1f83a5a0134755f70da31de60fd",
+    "arktika-m-grey-512px.png": "349e665529906ebcc4a5abbcb6119bc2a45153f4346a4c7903f1d02e29eb08cc"
+  }
+}

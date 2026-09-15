@@ -1,0 +1,9 @@
+{
+  "source": "satellites/fy-3g/grey/fy-3g-grey.svg",
+  "svg_sha256": "2c83b4df6c8e1367b95aa8e84c4d183ffc80596e12dac90edf8015fab229c727",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "fy-3g-grey-1024px.png": "e612f8b393cd0cae4a283d901b7479162c2d86ead0a3d602a8f4649a20b3eed6",
+    "fy-3g-grey-512px.png": "eda9e10f643b3cce926e5a56faba4e8546a8990cf786745e3d84a618c9ecbee8"
+  }
+}

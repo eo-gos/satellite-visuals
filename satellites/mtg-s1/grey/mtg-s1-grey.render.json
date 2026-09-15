@@ -1,0 +1,9 @@
+{
+  "source": "satellites/mtg-s1/grey/mtg-s1-grey.svg",
+  "svg_sha256": "eadf2ca3119eac54bb0364c70a65b137cf86aa961fe9d50e62cedc860950ab84",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "mtg-s1-grey-1024px.png": "55bb44376f59ea741bd166cc692ddc6e3ca46ca30d7730419b7abce78549318a",
+    "mtg-s1-grey-512px.png": "73d1c1ef5be399454082227e2ed4c7b5a20e5673098d547fb835e33ee057675b"
+  }
+}

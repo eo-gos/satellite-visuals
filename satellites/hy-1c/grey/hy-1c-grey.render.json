@@ -1,0 +1,9 @@
+{
+  "source": "satellites/hy-1c/grey/hy-1c-grey.svg",
+  "svg_sha256": "10ee910f9a7ca6d29248818d24f9bd2a0e89653dc2398400916fc1b40ddab707",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "hy-1c-grey-1024px.png": "05419445aad9a55b2e4bc206a237d8d5129e7cc4a8b0d6a3fb4dee4a81b31199",
+    "hy-1c-grey-512px.png": "04c4e0f2591e4d5521f3529b3f0eb94ddd2d8cb1c54d9fd9c37af929213baca4"
+  }
+}

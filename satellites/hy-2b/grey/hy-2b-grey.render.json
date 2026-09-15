@@ -1,0 +1,9 @@
+{
+  "source": "satellites/hy-2b/grey/hy-2b-grey.svg",
+  "svg_sha256": "613b9f9b9efc4760439128dc184bc4b519f77027f7a81484cbc7ee1366601bb4",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "hy-2b-grey-1024px.png": "2f110969184567187e1a721402ffa75460bc91b91f647e69e7b3ab02679e7d5c",
+    "hy-2b-grey-512px.png": "b543c3cbde1012ad8d5ea1ce7b2ee339498e249558d4fa9c5196a56c1b6f930b"
+  }
+}

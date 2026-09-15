@@ -1,0 +1,9 @@
+{
+  "source": "satellites/hydrognss/grey/hydrognss-grey.svg",
+  "svg_sha256": "3379ee8c1616ac27e9524402be77e34e2acf28f1eb3278688f21e3c014ed90b7",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "hydrognss-grey-1024px.png": "b141c97108aecf8f3533af193eafe1f8655822c8ee33b3892f8de8c18a274ad1",
+    "hydrognss-grey-512px.png": "232313c540c4e69f19226a95e434dd98db68c5436cfc5dffefab94cdc01c329a"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/ghgsat-c10/grey/ghgsat-c10-grey.svg",
+  "svg_sha256": "1520e1337cbbf6a05a2326dc754bc092eccf0e1b9dcdd14afd18511feab344cd",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "ghgsat-c10-grey-1024px.png": "4889efb2432d2150e9f588c17d7600204d9a048bb96910f1941824a1135608f3",
+    "ghgsat-c10-grey-512px.png": "88cf8502752968198227e4eefe780a7b5e7700ee32737af7661ed3a64f9538f1"
+  }
+}

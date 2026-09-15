@@ -1,0 +1,9 @@
+{
+  "source": "satellites/gaofen-5/grey/gaofen-5-grey.svg",
+  "svg_sha256": "2aa119d0a75cf4061203a160194ff3092b88779983c25f5a2e9ccf0ca46c8785",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "gaofen-5-grey-1024px.png": "67ae3fbe7026fcb2d2456342c58c63464b9c948f6caca2b6b52d60ff2d6812f7",
+    "gaofen-5-grey-512px.png": "e7cb4af00cd1116ca64f40c1b2dbdbd58e19d9e286765f60f82ade8bf82539b2"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/ziyuan-3/grey/ziyuan-3-grey.svg",
+  "svg_sha256": "594b5191b2e430777fc14392dc408a1169629b7964cd0a47c853b343ea2e5c1d",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "ziyuan-3-grey-1024px.png": "5334153abb99d4e9c88c157e0370b742473075d3c614e6297c9ef198752b21e4",
+    "ziyuan-3-grey-512px.png": "200e77bef0a78ab1cbb2b18d10ffa6df01d0edfeb9a820b1d12c3fdd2d85d646"
+  }
+}
