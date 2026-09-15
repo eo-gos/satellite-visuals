@@ -150,7 +150,7 @@ def row_html(folder, d, orig, chk, icon16, refs_local):
     grade = d.get("evidence", "C")
 
     return f"""
-<section class="row" data-folder="{esc(folder)}">
+<section class="row" data-folder="{esc(folder)}" data-candidate="{esc(schema.candidate_fingerprint(base))}" data-icon-call="{'1' if (icon16 and not icon16['legible']) or (icon16 is None and (base / f'{folder}-icon.svg').exists()) else '0'}">
   <header class="rowhead">
     <div><h2>{esc(d.get("mission", folder))}</h2>
       <div class="sub"><code>{esc(folder)}</code>
@@ -295,10 +295,21 @@ const state = JSON.parse(localStorage.getItem(KEY) || "{}");
 function paint(){
   const c = {approve:0, regenerate:0, reject:0}; let open = 0, icons = 0;
   document.querySelectorAll(".row").forEach(row => {
-    const f = row.dataset.folder, s = state[f] || {};
+    const f = row.dataset.folder;
+    // A decision is bound to the candidate it was made on. If the drawing,
+    // icon or description under this folder changed since, the saved
+    // decision and icon call are dropped (guidance is kept: it is advice
+    // for the next round, not an approval).
+    if (state[f] && state[f].candidate && state[f].candidate !== row.dataset.candidate) {
+      delete state[f].decision; delete state[f].icon; delete state[f].candidate;
+      state[f].stale = true;
+    }
+    const s = state[f] || {};
     row.className = "row" + (s.decision ? " " + s.decision : "");
     const lab = row.querySelector(".state");
-    lab.textContent = (s.decision || "undecided") + (s.icon ? " / icon: " + s.icon : "");
+    lab.textContent = (s.decision || "undecided") + (s.icon ? " / icon: " + s.icon : "")
+      + (s.stale ? " (candidate changed since last decision)" : "")
+      + (row.dataset.iconCall === "1" && s.decision === "approve" && !s.icon ? " — icon call needed" : "");
     lab.className = "state" + (s.decision ? " " + s.decision : "");
     if (s.decision) c[s.decision]++; else open++;
     if (s.icon) icons++;
@@ -324,6 +335,7 @@ document.querySelectorAll(".row").forEach(row => {
     state[f] = state[f] || {};
     state[f][key] = (state[f][key] === b.dataset.act) ? null : b.dataset.act;
     if (!state[f][key]) delete state[f][key];
+    state[f].candidate = row.dataset.candidate; delete state[f].stale;
     paint();
   }));
   const g = row.querySelector(".guide");
@@ -333,13 +345,28 @@ document.querySelectorAll(".row").forEach(row => {
   });
 });
 document.getElementById("export").addEventListener("click", () => {
-  const picks = [...document.querySelectorAll(".row")].map(row => {
+  const msg = document.getElementById("export-msg");
+  const rows = [...document.querySelectorAll(".row")];
+  // An approved row whose icon needs a call cannot be exported undecided:
+  // apply_art would refuse it anyway, and a silent null must never read as
+  // "keep" (CX #134 P2).
+  const missing = rows.filter(row => {
+    const s = state[row.dataset.folder] || {};
+    return s.decision === "approve" && row.dataset.iconCall === "1" && !s.icon;
+  }).map(row => row.dataset.folder);
+  if (missing.length) {
+    msg.textContent = "Not exported: icon keep/drop needed on " + missing.join(", ");
+    return;
+  }
+  msg.textContent = "";
+  const picks = rows.map(row => {
     const f = row.dataset.folder, s = state[f] || {};
     return {folder: f, decision: s.decision || "undecided",
-            icon: s.icon || null, guidance: s.guidance || ""};
+            icon: s.icon || null, icon_call: row.dataset.iconCall === "1",
+            candidate: row.dataset.candidate, guidance: s.guidance || ""};
   });
   const blob = new Blob([JSON.stringify({
-    schema: "satellite-visuals/house-art-review/1",
+    schema: "satellite-visuals/house-art-review/2",
     generated: new Date().toISOString(),
     source: "tools/make_art_checker.py", picks}, null, 2)], {type: "application/json"});
   const a = document.createElement("a");
@@ -421,6 +448,7 @@ def main(argv=None):
     <span>icon calls <b id="c-icon">0</b></span>
   </div>
   <button class="export" id="export">Export art-picks.json</button>
+  <span id="export-msg" class="iconq"></span>
 </div>
 <main>{''.join(rows)}</main>
 <script>{SCRIPT}</script>

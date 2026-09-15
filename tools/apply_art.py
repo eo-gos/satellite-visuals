@@ -8,8 +8,16 @@
 
 For each approved pick this:
 
+  0. checks the pick against the candidate: its `candidate` fingerprint (colour
+     SVG + icon SVG + description.json, stamped by the checker) must equal the
+     working directory's now, so an approval never applies a regenerated
+     drawing; and where the 16 px check says the icon breaks up (or there is no
+     render to check) the pick must say `icon: keep` or `icon: drop`;
   1. copies `<folder>.svg` and `<folder>-icon.svg` out of the gitignored working
-     directory into `satellites/<folder>/` (an icon marked `drop` is not copied);
+     directory into `satellites/<folder>/` (an icon marked `drop` is not copied,
+     and a house-artwork icon a previous apply put there is removed along with
+     its ATTRIBUTIONS row — any other icon in that slot is left alone and the
+     drop refused);
   2. derives the greyscale twin `satellites/<folder>/grey/<folder>-grey.svg`
      from the copied colour SVG (`tools/desaturate_svg.py`, the same derivation
      every house drawing gets) — the twin is the form the Explorer shows, and
@@ -42,6 +50,7 @@ from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from desaturate_svg import write_twin  # noqa: E402
+from house_art import checks as art_checks  # noqa: E402
 from house_art import schema  # noqa: E402
 from house_art.refs import OUT  # noqa: E402
 from index_utils import (UnsafeFolderName, by_folder, check_folder_name,  # noqa: E402
@@ -60,6 +69,31 @@ METHOD_NOTE = ("original depiction drawn from a structured description via "
 
 class Refused(Exception):
     """A pick that must not be applied."""
+
+
+ICON_CHOICES = ("keep", "drop")
+
+
+def icon_call_required(base, folder):
+    """Does this candidate need an explicit icon keep/drop from the reviewer?
+
+    Derived from the candidate itself, never trusted from the pick: the 16 px
+    legibility check on `<folder>-icon-render.png`. A candidate with an icon
+    SVG but no render to check cannot be judged, so it needs the call too. No
+    icon SVG at all: nothing to decide.
+    """
+    base = Path(base)
+    if not (base / f"{folder}-icon.svg").is_file():
+        return False
+    png = base / f"{folder}-icon-render.png"
+    if not png.is_file():
+        return True
+    return not art_checks.icon_legibility(png)["legible"]
+
+
+def _is_managed_icon_row(row):
+    return (row is not None and len(row) >= 6 and row[2] == ART_HOLDER
+            and "silhouette derived from" in row[5])
 
 
 def load_picks(path):
@@ -95,10 +129,47 @@ def apply_one(folder, pick, index, attrib_rows, repo=REPO, workdir=None, dry_run
     if not colour_src.exists():
         raise Refused(f"{folder}: no {folder}.svg in {base}")
 
-    keep_icon = pick.get("icon") != "drop" and icon_src.exists()
+    # The approval is bound to the candidate that was reviewed: the pick must
+    # carry the fingerprint the checker stamped, and it must match what is in
+    # the working directory now. A regenerated drawing gets a new review.
+    expected = schema.candidate_fingerprint(base)
+    got = pick.get("candidate")
+    if not isinstance(got, str) or not got:
+        raise Refused(f"{folder}: pick carries no candidate fingerprint — export it "
+                      f"from the checker again (old export format?)")
+    if got != expected:
+        raise Refused(f"{folder}: pick was reviewed against a different candidate "
+                      f"({got[:12]}… vs {expected[:12]}… now in {base}) — the drawing "
+                      f"or description changed since review; re-review it")
+
+    # Icon: an explicit keep/drop is required where the 16 px check says the
+    # silhouette does not survive (or cannot be checked); a legible icon may be
+    # left undecided and is kept. Any value outside keep/drop is refused.
+    icon_choice = pick.get("icon")
+    if icon_choice is not None and icon_choice not in ICON_CHOICES:
+        raise Refused(f"{folder}: icon decision must be one of {ICON_CHOICES}, "
+                      f"found {icon_choice!r}")
+    if icon_choice is None and icon_call_required(base, folder):
+        raise Refused(f"{folder}: the icon needs an explicit keep/drop (it breaks up "
+                      f"at 16 px, or has no render to check) and the pick carries none")
+    keep_icon = icon_choice != "drop" and icon_src.exists()
     dest = Path(repo) / "satellites" / folder
     colour_rel = f"satellites/{folder}/{folder}.svg"
     icon_rel = f"satellites/{folder}/{folder}-icon.svg"
+
+    # An explicit drop also retires an icon a previous apply of THIS lane put
+    # there: the API discovers icons by glob, so an index field alone does not
+    # stop it being served. Only a house-artwork icon (its ATTRIBUTIONS row
+    # says so) is removed; anything else in that slot is not this lane's to
+    # delete and the drop is refused rather than acted on.
+    retire_icon = False
+    if icon_choice == "drop" and (dest / f"{folder}-icon.svg").is_file():
+        if _is_managed_icon_row(attrib_rows.get(icon_rel)):
+            retire_icon = True
+        else:
+            raise Refused(f"{folder}: icon: drop, but the existing {icon_rel} is not a "
+                          f"house-artwork icon of this lane (no matching ATTRIBUTIONS "
+                          f"row) — removing it is a separate, gated decision")
 
     entry, created = ensure_entry(index, folder,
                                   str(d.get("mission_id") or ""),
@@ -109,6 +180,10 @@ def apply_one(folder, pick, index, attrib_rows, repo=REPO, workdir=None, dry_run
         shutil.copyfile(colour_src, dest / colour_src.name)
         if keep_icon:
             shutil.copyfile(icon_src, dest / icon_src.name)
+        elif retire_icon:
+            (dest / f"{folder}-icon.svg").unlink()
+    if retire_icon:
+        attrib_rows.pop(icon_rel, None)
 
     entry["SVGColourPath"] = colour_rel
     entry["SVGBlackPath"] = icon_rel if keep_icon else ""
@@ -150,7 +225,9 @@ def apply_one(folder, pick, index, attrib_rows, repo=REPO, workdir=None, dry_run
             attrib_rows[row[0]] = row
 
     actions.append(f"{'NEW ' if created else 'OK  '} {folder}: {colour_rel}"
-                   + (f" + icon" if keep_icon else " (icon dropped)") + " + grey twin"
+                   + (f" + icon" if keep_icon else
+                      " (icon dropped; previous house icon removed)" if retire_icon
+                      else " (icon dropped)") + " + grey twin"
                    + f", {len(urls)} reference URL(s), evidence {d.get('evidence')}")
     return actions
 

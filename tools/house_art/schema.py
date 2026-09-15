@@ -152,3 +152,26 @@ def reference_urls(d):
     """The URL list that goes into index.json for this folder."""
     return [r["source_page"] for r in d.get("references") or []
             if isinstance(r, dict) and _is_url(r.get("source_page"))]
+
+
+def candidate_fingerprint(base):
+    """Identity of one candidate as reviewed: SHA-256 over the colour SVG, the
+    icon SVG (empty when absent) and description.json, in that order, as bytes.
+
+    The checker stamps every row with it and writes it into each exported pick;
+    apply_art recomputes it from the working directory and refuses a pick whose
+    fingerprint differs. So an approval is bound to the exact drawing and
+    description that were looked at — regenerating a candidate under the same
+    folder invalidates the old decision instead of inheriting it (CX #134 P2).
+    """
+    import hashlib
+    from pathlib import Path
+    base = Path(base)
+    folder = base.name
+    h = hashlib.sha256()
+    for name in (f"{folder}.svg", f"{folder}-icon.svg", "description.json"):
+        p = base / name
+        data = p.read_bytes() if p.is_file() else b""
+        h.update(len(data).to_bytes(8, "big"))
+        h.update(data)
+    return h.hexdigest()

@@ -283,13 +283,38 @@ class ApplyRefusalTests(unittest.TestCase):
                 ["path", "title", "creator_or_rights_holder", "source_url",
                  "original_license_or_terms", "license_url_or_notes"])
 
-    def _candidate(self, folder="testsat", **over):
+    def _candidate(self, folder="testsat", legible_icon=True, **over):
         base = self.work / folder
         base.mkdir(parents=True, exist_ok=True)
         d = minimal_description(folder, **over)
         (base / "description.json").write_text(json.dumps(d), encoding="utf-8")
         kit.render(minimal_scene(), base / f"{folder}.svg", base / f"{folder}-icon.svg")
+        self._icon_render(folder, legible_icon)
         return d
+
+    def _icon_render(self, folder, legible):
+        """The 16 px legibility input: one solid blob (legible) or two small
+        separated dots (breaks up). The kit's own render is node-side."""
+        from PIL import Image
+        im = Image.new("L", (64, 64), 255)
+        if legible:
+            for x in range(8, 56):
+                for y in range(8, 56):
+                    im.putpixel((x, y), 0)
+        else:
+            for (x0, y0) in ((6, 6), (48, 48)):
+                for x in range(x0, x0 + 10):
+                    for y in range(y0, y0 + 10):
+                        im.putpixel((x, y), 0)
+        im.save(self.work / folder / f"{folder}-icon-render.png")
+
+    def _pick(self, folder="testsat", **over):
+        """An approve pick bound to the candidate now in the working dir, the
+        way the checker exports it."""
+        pick = {"folder": folder, "decision": "approve", "icon": None,
+                "candidate": schema.candidate_fingerprint(self.work / folder)}
+        pick.update(over)
+        return pick
 
     def test_refuses_a_description_with_no_references(self):
         self._candidate(references=[])
@@ -310,7 +335,7 @@ class ApplyRefusalTests(unittest.TestCase):
     def test_applies_a_good_candidate(self):
         self._candidate()
         index, attrib = [], {}
-        actions = apply_art.apply_one("testsat", {"decision": "approve"}, index,
+        actions = apply_art.apply_one("testsat", self._pick(), index,
                                       attrib, repo=self.repo, workdir=self.work)
         self.assertTrue(actions)
         entry = index[0]
@@ -341,7 +366,7 @@ class ApplyRefusalTests(unittest.TestCase):
         creates must not claim one is on the way."""
         self._candidate()
         index, attrib = [], {}
-        apply_art.apply_one("testsat", {"decision": "approve"}, index, attrib,
+        apply_art.apply_one("testsat", self._pick(), index, attrib,
                             repo=self.repo, workdir=self.work)
         self.assertEqual(index[0]["imageStatus"], "svg-fallback")
         self.assertEqual(index[0]["imageSourceTier"], "")
@@ -356,7 +381,7 @@ class ApplyRefusalTests(unittest.TestCase):
                   "imageCredit": "ESA", "imageSourceTier": "B",
                   "imageStatus": "licensed",
                   "PhotoPath": "satellites/testsat/testsat-photo.jpg"}]
-        apply_art.apply_one("testsat", {"decision": "approve"}, index, {},
+        apply_art.apply_one("testsat", self._pick(), index, {},
                             repo=self.repo, workdir=self.work)
         self.assertEqual(index[0]["imageStatus"], "licensed")
         self.assertEqual(index[0]["imageLicense"], "ESA Standard Licence")
@@ -366,7 +391,7 @@ class ApplyRefusalTests(unittest.TestCase):
     def test_dropped_icon_is_not_copied_or_recorded(self):
         self._candidate()
         index, attrib = [], {}
-        apply_art.apply_one("testsat", {"decision": "approve", "icon": "drop"},
+        apply_art.apply_one("testsat", self._pick(icon="drop"),
                             index, attrib, repo=self.repo, workdir=self.work)
         self.assertEqual(index[0]["SVGBlackPath"], "")
         self.assertFalse((self.repo / "satellites/testsat/testsat-icon.svg").exists())
@@ -378,13 +403,128 @@ class ApplyRefusalTests(unittest.TestCase):
         refs.mkdir(parents=True, exist_ok=True)
         (refs / "ref1.jpg").write_bytes(b"\xff\xd8\xff" + b"0" * 64)
         index, attrib = [], {}
-        apply_art.apply_one("testsat", {"decision": "approve"}, index, attrib,
+        apply_art.apply_one("testsat", self._pick(), index, attrib,
                             repo=self.repo, workdir=self.work)
         written = sorted(p.name for p in (self.repo / "satellites/testsat").iterdir())
         self.assertEqual(written, ["grey", "testsat-icon.svg", "testsat.svg"])
         # the grey/ subfolder holds only the derived twin: no raster, no reference
         grey = sorted(p.name for p in (self.repo / "satellites/testsat/grey").iterdir())
         self.assertEqual(grey, ["testsat-grey.svg"])
+
+    # --- approval bound to the reviewed candidate (CX #134 P2) ------------
+
+    def test_pick_without_fingerprint_is_refused(self):
+        self._candidate()
+        with self.assertRaises(apply_art.Refused) as ctx:
+            apply_art.apply_one("testsat", {"decision": "approve"}, [], {},
+                                repo=self.repo, workdir=self.work)
+        self.assertIn("fingerprint", str(ctx.exception))
+        self.assertFalse((self.repo / "satellites/testsat").exists())
+
+    def test_regenerated_candidate_invalidates_the_old_pick(self):
+        self._candidate()
+        old = self._pick()
+        # regenerate under the same folder: a different drawing
+        kit.render(minimal_scene(extra_part="antenna"),
+                   self.work / "testsat/testsat.svg", self.work / "testsat/testsat-icon.svg")
+        with self.assertRaises(apply_art.Refused) as ctx:
+            apply_art.apply_one("testsat", old, [], {}, repo=self.repo, workdir=self.work)
+        self.assertIn("different candidate", str(ctx.exception))
+        self.assertFalse((self.repo / "satellites/testsat/testsat.svg").exists())
+        # a fresh export of the regenerated candidate applies
+        apply_art.apply_one("testsat", self._pick(), [], {}, repo=self.repo, workdir=self.work)
+        self.assertTrue((self.repo / "satellites/testsat/testsat.svg").exists())
+
+    def test_description_edit_invalidates_the_old_pick(self):
+        self._candidate()
+        old = self._pick()
+        d = minimal_description("testsat", distinctive="Now with a dish.")
+        (self.work / "testsat/description.json").write_text(json.dumps(d), encoding="utf-8")
+        with self.assertRaises(apply_art.Refused):
+            apply_art.apply_one("testsat", old, [], {}, repo=self.repo, workdir=self.work)
+
+    # --- the icon call is explicit where it is needed (CX #134 P2) -------
+
+    def test_flagged_icon_with_no_decision_is_refused(self):
+        self._candidate(legible_icon=False)
+        with self.assertRaises(apply_art.Refused) as ctx:
+            apply_art.apply_one("testsat", self._pick(icon=None), [], {},
+                                repo=self.repo, workdir=self.work)
+        self.assertIn("explicit keep/drop", str(ctx.exception))
+        self.assertFalse((self.repo / "satellites/testsat/testsat-icon.svg").exists())
+
+    def test_flagged_icon_with_explicit_keep_is_copied(self):
+        self._candidate(legible_icon=False)
+        index = []
+        apply_art.apply_one("testsat", self._pick(icon="keep"), index, {},
+                            repo=self.repo, workdir=self.work)
+        self.assertTrue((self.repo / "satellites/testsat/testsat-icon.svg").exists())
+        self.assertEqual(index[0]["SVGBlackPath"], "satellites/testsat/testsat-icon.svg")
+
+    def test_icon_without_a_render_to_check_needs_the_call(self):
+        self._candidate()
+        (self.work / "testsat/testsat-icon-render.png").unlink()
+        with self.assertRaises(apply_art.Refused):
+            apply_art.apply_one("testsat", self._pick(icon=None), [], {},
+                                repo=self.repo, workdir=self.work)
+
+    def test_legible_icon_may_be_left_undecided_and_is_kept(self):
+        self._candidate(legible_icon=True)
+        index = []
+        apply_art.apply_one("testsat", self._pick(icon=None), index, {},
+                            repo=self.repo, workdir=self.work)
+        self.assertTrue((self.repo / "satellites/testsat/testsat-icon.svg").exists())
+
+    def test_invalid_icon_value_is_refused(self):
+        self._candidate()
+        with self.assertRaises(apply_art.Refused):
+            apply_art.apply_one("testsat", self._pick(icon="maybe"), [], {},
+                                repo=self.repo, workdir=self.work)
+
+    # --- an explicit drop retires the icon this lane put there (CX #134 P2)
+
+    def test_keep_then_drop_removes_the_house_icon_and_its_row(self):
+        self._candidate()
+        index, attrib = [], {}
+        apply_art.apply_one("testsat", self._pick(icon="keep"), index, attrib,
+                            repo=self.repo, workdir=self.work)
+        icon = self.repo / "satellites/testsat/testsat-icon.svg"
+        self.assertTrue(icon.exists())
+        self.assertIn("satellites/testsat/testsat-icon.svg", attrib)
+        apply_art.apply_one("testsat", self._pick(icon="drop"), index, attrib,
+                            repo=self.repo, workdir=self.work)
+        self.assertFalse(icon.exists(), "a dropped house icon must not stay on disk")
+        self.assertNotIn("satellites/testsat/testsat-icon.svg", attrib)
+        self.assertEqual(index[0]["SVGBlackPath"], "")
+        # the consumer discovers icons by glob: nothing left for it to find
+        self.assertEqual(list((self.repo / "satellites/testsat").glob("*-icon.svg")), [])
+        # the colour SVG and the grey twin are untouched by the drop
+        self.assertTrue((self.repo / "satellites/testsat/testsat.svg").exists())
+        self.assertTrue((self.repo / "satellites/testsat/grey/testsat-grey.svg").exists())
+
+    def test_drop_does_not_remove_an_icon_this_lane_did_not_make(self):
+        self._candidate()
+        foreign = self.repo / "satellites/testsat/testsat-icon.svg"
+        foreign.parent.mkdir(parents=True)
+        foreign.write_text("<svg/>", encoding="utf-8")
+        attrib = {"satellites/testsat/testsat-icon.svg":
+                  ["satellites/testsat/testsat-icon.svg", "traced from a photo",
+                   "Some Agency", "https://example.org", "CC BY 4.0", "make_icon.py"]}
+        with self.assertRaises(apply_art.Refused) as ctx:
+            apply_art.apply_one("testsat", self._pick(icon="drop"), [], attrib,
+                                repo=self.repo, workdir=self.work)
+        self.assertIn("gated", str(ctx.exception))
+        self.assertTrue(foreign.exists())
+        self.assertIn("satellites/testsat/testsat-icon.svg", attrib)
+
+    def test_dry_run_drop_deletes_nothing(self):
+        self._candidate()
+        index, attrib = [], {}
+        apply_art.apply_one("testsat", self._pick(icon="keep"), index, attrib,
+                            repo=self.repo, workdir=self.work)
+        apply_art.apply_one("testsat", self._pick(icon="drop"), index, attrib,
+                            repo=self.repo, workdir=self.work, dry_run=True)
+        self.assertTrue((self.repo / "satellites/testsat/testsat-icon.svg").exists())
 
 
 class FolderNameGuardTests(unittest.TestCase):

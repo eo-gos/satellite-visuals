@@ -247,6 +247,21 @@ process, not about output:
   silhouette of the colour drawing's structural shapes, re-emitted in
   `fill:currentColor`. It is never derived from a photograph. The photo-derived
   icon lane is `make_icon.py` and keeps its own, stricter licence gate.
+- **An approval is bound to the exact candidate reviewed.** The checker
+  stamps each row with a fingerprint of the colour SVG, icon SVG and
+  `description.json`, keeps browser decisions per fingerprint (a regenerated
+  drawing under the same folder comes back undecided), and writes it into
+  every exported pick; `apply_art.py` recomputes it from the working directory
+  and refuses a pick that does not match. Re-export after any regeneration.
+- **The 16 px icon call is explicit where it is needed.** Where the
+  legibility check says the silhouette breaks up (or there is no render to
+  check), an approved row must carry `icon: keep` or `icon: drop`: the checker
+  will not export without it, and `apply_art.py` refuses a missing or invalid
+  value. A legible icon may be left undecided and is kept. An explicit `drop`
+  on a folder whose icon a previous apply of this lane created removes that
+  icon and its `ATTRIBUTIONS.csv` row (the API discovers icons by glob, so an
+  index field alone would not retire it); an icon that is not this lane's is
+  never removed — the drop is refused and the removal is a separate decision.
 - **The greyscale twin is derived at apply time.** `apply_art.py` writes
   `grey/<folder>-grey.svg` from the colour SVG it just copied in, exactly as
   every hand-drawn folder got one (`tools/desaturate_svg.py`); the twin is the
