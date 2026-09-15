@@ -64,6 +64,7 @@ def check_folder_name(folder):
 ENTRY_ORDER = (
     "folder", "missionID", "missionName",
     "SVGColourPath", "SVGBlackPath", "PNG1024Path", "PNG512Path",
+    "SVGGreyPath", "PNGGrey1024Path", "PNGGrey512Path",
     "imageSourceURL", "imageRightsHolder", "imageLicense", "imageCredit",
     "imageSourceTier", "imageStatus", "PhotoPath",
 )

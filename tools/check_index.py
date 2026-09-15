@@ -28,7 +28,12 @@ Checks:
   - licenceNoticeUrl never appears on a non-ESA entry (it is the marker of a
     rights-holder-imposed display condition, not a general link slot — a new
     licence with its own notice condition must be added here deliberately);
-  - any licenceNoticeUrl value is https.
+  - any licenceNoticeUrl value is https;
+  - every entry with a colour SVG has its greyscale twin (grey/<folder>-grey.svg
+    plus the two PNG renders), the twin is stamped from the current colour SVG
+    (not stale) and carries no chroma — the served form is the grey twin, so a
+    colour edit without a regenerated twin would ship the old drawing
+    (tools/desaturate_svg.py --check is the same gate, standalone).
 """
 
 import json
@@ -39,6 +44,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 from index_utils import SAFE_FOLDER  # noqa: E402  (local sibling module)
 from licenses import _norm  # noqa: E402  (local sibling module)
+from desaturate_svg import check_entry as check_grey_twin  # noqa: E402  (local sibling module)
 
 REPO = Path(__file__).resolve().parent.parent
 
@@ -52,11 +58,13 @@ PATH_FIELDS = (
     "SVGColourPath", "SVGBlackPath", "PNG1024Path", "PNG512Path",
     "PhotoPath", "PhotoCut512Path", "PhotoCut1024Path",
     "PhotoCleanPath", "PhotoClean512Path", "PhotoClean1024Path",
+    "SVGGreyPath", "PNGGrey1024Path", "PNGGrey512Path",
 )
 
 
-def main():
-    entries = json.load(open(REPO / "index.json"))
+def check_entries(entries, repo=REPO):
+    """All findings for an index; [] when clean. `repo` is the tree the path
+    fields are resolved against (tests point it at a temporary layout)."""
     problems = []
     seen_folders = {}
 
@@ -120,11 +128,20 @@ def main():
         if notice and not str(notice).startswith("https://"):
             problems.append(f"{name}: licenceNoticeUrl is not https: {notice!r}")
 
+        # --- greyscale twin (the served form of a house drawing) -----------
+        problems.extend(check_grey_twin(e, repo))
+
+    return problems
+
+
+def main():
+    entries = json.load(open(REPO / "index.json"))
+    problems = check_entries(entries)
     for p in problems:
         print(f"FAIL {p}")
     if not problems:
         print(f"OK   {len(entries)} entries; folders unique and consistent, "
-              f"notice conditions consistent")
+              f"notice conditions consistent, grey twins present and fresh")
     return 1 if problems else 0
 
 

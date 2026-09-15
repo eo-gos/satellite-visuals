@@ -33,6 +33,8 @@ from index_utils import (UnsafeFolderName, check_folder_name,  # noqa: E402
                          parse_new_specs, unbacked_folders)
 from licenses import permits_icon_derivation  # noqa: E402
 from process_photos import DEFAULT_MARGIN, process_folder  # noqa: E402
+import desaturate_svg  # noqa: E402
+from check_index import check_entries  # noqa: E402
 
 
 def make_root(tmp):
@@ -685,6 +687,129 @@ class UnbackedFolderTests(unittest.TestCase):
         index = [{"folder": "terra"}]
         self.assertEqual(drop_entries(index, ["nosuch"]), 0)
         self.assertEqual(len(index), 1)
+
+
+class GreyTwinTests(unittest.TestCase):
+    """The greyscale twin is the served form of every house drawing, so its
+    derivation and its freshness gate are pinned: colours map to the CSS
+    grayscale(1) luminance, non-colours are untouched, a stale or chromatic
+    twin fails check_index, and generation is idempotent."""
+
+    COLOUR = ('<?xml version="1.0"?>\n<svg xmlns="http://www.w3.org/2000/svg" '
+              'viewBox="0 0 10 10"><style>.B{fill:#e2cfa1}</style>'
+              '<path class="B" d="M0 0h5v5z"/><path fill="#374178" '
+              'style="stroke:#9a8e57;fill-opacity:.5" d="M5 5h5v5z"/>'
+              '<path fill="url(#g)" stroke="none" d="M0 5h5v5z"/></svg>')
+
+    def setUp(self):
+        self._tmp = tempfile.TemporaryDirectory()
+        self.root = Path(self._tmp.name)
+        folder = self.root / "satellites" / "testsat"
+        folder.mkdir(parents=True)
+        (folder / "testsat.svg").write_text(self.COLOUR, encoding="utf-8")
+        self.entry = {"folder": "testsat", "missionID": "1",
+                      "SVGColourPath": "satellites/testsat/testsat.svg",
+                      "imageLicense": "CC BY 4.0"}
+
+    def tearDown(self):
+        self._tmp.cleanup()
+
+    def _render_pngs(self):
+        # The PNG renderer is node-side; the gate only needs the files to exist
+        # and be newer than the SVG.
+        for field in ("PNGGrey1024Path", "PNGGrey512Path"):
+            p = self.root / self.entry[field]
+            p.write_bytes(b"png")
+
+    def test_luminance_matches_css_grayscale(self):
+        self.assertEqual(desaturate_svg.grey_of("#ff0000"), "#363636")
+        self.assertEqual(desaturate_svg.grey_of("#00ff00"), "#b6b6b6")
+        self.assertEqual(desaturate_svg.grey_of("#0000ff"), "#121212")
+        self.assertEqual(desaturate_svg.grey_of("#fff"), "#ffffff")
+        self.assertEqual(desaturate_svg.grey_of("#00ff0080"), "#b6b6b680")
+        self.assertEqual(desaturate_svg.grey_of("rgb(255, 0, 0)"), "rgb(54,54,54)")
+        self.assertEqual(desaturate_svg.grey_of("gold"), "#d0d0d0")
+
+    def test_non_colours_are_left_alone(self):
+        for tok in ("none", "currentColor", "url(#g)", "inherit", "transparent"):
+            self.assertEqual(desaturate_svg.grey_of(tok), tok)
+
+    def test_unknown_colour_keyword_is_refused_not_kept(self):
+        with self.assertRaises(desaturate_svg.UnknownColour):
+            desaturate_svg.desaturate('<path fill="rebeccapurple"/>')
+
+    def test_desaturate_rewrites_attributes_styles_and_css_blocks(self):
+        grey = desaturate_svg.desaturate(self.COLOUR)
+        self.assertIn(".B{fill:#d0d0d0}", grey)
+        self.assertIn('fill="#434343"', grey)
+        self.assertIn("stroke:#8d8d8d;fill-opacity:.5", grey)
+        self.assertIn('fill="url(#g)" stroke="none"', grey)
+        self.assertEqual(desaturate_svg.chromatic_tokens(grey), [])
+        self.assertEqual(desaturate_svg.chromatic_tokens(self.COLOUR),
+                         ["#e2cfa1", "#374178", "#9a8e57"])
+
+    def test_twin_is_written_under_grey_and_stamped_from_the_source(self):
+        paths = desaturate_svg.write_twin(self.entry, self.root)
+        self.assertEqual(paths["SVGGreyPath"], "satellites/testsat/grey/testsat-grey.svg")
+        text = (self.root / paths["SVGGreyPath"]).read_text(encoding="utf-8")
+        self.assertTrue(text.startswith('<?xml version="1.0"?>'))
+        src, sha = desaturate_svg.read_stamp(text)
+        self.assertEqual(src, "satellites/testsat/testsat.svg")
+        self.assertEqual(sha, desaturate_svg.sha256_of(self.root / src))
+
+    def test_gate_passes_when_twin_is_fresh_and_pngs_rendered(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        self.assertEqual(check_entries([self.entry], self.root), [])
+
+    def test_gate_fails_without_a_twin(self):
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("SVGGreyPath should be" in p for p in problems))
+        self.assertTrue(any("missing satellites/testsat/grey/testsat-grey.svg" in p
+                            for p in problems))
+
+    def test_gate_fails_when_the_colour_svg_changed_after_derivation(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        (self.root / self.entry["SVGColourPath"]).write_text(
+            self.COLOUR.replace("#374178", "#374179"), encoding="utf-8")
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("stale" in p for p in problems), problems)
+
+    def test_gate_fails_when_a_twin_carries_colour(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        grey = self.root / self.entry["SVGGreyPath"]
+        grey.write_text(grey.read_text(encoding="utf-8").replace("#434343", "#434348"),
+                        encoding="utf-8")
+        self._render_pngs()  # keep the PNGs newer than the edited SVG
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("still carries colour" in p for p in problems), problems)
+
+    def test_gate_fails_when_pngs_are_older_than_the_grey_svg(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        import os
+        import time
+        grey = self.root / self.entry["SVGGreyPath"]
+        later = time.time() + 5
+        os.utime(grey, (later, later))
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("older than the grey SVG" in p for p in problems), problems)
+
+    def test_photo_only_entry_has_nothing_to_check(self):
+        entry = {"folder": "photosat", "missionID": "", "SVGColourPath": "",
+                 "SVGGreyPath": "", "PhotoPath": "satellites/photosat/photosat-photo.png"}
+        self.assertEqual(desaturate_svg.check_entry(entry, self.root), [])
+
+    def test_regeneration_is_idempotent(self):
+        first = desaturate_svg.write_twin(self.entry, self.root)
+        path = self.root / first["SVGGreyPath"]
+        before = path.stat().st_mtime_ns
+        text = path.read_text(encoding="utf-8")
+        desaturate_svg.write_twin(self.entry, self.root)
+        self.assertEqual(path.read_text(encoding="utf-8"), text)
+        self.assertEqual(path.stat().st_mtime_ns, before)
 
 
 if __name__ == "__main__":
