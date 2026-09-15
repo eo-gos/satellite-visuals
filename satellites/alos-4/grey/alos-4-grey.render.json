@@ -1,0 +1,9 @@
+{
+  "source": "satellites/alos-4/grey/alos-4-grey.svg",
+  "svg_sha256": "5ac2cd5894c93e441ccf517f7825a39a7e77a1d2c9d3456a34c5106b5ebb7a46",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "alos-4-grey-1024px.png": "ac40160775fe9fc9edc102125a7c8e13a001d5c7360206eaa3a445b4020a8af2",
+    "alos-4-grey-512px.png": "ddafeca67774fb41bd10d7a765685314c77d7faf5b6178c616fb083c5f3d4759"
+  }
+}

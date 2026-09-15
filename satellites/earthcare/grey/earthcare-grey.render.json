@@ -1,0 +1,9 @@
+{
+  "source": "satellites/earthcare/grey/earthcare-grey.svg",
+  "svg_sha256": "ef7c8191b22e0267b4403b16d3240f8c233c7f093e2ad680b7343690c9d12fb4",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "earthcare-grey-1024px.png": "d0f594aa85bfdd3d7f0e95e16fe98dd906fa80cc12b067bb2bc4ba5c1ce6c3e8",
+    "earthcare-grey-512px.png": "2c3e83281aab43dba8d72e62a3c471ba5c9c781be93924aaee909ed8dcd8f0c0"
+  }
+}

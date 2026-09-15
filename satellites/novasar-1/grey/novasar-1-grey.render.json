@@ -1,0 +1,9 @@
+{
+  "source": "satellites/novasar-1/grey/novasar-1-grey.svg",
+  "svg_sha256": "51565aeef21d740067192aa89c013ee0e95ed97ab625ad034715cf885c2fb062",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "novasar-1-grey-1024px.png": "e6e2d99dd1baab0782c68f396b3a2668427d694971252e1b8a0e8dd5648b0b61",
+    "novasar-1-grey-512px.png": "3331000adc8fca7abd265dd31d2cfe0499eb19ad9f8698c4ea0ba4fd0f6e6414"
+  }
+}

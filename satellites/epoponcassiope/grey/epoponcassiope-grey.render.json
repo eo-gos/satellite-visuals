@@ -1,0 +1,9 @@
+{
+  "source": "satellites/epoponcassiope/grey/epoponcassiope-grey.svg",
+  "svg_sha256": "d2ced45e493b40f26f0e9e462084121270eed166a90e2032a1cf97c612ef6b7c",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "epoponcassiope-grey-1024px.png": "8b6287e968a4890c5151feb914104229c3d3849795d5557623bf6de25755bfbf",
+    "epoponcassiope-grey-512px.png": "9bd93496c048b26afcc2cf962bd764ee4983a4d5c4807b4710a9bf44da237969"
+  }
+}

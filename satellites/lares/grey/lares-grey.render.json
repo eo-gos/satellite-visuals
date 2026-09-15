@@ -1,0 +1,9 @@
+{
+  "source": "satellites/lares/grey/lares-grey.svg",
+  "svg_sha256": "3e27dcea3b5ce06bdc8df75b8dbe9383d7ee515fce0d6ca360fff3989c7e0bf6",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "lares-grey-1024px.png": "bf8a9fd81b65298fbe80d82ff230b7b40e8d6906001d0d22edd4aae749f608fc",
+    "lares-grey-512px.png": "c52d0c714502c5112375349d63e20b5d65fd8242779d4f072e639b82a5943442"
+  }
+}

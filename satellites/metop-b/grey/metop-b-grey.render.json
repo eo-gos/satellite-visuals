@@ -1,0 +1,9 @@
+{
+  "source": "satellites/metop-b/grey/metop-b-grey.svg",
+  "svg_sha256": "f4a8306546920993b258fff740a1f673a889574b730d9bdaba374e2f66f2fd7a",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "metop-b-grey-1024px.png": "ab70892fd4851ca5433684e78eae403d740fda7a590850f2fbe8dcee910ba3b1",
+    "metop-b-grey-512px.png": "58d8823308f319d1304877b717b3ac7a31d451d96e47ffe2402d5d8cc3356c7b"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/planet-dove/grey/planet-dove-grey.svg",
+  "svg_sha256": "447c364b1c6794c0dfb35006f2b145c6ffa64b462cb8352f6905a6bc4001b5cc",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "planet-dove-grey-1024px.png": "b4885841fadb65225deba7a298d5ffee644906a7e2a1dbb9a962a0c1f67d6020",
+    "planet-dove-grey-512px.png": "5c4e93884355bac7f945112cf6d01c4b789433e3d306dbf0adcdfd08aac1da9e"
+  }
+}

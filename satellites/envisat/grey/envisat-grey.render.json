@@ -1,0 +1,9 @@
+{
+  "source": "satellites/envisat/grey/envisat-grey.svg",
+  "svg_sha256": "c7d616ec12f122dd4fc48f60887039bd5bc9bc0a0d76d65702d2af1559e6d720",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "envisat-grey-1024px.png": "f7102f75950f060999ee7fe40898c0e7bc4e45e29f9363b602011796bffc737a",
+    "envisat-grey-512px.png": "4e1a812220124e2ea2cef72828785a134ae7de4eceebeed249d306933b294861"
+  }
+}

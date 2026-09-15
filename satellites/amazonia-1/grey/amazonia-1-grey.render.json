@@ -1,0 +1,9 @@
+{
+  "source": "satellites/amazonia-1/grey/amazonia-1-grey.svg",
+  "svg_sha256": "60e27b9119d96aa0b94008dd7bc41fb1bce2d10314c3f65c5dbbd98264e9cd6b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "amazonia-1-grey-1024px.png": "2aed52a38b408a1a312827fc15e84d0e6939316ffddd64f05acb70f817e60832",
+    "amazonia-1-grey-512px.png": "a4ce3190ec73763342c0be71692e24657bcf3483d6551907c106984bb5b1520d"
+  }
+}

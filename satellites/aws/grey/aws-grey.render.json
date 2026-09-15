@@ -1,0 +1,9 @@
+{
+  "source": "satellites/aws/grey/aws-grey.svg",
+  "svg_sha256": "6a18a51bcc2d76c59bec0f6927ec3e2557ff37eb35420222a0fe0cd90f125f56",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "aws-grey-1024px.png": "fd23a931dd1ee16759be837e679c4d113907049f84da72a50b30d062c2837cf5",
+    "aws-grey-512px.png": "088165c30068b2c0a6c2f6b8accadad5bb70053c2669a2e69c01f456f3f6308c"
+  }
+}

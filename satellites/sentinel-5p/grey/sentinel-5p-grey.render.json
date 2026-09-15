@@ -1,0 +1,9 @@
+{
+  "source": "satellites/sentinel-5p/grey/sentinel-5p-grey.svg",
+  "svg_sha256": "2dbc77dc3596c77d5d26a6899a962401c8567e11fbf8a912c1146c5c821c7ebc",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "sentinel-5p-grey-1024px.png": "bdde36bf142c1d0d02bc72055ba3273a3ed151794c1c8da1427373d58fc76782",
+    "sentinel-5p-grey-512px.png": "831a12d5d325e30c8a7e0be5391d782a6b1cb8b35599269ded11b58cc3b856b2"
+  }
+}

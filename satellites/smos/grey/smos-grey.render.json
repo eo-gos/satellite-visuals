@@ -1,0 +1,9 @@
+{
+  "source": "satellites/smos/grey/smos-grey.svg",
+  "svg_sha256": "352ca1d1fc8b26e18386d614729b48b74bf7143b3b4e779af32aafdebdf7d50b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "smos-grey-1024px.png": "8fc3ad580d9b47a974377daed0880e76b2d6338424b77fb6e602cf4af5253b16",
+    "smos-grey-512px.png": "83cf6efe7a9ff68d3a454e59772020224ae15a8fadb91d2caddb6066b7aa3885"
+  }
+}

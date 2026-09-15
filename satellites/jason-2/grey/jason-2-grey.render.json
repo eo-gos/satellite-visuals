@@ -1,0 +1,9 @@
+{
+  "source": "satellites/jason-2/grey/jason-2-grey.svg",
+  "svg_sha256": "8086b518d16be1059ee6518898c7927688f57b458b0c4dcf4edcb3754b864f27",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "jason-2-grey-1024px.png": "5410545a5e0587baaeb37b21896f00bea811c64520b5f09dc2fcbd6bf9cd2c5b",
+    "jason-2-grey-512px.png": "ef2133d7fd413ba97bcede809aad48f20ee38b83649cce0de19f0b7f76c3774f"
+  }
+}

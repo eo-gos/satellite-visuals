@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cryosat-2/grey/cryosat-2-grey.svg",
+  "svg_sha256": "011328a71ea3aa939bd464d9627dcedd4130b72f2279173616ed7fceb09fb37b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cryosat-2-grey-1024px.png": "b779013c36de9311db9914b6935746a80e06cb237ceaae061a84dcaa1019b401",
+    "cryosat-2-grey-512px.png": "835c0116d20868cf21096d83af51795b5579f3d03bbb80b0770eb8e5ea5248a4"
+  }
+}

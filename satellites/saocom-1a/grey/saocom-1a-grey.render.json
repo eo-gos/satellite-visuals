@@ -1,0 +1,9 @@
+{
+  "source": "satellites/saocom-1a/grey/saocom-1a-grey.svg",
+  "svg_sha256": "a6258ec75cdb2dcde43d432a8dae356603ac48aec8791af1a542ad95e432c5ce",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "saocom-1a-grey-1024px.png": "8a23c8bce4492011b3101fb5106ec651050a309584b89e78ff5d17f48c5a4877",
+    "saocom-1a-grey-512px.png": "d64e5428b752a5a6e923803ab28fd44a77683a2e2ccea859a24765592aa70e17"
+  }
+}

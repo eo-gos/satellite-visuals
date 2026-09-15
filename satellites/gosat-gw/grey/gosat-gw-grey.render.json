@@ -1,0 +1,9 @@
+{
+  "source": "satellites/gosat-gw/grey/gosat-gw-grey.svg",
+  "svg_sha256": "ab3645331da8bc5af23c13a4e3b780e5b132d68ee5de1aa23967463c89925fca",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "gosat-gw-grey-1024px.png": "5c4a746d830c76aaef1c04c6beff59c0a129b907fbbf05daf1144f878b5f2dfd",
+    "gosat-gw-grey-512px.png": "5c41e26fe020f6032e11013088f33630da81ab3a6c0cb56bd91cad12fd3f4774"
+  }
+}

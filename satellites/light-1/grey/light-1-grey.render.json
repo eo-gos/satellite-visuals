@@ -1,0 +1,9 @@
+{
+  "source": "satellites/light-1/grey/light-1-grey.svg",
+  "svg_sha256": "e4613586466606db8e4254a5c76ca4482fdf42b4b6583ea6e521a214058417a8",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "light-1-grey-1024px.png": "0d59140430fbef17236e5f634d62aa7a60da0e03bd372675a691fcda0d6ea84d",
+    "light-1-grey-512px.png": "e24435c30e92d424d1a8be8c16c0f35065c73dc2f2145f1874842fe1dd47d652"
+  }
+}

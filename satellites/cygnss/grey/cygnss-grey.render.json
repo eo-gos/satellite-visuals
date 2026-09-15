@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cygnss/grey/cygnss-grey.svg",
+  "svg_sha256": "915ba4e50b48564bb9132f592dff2da4f245f1f6b247a42511077214c8a76a10",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cygnss-grey-1024px.png": "1896fa51f455af5d60939fec91516087933eab0de1d135faaa8df946a2dcc670",
+    "cygnss-grey-512px.png": "7021916b17b05d564a9d0078c6a2dbb59d2809f4e9fe52df58b9a5d66c2d69c7"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/acrimsat/grey/acrimsat-grey.svg",
+  "svg_sha256": "f04612bbf3fd2a7dae22e73bf5d74656b063b9624a747766fcc3dc9ee7231b9e",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "acrimsat-grey-1024px.png": "3f140b979386b02d6d53c877fe8e234d1c6d4e916dea9e8d90a98425071d8a60",
+    "acrimsat-grey-512px.png": "25a224a6c5be87425449f7254a3c6b9f8a758ae3cf6fa1991824a930a7c6d2f6"
+  }
+}

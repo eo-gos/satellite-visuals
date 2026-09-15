@@ -1,0 +1,9 @@
+{
+  "source": "satellites/khalifasat/grey/khalifasat-grey.svg",
+  "svg_sha256": "1b3a0563e4b74c013455fe9dde6b0475df47fbcdbdd9afc9e94d46e55a29bd3b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "khalifasat-grey-1024px.png": "931ef9c1ed3a0ce810444ef2e2676aeea62e8f34c48abb9c61755c83051d110e",
+    "khalifasat-grey-512px.png": "4c681caf5d5552b9aae2cc92fa3932bd6aa8caafe1be1d363392cc1635fdcc72"
+  }
+}

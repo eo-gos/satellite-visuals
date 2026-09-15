@@ -1,0 +1,9 @@
+{
+  "source": "satellites/scisat-1/grey/scisat-1-grey.svg",
+  "svg_sha256": "9aa97ada48ab3c761f6f280c74934cef38b6eda2f40568088855d04e600b9a28",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "scisat-1-grey-1024px.png": "5099ff400f3ed1f762afd6fd172c46a4d0b8683645c11d08f5bc5ef645d22878",
+    "scisat-1-grey-512px.png": "c7e190ea91b28d5a29350b08823fdd977c18fceaf00ba3dc83bef52cd3a7f6ec"
+  }
+}

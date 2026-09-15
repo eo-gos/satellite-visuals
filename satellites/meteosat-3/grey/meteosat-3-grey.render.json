@@ -1,0 +1,9 @@
+{
+  "source": "satellites/meteosat-3/grey/meteosat-3-grey.svg",
+  "svg_sha256": "9ec81f078e5a26b44071ff0eafe33e6f6d9eaf81a52c69bd870ec7de6d324cd2",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "meteosat-3-grey-1024px.png": "d6735c70bfaf74f8dc941479421a027ad89a8865dfc2529617c70dfc9e40b335",
+    "meteosat-3-grey-512px.png": "ea474adf402c689d148ed5e97736e9e43ae828527c954d6ef51d694f6e3541db"
+  }
+}

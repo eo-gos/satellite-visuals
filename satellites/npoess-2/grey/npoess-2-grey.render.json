@@ -1,0 +1,9 @@
+{
+  "source": "satellites/npoess-2/grey/npoess-2-grey.svg",
+  "svg_sha256": "102deab1f4acc6b14baaeb51239b92f7e9744eab752bb0b0bf6fbb94df47aa8e",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "npoess-2-grey-1024px.png": "6b3a4a53bdff8c9bd011c8db203861cf2e80d9eb8f4c080f8f40db6b0e9e0c9f",
+    "npoess-2-grey-512px.png": "211a81deb037458b3e1c0067522339dcf8bfde90f267fb571079bab729637456"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/swot/grey/swot-grey.svg",
+  "svg_sha256": "6ab18fbf33df367bcce082459b954e749822df1ae9623ca289391ffa85c509d7",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "swot-grey-1024px.png": "0c789a2020bb9b233dbd266d104eb99cc102a661568bd7509739b63d449294a7",
+    "swot-grey-512px.png": "4a5fb9b98e878dcfdca59dcfa5a676af9fdd08cf67aca24492468eaaeb580b9b"
+  }
+}
