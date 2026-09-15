@@ -23,6 +23,7 @@ Runs on Pillow alone; no numpy, no network.
 import csv
 import json
 import shutil
+import subprocess
 import sys
 import tempfile
 import unittest
@@ -32,6 +33,7 @@ sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import apply_art  # noqa: E402
 import desaturate_svg  # noqa: E402
+import make_art_checker  # noqa: E402
 from house_art import checks, kit, schema  # noqa: E402
 from index_utils import UnsafeFolderName  # noqa: E402
 
@@ -525,6 +527,131 @@ class ApplyRefusalTests(unittest.TestCase):
         apply_art.apply_one("testsat", self._pick(icon="drop"), index, attrib,
                             repo=self.repo, workdir=self.work, dry_run=True)
         self.assertTrue((self.repo / "satellites/testsat/testsat-icon.svg").exists())
+
+
+class CheckerRowTests(unittest.TestCase):
+    """The review page's icon controls follow the same rule as apply_art's
+    requirement: whenever a row needs an icon call, the buttons are there to
+    give it (CX #134 pass 2)."""
+
+    ORIG = {"overall": "PASS", "margin_over_control_p95": 0.05,
+            "max_edge_overlap": 0.21, "control": {"p95": 0.16},
+            "closest_reference": "ref1.jpg"}
+
+    def setUp(self):
+        # row_html inlines the candidate's SVGs from the checker's working
+        # directory; point it at a temporary one holding a rendered candidate.
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        base = self.tmp / "testsat"
+        base.mkdir()
+        kit.render(minimal_scene(), base / "testsat.svg", base / "testsat-icon.svg")
+        (base / "description.json").write_text(json.dumps(minimal_description()),
+                                               encoding="utf-8")
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _row(self, icon16, has_icon):
+        return make_art_checker.row_html("testsat", minimal_description(), self.ORIG,
+                                         {}, icon16, {}, has_icon=has_icon)
+
+    def test_rule_matches_apply_side(self):
+        req = make_art_checker.icon_call_required
+        self.assertFalse(req(False, None))
+        self.assertTrue(req(True, None))
+        self.assertTrue(req(True, {"legible": False, "components": 3}))
+        self.assertFalse(req(True, {"legible": True, "components": 1}))
+
+    def test_missing_render_shows_both_buttons_and_the_reason(self):
+        html = self._row(None, has_icon=True)
+        self.assertIn('data-icon-call="1"', html)
+        self.assertIn('data-act="keep"', html)
+        self.assertIn('data-act="drop"', html)
+        self.assertIn("No 16&nbsp;px render to check", html)
+
+    def test_illegible_icon_shows_both_buttons(self):
+        html = self._row({"legible": False, "components": 3}, has_icon=True)
+        self.assertIn('data-icon-call="1"', html)
+        self.assertIn('data-act="keep"', html)
+        self.assertIn("breaks into 3 pieces", html)
+
+    def test_legible_icon_needs_no_call_and_shows_no_buttons(self):
+        html = self._row({"legible": True, "components": 1}, has_icon=True)
+        self.assertIn('data-icon-call="0"', html)
+        self.assertNotIn('data-act="keep"', html)
+
+    def test_no_icon_needs_no_call(self):
+        html = self._row(None, has_icon=False)
+        self.assertIn('data-icon-call="0"', html)
+        self.assertNotIn('data-act="drop"', html)
+
+    def test_row_carries_the_candidate_fingerprint(self):
+        html = self._row(None, has_icon=False)
+        self.assertIn('data-candidate="', html)
+
+
+@unittest.skipIf(shutil.which("node") is None, "node not available")
+class CheckerLogicTests(unittest.TestCase):
+    """The page's decision logic, run under node exactly as shipped (the LOGIC
+    block is what the page embeds): legacy saved approvals and approvals made
+    on a different candidate never reach an export (CX #134 pass 2)."""
+
+    HARNESS = """
+const L = require(process.argv[2]);
+const rows = [{folder: "testsat", candidate: "NEW", iconCall: true},
+              {folder: "other", candidate: "O1", iconCall: false}];
+const out = {};
+// legacy state: saved by the /1 checker, no candidate field at all
+let st = {testsat: {decision: "approve", icon: "keep", guidance: "nice"}};
+out.legacy_reset = L.reconcile(st, rows);
+out.legacy_state = JSON.parse(JSON.stringify(st));
+out.legacy_export = L.buildPicks(st, rows);
+// changed candidate: decided on OLD, the row is now NEW
+st = {testsat: {decision: "approve", icon: "drop", candidate: "OLD"}};
+out.changed_reset = L.reconcile(st, rows);
+out.changed_export = L.buildPicks(st, rows);
+// a fresh decision binds to the current candidate; a flagged approve without
+// an icon call blocks export; with one it exports the fingerprint
+st = {};
+L.decide(st, rows[0], "decision", "approve");
+out.blocked = L.buildPicks(st, rows);
+L.decide(st, rows[0], "icon", "keep");
+out.exported = L.buildPicks(st, rows);
+// a stale entry with only guidance is untouched
+st = {other: {guidance: "later"}};
+out.guidance_reset = L.reconcile(st, rows);
+out.storage_key = L.STORAGE_KEY;
+console.log(JSON.stringify(out));
+"""
+
+    def test_logic_under_node(self):
+        tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, tmp, ignore_errors=True)
+        (tmp / "logic.js").write_text(make_art_checker.LOGIC, encoding="utf-8")
+        (tmp / "harness.js").write_text(self.HARNESS, encoding="utf-8")
+        proc = subprocess.run(["node", str(tmp / "harness.js"), str(tmp / "logic.js")],
+                              capture_output=True, text=True, timeout=30)
+        self.assertEqual(proc.returncode, 0, proc.stderr)
+        out = json.loads(proc.stdout)
+        # legacy approval is dropped, guidance kept, export is undecided and
+        # carries no decision under the new fingerprint
+        self.assertEqual(out["legacy_reset"], ["testsat"])
+        self.assertEqual(out["legacy_state"]["testsat"],
+                         {"guidance": "nice", "stale": True})
+        pick = out["legacy_export"]["picks"][0]
+        self.assertEqual((pick["decision"], pick["icon"], pick["candidate"]),
+                         ("undecided", None, "NEW"))
+        # a decision made on another candidate is dropped the same way
+        self.assertEqual(out["changed_reset"], ["testsat"])
+        self.assertEqual(out["changed_export"]["picks"][0]["decision"], "undecided")
+        # export gate and binding
+        self.assertEqual(out["blocked"], {"missing": ["testsat"]})
+        pick = out["exported"]["picks"][0]
+        self.assertEqual((pick["decision"], pick["icon"], pick["icon_call"], pick["candidate"]),
+                         ("approve", "keep", True, "NEW"))
+        self.assertEqual(out["guidance_reset"], [])
+        self.assertTrue(out["storage_key"].endswith("/2"))
 
 
 class FolderNameGuardTests(unittest.TestCase):

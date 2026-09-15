@@ -104,7 +104,14 @@ def summarise(d):
     return bits
 
 
-def row_html(folder, d, orig, chk, icon16, refs_local):
+def icon_call_required(has_icon, icon16):
+    """Does this row need an explicit icon keep/drop? Same rule as
+    apply_art.icon_call_required, expressed over what the page already knows:
+    an icon exists and either breaks up at 16 px or has no render to check."""
+    return bool(has_icon) and (icon16 is None or not icon16["legible"])
+
+
+def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     thumbs = []
     for r in d.get("references", []):
         page = r.get("source_page") or ""
@@ -125,10 +132,18 @@ def row_html(folder, d, orig, chk, icon16, refs_local):
             f'<div class="refmeta">ref {r.get("n")} &middot; {esc(r.get("credit", ""))}{tail}</div></div>')
 
     base = OUT / folder
+    if has_icon is None:
+        has_icon = (base / f"{folder}-icon.svg").exists()
+    icon_call = icon_call_required(has_icon, icon16)
     icon_ctrl = ""
-    if icon16 and not icon16["legible"]:
-        icon_ctrl = (f'<span class="iconq">Icon breaks into {icon16["components"]} '
-                     f'pieces at 16&nbsp;px.</span>'
+    if icon_call:
+        # One rule for the flag and the controls (CX #134 pass 2): whenever the
+        # row needs an icon decision, both buttons are there to give it.
+        why = (f'Icon breaks into {icon16["components"]} pieces at 16&nbsp;px.'
+               if icon16 is not None else
+               f'No 16&nbsp;px render to check ({esc(folder)}-icon-render.png missing) '
+               f'&mdash; decide by eye or regenerate the render.')
+        icon_ctrl = (f'<span class="iconq">{why}</span>'
                      '<button class="btn keep" data-act="keep">Icon: keep</button>'
                      '<button class="btn drop" data-act="drop">Icon: drop</button>')
 
@@ -150,7 +165,7 @@ def row_html(folder, d, orig, chk, icon16, refs_local):
     grade = d.get("evidence", "C")
 
     return f"""
-<section class="row" data-folder="{esc(folder)}" data-candidate="{esc(schema.candidate_fingerprint(base))}" data-icon-call="{'1' if (icon16 and not icon16['legible']) or (icon16 is None and (base / f'{folder}-icon.svg').exists()) else '0'}">
+<section class="row" data-folder="{esc(folder)}" data-candidate="{esc(schema.candidate_fingerprint(base))}" data-icon-call="{'1' if icon_call else '0'}">
   <header class="rowhead">
     <div><h2>{esc(d.get("mission", folder))}</h2>
       <div class="sub"><code>{esc(folder)}</code>
@@ -289,22 +304,70 @@ img.overlay{width:100%;max-width:280px;margin-top:8px;border:1px solid var(--lin
 @media (max-width:1100px){.grid{grid-template-columns:1fr}}
 """
 
+LOGIC = """
+// Pure review logic, shared by the page and by tools/test_house_art.py (which
+// runs it under node). `rows` are plain objects {folder, candidate, iconCall}.
+const STORAGE_KEY = "eogos-house-art-review/2";  // new namespace: nothing saved
+                                                  // by the /1 checker is read.
+function reconcile(state, rows) {
+  // A decision is bound to the candidate it was made on. A saved decision
+  // whose candidate is absent (legacy state) or differs (regenerated drawing)
+  // is dropped — decision and icon alike — and only guidance survives, as
+  // advice for the next round. Returns the folders that were reset.
+  const reset = [];
+  for (const row of rows) {
+    const s = state[row.folder];
+    if (!s) continue;
+    if ((s.decision || s.icon) && s.candidate !== row.candidate) {
+      delete s.decision; delete s.icon; delete s.candidate;
+      s.stale = true; reset.push(row.folder);
+    }
+  }
+  return reset;
+}
+function decide(state, row, key, value) {
+  // Toggle a decision/icon button for a row; every decision re-binds the
+  // entry to the row's current candidate.
+  const s = state[row.folder] = state[row.folder] || {};
+  if (s.candidate !== row.candidate) { delete s.decision; delete s.icon; }
+  s[key] = (s[key] === value) ? null : value;
+  if (!s[key]) delete s[key];
+  s.candidate = row.candidate; delete s.stale;
+  return s;
+}
+function buildPicks(state, rows) {
+  // An approved row whose icon needs a call cannot be exported undecided:
+  // apply_art would refuse it anyway, and a silent null must never read as
+  // "keep". Returns {missing:[folders]} or {picks:[...]}.
+  const missing = rows.filter(row => {
+    const s = state[row.folder] || {};
+    return s.decision === "approve" && row.iconCall && !s.icon;
+  }).map(row => row.folder);
+  if (missing.length) return {missing};
+  const picks = rows.map(row => {
+    const s = state[row.folder] || {};
+    const bound = s.candidate === row.candidate;
+    return {folder: row.folder,
+            decision: bound && s.decision ? s.decision : "undecided",
+            icon: bound && s.icon ? s.icon : null,
+            icon_call: !!row.iconCall,
+            candidate: row.candidate, guidance: s.guidance || ""};
+  });
+  return {picks};
+}
+if (typeof module !== "undefined") module.exports = {STORAGE_KEY, reconcile, decide, buildPicks};
+"""
+
 SCRIPT = """
-const KEY = "eogos-house-art-review";
-const state = JSON.parse(localStorage.getItem(KEY) || "{}");
+const state = JSON.parse(localStorage.getItem(STORAGE_KEY) || "{}");
+const rowOf = el => ({folder: el.dataset.folder, candidate: el.dataset.candidate,
+                      iconCall: el.dataset.iconCall === "1"});
+const rowEls = () => [...document.querySelectorAll(".row")];
 function paint(){
   const c = {approve:0, regenerate:0, reject:0}; let open = 0, icons = 0;
-  document.querySelectorAll(".row").forEach(row => {
-    const f = row.dataset.folder;
-    // A decision is bound to the candidate it was made on. If the drawing,
-    // icon or description under this folder changed since, the saved
-    // decision and icon call are dropped (guidance is kept: it is advice
-    // for the next round, not an approval).
-    if (state[f] && state[f].candidate && state[f].candidate !== row.dataset.candidate) {
-      delete state[f].decision; delete state[f].icon; delete state[f].candidate;
-      state[f].stale = true;
-    }
-    const s = state[f] || {};
+  reconcile(state, rowEls().map(rowOf));
+  rowEls().forEach(row => {
+    const f = row.dataset.folder, s = state[f] || {};
     row.className = "row" + (s.decision ? " " + s.decision : "");
     const lab = row.querySelector(".state");
     lab.textContent = (s.decision || "undecided") + (s.icon ? " / icon: " + s.icon : "")
@@ -325,56 +388,40 @@ function paint(){
   document.getElementById("c-reject").textContent = c.reject;
   document.getElementById("c-undecided").textContent = open;
   document.getElementById("c-icon").textContent = icons;
-  localStorage.setItem(KEY, JSON.stringify(state));
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
 }
-document.querySelectorAll(".row").forEach(row => {
-  const f = row.dataset.folder;
+rowEls().forEach(row => {
   row.querySelectorAll(".btn").forEach(b => b.addEventListener("click", () => {
     const isIcon = b.dataset.act === "keep" || b.dataset.act === "drop";
-    const key = isIcon ? "icon" : "decision";
-    state[f] = state[f] || {};
-    state[f][key] = (state[f][key] === b.dataset.act) ? null : b.dataset.act;
-    if (!state[f][key]) delete state[f][key];
-    state[f].candidate = row.dataset.candidate; delete state[f].stale;
+    decide(state, rowOf(row), isIcon ? "icon" : "decision", b.dataset.act);
     paint();
   }));
   const g = row.querySelector(".guide");
   if (g) g.addEventListener("input", e => {
+    const f = row.dataset.folder;
     state[f] = state[f] || {}; state[f].guidance = e.target.value;
-    localStorage.setItem(KEY, JSON.stringify(state));
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
   });
 });
 document.getElementById("export").addEventListener("click", () => {
   const msg = document.getElementById("export-msg");
-  const rows = [...document.querySelectorAll(".row")];
-  // An approved row whose icon needs a call cannot be exported undecided:
-  // apply_art would refuse it anyway, and a silent null must never read as
-  // "keep" (CX #134 P2).
-  const missing = rows.filter(row => {
-    const s = state[row.dataset.folder] || {};
-    return s.decision === "approve" && row.dataset.iconCall === "1" && !s.icon;
-  }).map(row => row.dataset.folder);
-  if (missing.length) {
-    msg.textContent = "Not exported: icon keep/drop needed on " + missing.join(", ");
+  const result = buildPicks(state, rowEls().map(rowOf));
+  if (result.missing) {
+    msg.textContent = "Not exported: icon keep/drop needed on " + result.missing.join(", ");
     return;
   }
   msg.textContent = "";
-  const picks = rows.map(row => {
-    const f = row.dataset.folder, s = state[f] || {};
-    return {folder: f, decision: s.decision || "undecided",
-            icon: s.icon || null, icon_call: row.dataset.iconCall === "1",
-            candidate: row.dataset.candidate, guidance: s.guidance || ""};
-  });
   const blob = new Blob([JSON.stringify({
     schema: "satellite-visuals/house-art-review/2",
     generated: new Date().toISOString(),
-    source: "tools/make_art_checker.py", picks}, null, 2)], {type: "application/json"});
+    source: "tools/make_art_checker.py", picks: result.picks}, null, 2)], {type: "application/json"});
   const a = document.createElement("a");
   a.href = URL.createObjectURL(blob); a.download = "art-picks.json"; a.click();
   setTimeout(() => URL.revokeObjectURL(a.href), 1000);
 });
 paint();
 """
+
 
 
 def candidates(names=None):
@@ -416,7 +463,8 @@ def main(argv=None):
                 p = local_path(r)
                 if p:
                     refs_local[r.get("n")] = p
-        rows.append(row_html(folder, d, orig, chk, icon16, refs_local))
+        rows.append(row_html(folder, d, orig, chk, icon16, refs_local,
+                             has_icon=(base / f"{folder}-icon.svg").exists()))
 
     for line in skipped:
         print(f"SKIP {line}")
@@ -451,7 +499,7 @@ def main(argv=None):
   <span id="export-msg" class="iconq"></span>
 </div>
 <main>{''.join(rows)}</main>
-<script>{SCRIPT}</script>
+<script>{LOGIC}{SCRIPT}</script>
 """
     out = Path(args.out)
     out.parent.mkdir(parents=True, exist_ok=True)
