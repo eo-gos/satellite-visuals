@@ -1,0 +1,9 @@
+{
+  "source": "satellites/gomx4/grey/gomx4-grey.svg",
+  "svg_sha256": "4cedd7dd0981c9597542df2e48f0f257077b76d5b63c51803be86af92d8126ca",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "gomx4-grey-1024px.png": "fdf5a7392f1cf6b97b4436937a6f18c9477f5f3de421cf789277acca651b67e0",
+    "gomx4-grey-512px.png": "42cbf2e4d812e43410b0f1ed19976e8dfd93628c1020e814f6b6b0c0d0d842a2"
+  }
+}

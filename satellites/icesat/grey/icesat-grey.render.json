@@ -1,0 +1,9 @@
+{
+  "source": "satellites/icesat/grey/icesat-grey.svg",
+  "svg_sha256": "d33526abb25181b4ceb6710ccb29d2fe8b42f357859ab9fb9b054bfd8a31902a",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "icesat-grey-1024px.png": "9bbe3ba53ba117a797c0c3b71da2ad2e173c7e753e60de2dcdf634e5be1c3acd",
+    "icesat-grey-512px.png": "f5295ab8f3c169a7b42adfcec1302bcc58dccfdcaac4b68fad9d311ea66dbdda"
+  }
+}

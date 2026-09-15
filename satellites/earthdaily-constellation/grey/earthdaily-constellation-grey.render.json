@@ -1,0 +1,9 @@
+{
+  "source": "satellites/earthdaily-constellation/grey/earthdaily-constellation-grey.svg",
+  "svg_sha256": "0c6051e42b1a0a799ea8aeff7fef874aec0a5199abb23006feb44b07540eb1ec",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "earthdaily-constellation-grey-1024px.png": "51cc76ccc413bdc6599b9341969114f46070155e732f825ea239e27a3f044e5e",
+    "earthdaily-constellation-grey-512px.png": "e6b9770d2a75fb9c20e34d2599ecf91f6b2222b97c3612bb985a714e6f734a7c"
+  }
+}

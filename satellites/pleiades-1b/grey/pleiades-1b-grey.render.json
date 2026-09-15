@@ -1,0 +1,9 @@
+{
+  "source": "satellites/pleiades-1b/grey/pleiades-1b-grey.svg",
+  "svg_sha256": "86489d74d339b549121a1a0f14a3a24b1ce53ebc677e3ca3e01058c2076a7ea6",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "pleiades-1b-grey-1024px.png": "051aca1774ee27af6a1c8c1462f4f6545b01276224d0753af381b3da53f4b329",
+    "pleiades-1b-grey-512px.png": "84f9d6abe66e2647f35538daae6bbec1c6ef413d88e350a42e28931ea070ff76"
+  }
+}

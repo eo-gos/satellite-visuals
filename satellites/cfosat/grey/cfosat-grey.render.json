@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cfosat/grey/cfosat-grey.svg",
+  "svg_sha256": "450a92f606248ca11ea3b32326c137bd9f71dc7835fcce713adea5b96b0bfa97",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cfosat-grey-1024px.png": "2c1dfbecf18ae7b82b154477d2d4e4c230656c3158779b12f45f374b3b8591cb",
+    "cfosat-grey-512px.png": "8d6962e25109d275c3c0eeba025f0620d95472f3fa5cf3fc08258819b65397dd"
+  }
+}

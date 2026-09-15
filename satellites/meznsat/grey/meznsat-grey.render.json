@@ -1,0 +1,9 @@
+{
+  "source": "satellites/meznsat/grey/meznsat-grey.svg",
+  "svg_sha256": "222cbd948c72274a5968474a47d214fdd64281dea5b39d7d8abf9fb3be4aad66",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "meznsat-grey-1024px.png": "746c691340a411995059d2ff548791d38deed169178534ed8199ee663289195b",
+    "meznsat-grey-512px.png": "57be2d50e6a85a74d4b50033bf5fe0f0fd9d2cee320f0db242e3221c5cb626af"
+  }
+}

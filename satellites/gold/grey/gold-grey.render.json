@@ -1,0 +1,9 @@
+{
+  "source": "satellites/gold/grey/gold-grey.svg",
+  "svg_sha256": "95e2f0e112924af12c9e7a5bf4d3b5144cebd76067459f89d779837ecd97d72a",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "gold-grey-1024px.png": "8621a6f99d334d3f4bd54af918f6ea337ba058ac026fa2e067074e55559fd063",
+    "gold-grey-512px.png": "63172c407c88662752f2327b73994b11e8f8b8f4c8e2a0b1a4dfc4e6580d3257"
+  }
+}

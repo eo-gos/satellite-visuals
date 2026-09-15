@@ -1,0 +1,9 @@
+{
+  "source": "satellites/dscovr/grey/dscovr-grey.svg",
+  "svg_sha256": "b5a07696a4e7d9033e8dac0df0affdc6d9dfae9e33913af58ed9b228d2fd7e46",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "dscovr-grey-1024px.png": "ec77d4d4e97d3e1c25e4fb0a04b166b8f57d5c57ab20103677c57c9ae4685e87",
+    "dscovr-grey-512px.png": "acc7d741073ed568a2d7290602c7e67120a30822cb02e7e14145b80d4b532966"
+  }
+}

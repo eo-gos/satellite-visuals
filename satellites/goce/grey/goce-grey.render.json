@@ -1,0 +1,9 @@
+{
+  "source": "satellites/goce/grey/goce-grey.svg",
+  "svg_sha256": "dec33a4cc0bd88b54f430c002ddfdf3bca08fb21bd95d522c8db0d6ae6e268d9",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "goce-grey-1024px.png": "9bf488dd84b93757b23acfeaef3f47fbe6946d63e800d3aabb70713688659eea",
+    "goce-grey-512px.png": "2e8a10cd0fc066d66f0f87b728cd21a352eac4cfd0fbe6f470fd23fa5864ee40"
+  }
+}

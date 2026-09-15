@@ -1,0 +1,9 @@
+{
+  "source": "satellites/sentinel-1/grey/sentinel-1-grey.svg",
+  "svg_sha256": "490a5b3ee0ad824dd28c0a4e94df545ef0eee148e086deb9b5da1d79a740e5e5",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "sentinel-1-grey-1024px.png": "df2e1bc84f89ee0fe6916df34289622ff6742a7fc16f3cde29375deb6b5cf282",
+    "sentinel-1-grey-512px.png": "7e6ef66ca7a2dd3aa44c3162ca18c048ab9033d07fbbc7add3c854389e148dca"
+  }
+}

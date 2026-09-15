@@ -1,0 +1,9 @@
+{
+  "source": "satellites/odin/grey/odin-grey.svg",
+  "svg_sha256": "1ad3912d2dcf99b0b961967e400f372e544feef3d0018fbb04034b6c0aad07b6",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "odin-grey-1024px.png": "13fa973bc455c22496c967629f5fbb6b1b13d9e4b8ada291cce7a9daaaf33971",
+    "odin-grey-512px.png": "19c0480ef0f2a385823d3ad68f044143f4eb5880b74d39ae5b5bedbda49fe77c"
+  }
+}

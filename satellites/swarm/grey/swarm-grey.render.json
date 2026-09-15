@@ -1,0 +1,9 @@
+{
+  "source": "satellites/swarm/grey/swarm-grey.svg",
+  "svg_sha256": "e6925c5c411cc3c295f4ea63e931e3d686f2a045432e9acb6a29d70b9e2b0bc9",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "swarm-grey-1024px.png": "5354c0217b72b1cb9bcfc525dcb2da826179a934e8594dc0114d8fc8d1395f9d",
+    "swarm-grey-512px.png": "2975a7305a4278bd25160b1d889bb4bedd8dd56912440c77e0b25230fbf34cec"
+  }
+}

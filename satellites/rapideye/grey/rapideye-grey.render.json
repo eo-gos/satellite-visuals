@@ -1,0 +1,9 @@
+{
+  "source": "satellites/rapideye/grey/rapideye-grey.svg",
+  "svg_sha256": "8c77cd251fa4b042101b08051b3de07e82bc1d2a3bf033585c55bdfe9d55ca04",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "rapideye-grey-1024px.png": "6b7e252cda4b6f46f15e9e8db10b63d11694698a754f5e09c68e9fe663fc4ea3",
+    "rapideye-grey-512px.png": "5677bac6848b140c589ecc563bfd9efd1852e1c2ca2b677ea917f23fd3c17f81"
+  }
+}

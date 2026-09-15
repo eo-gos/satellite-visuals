@@ -1,0 +1,9 @@
+{
+  "source": "satellites/prisma/grey/prisma-grey.svg",
+  "svg_sha256": "8c38bd04a8e060bfb9326e9d11ad19a87ad8599cdccaf89fbfa3e365c5ae76ad",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "prisma-grey-1024px.png": "6e1552236c4eb9585626564449949b23a3dab1d6f86263afc0624651652c5782",
+    "prisma-grey-512px.png": "aa4af4618ae296660c69e083677ad6858da2d5d6bb004006c9e0bae0c26a0756"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cloudsat/grey/cloudsat-grey.svg",
+  "svg_sha256": "8940da774bae607e10e8b3ce20d40cff6ec5199f09381966ba9f68526e8c22d4",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cloudsat-grey-1024px.png": "315fdcb3fb890718e837204f91762ccbca4119581d4cb3e597b9325515e2728e",
+    "cloudsat-grey-512px.png": "f257b01578bdd2e9c2dd5c52a0cd22eb1ae27f05d3a15664d26842653bf5ab2d"
+  }
+}

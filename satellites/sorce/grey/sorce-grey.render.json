@@ -1,0 +1,9 @@
+{
+  "source": "satellites/sorce/grey/sorce-grey.svg",
+  "svg_sha256": "2b60fea266dea1e58b9859ea3afc3a4d7684ff8f1539b72689f929cad8d61181",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "sorce-grey-1024px.png": "4a7c225867795275cdc12503c0f5f934163069a37d17805b4dcf5082f5b46dcd",
+    "sorce-grey-512px.png": "073d189f9b7bc0278adff9cee90ef7c07923376e97110e9b633ac216e1c8af1f"
+  }
+}

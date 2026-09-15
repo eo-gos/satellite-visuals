@@ -1,0 +1,9 @@
+{
+  "source": "satellites/hotsat-1/grey/hotsat-1-grey.svg",
+  "svg_sha256": "df4eea8dee6b29d35bf82dd1a0139b47a40bed35be0244f8e5a02a5a094efe60",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "hotsat-1-grey-1024px.png": "4c50330a02172302843402c9ba27917478401c3d0e119b650dc82c93e4405a1d",
+    "hotsat-1-grey-512px.png": "b07ba0038b768bacb244e9ac376c84f1df8248afd4829447be8b137b7edf5018"
+  }
+}

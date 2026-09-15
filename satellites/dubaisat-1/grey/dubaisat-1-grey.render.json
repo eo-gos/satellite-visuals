@@ -1,0 +1,9 @@
+{
+  "source": "satellites/dubaisat-1/grey/dubaisat-1-grey.svg",
+  "svg_sha256": "c3e0e2f295af7f8e64885aa3bf6c6e9f110f97880ff4dfa03fc7c4d765207b2b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "dubaisat-1-grey-1024px.png": "2489ee36becf45c28784b8f79b2640eac865252032d7b3507a67f3969c2567ed",
+    "dubaisat-1-grey-512px.png": "e512914ee61182552b887bac61e1d9209f3830cdd8f790f36c24a8b782497852"
+  }
+}

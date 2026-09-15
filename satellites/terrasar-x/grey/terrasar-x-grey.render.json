@@ -1,0 +1,9 @@
+{
+  "source": "satellites/terrasar-x/grey/terrasar-x-grey.svg",
+  "svg_sha256": "09dce8f43b4ef6fd11648377a713eb661627653820adcaddf530dafe00b66f36",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "terrasar-x-grey-1024px.png": "b356b13eebc25ba4d752a5ee7fc6f7520e9a139e8c950efa0fb6cdbe7589515e",
+    "terrasar-x-grey-512px.png": "25c912d560a954af2b9bfbd8295ea4d3f5dc2c50ae59cbe1bd059052895484ba"
+  }
+}

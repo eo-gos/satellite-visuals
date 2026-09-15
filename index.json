@@ -15,7 +15,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/ace/ace-photo.png",
     "PhotoCut512Path": "satellites/ace/ace-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/ace/ace-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/ace/ace-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/ace/grey/ace-grey.svg",
+    "PNGGrey1024Path": "satellites/ace/grey/ace-grey-1024px.png",
+    "PNGGrey512Path": "satellites/ace/grey/ace-grey-512px.png"
   },
   {
     "folder": "acrimsat",
@@ -33,7 +36,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/acrimsat/acrimsat-photo.png",
     "PhotoCut512Path": "satellites/acrimsat/acrimsat-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/acrimsat/acrimsat-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/acrimsat/acrimsat-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/acrimsat/grey/acrimsat-grey.svg",
+    "PNGGrey1024Path": "satellites/acrimsat/grey/acrimsat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/acrimsat/grey/acrimsat-grey-512px.png"
   },
   {
     "folder": "alos-2",
@@ -49,7 +55,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/alos-2/grey/alos-2-grey.svg",
+    "PNGGrey1024Path": "satellites/alos-2/grey/alos-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/alos-2/grey/alos-2-grey-512px.png"
   },
   {
     "folder": "alos-4",
@@ -65,7 +74,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/alos-4/grey/alos-4-grey.svg",
+    "PNGGrey1024Path": "satellites/alos-4/grey/alos-4-grey-1024px.png",
+    "PNGGrey512Path": "satellites/alos-4/grey/alos-4-grey-512px.png"
   },
   {
     "folder": "amazonia-1",
@@ -83,7 +95,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/amazonia-1/amazonia-1-photo.jpg",
     "PhotoCut512Path": "satellites/amazonia-1/amazonia-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/amazonia-1/amazonia-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/amazonia-1/amazonia-1-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/amazonia-1/grey/amazonia-1-grey.svg",
+    "PNGGrey1024Path": "satellites/amazonia-1/grey/amazonia-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/amazonia-1/grey/amazonia-1-grey-512px.png"
   },
   {
     "folder": "aqua",
@@ -101,7 +116,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/aqua/aqua-photo.png",
     "PhotoCut512Path": "satellites/aqua/aqua-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/aqua/aqua-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/aqua/aqua-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "aura",
@@ -119,7 +137,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/aura/aura-photo.png",
     "PhotoCut512Path": "satellites/aura/aura-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/aura/aura-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/aura/aura-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "aws",
@@ -136,7 +157,10 @@
     "imageSourceTier": "B",
     "imageStatus": "licensed",
     "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
-    "PhotoPath": "satellites/aws/aws-photo.png"
+    "PhotoPath": "satellites/aws/aws-photo.png",
+    "SVGGreyPath": "satellites/aws/grey/aws-grey.svg",
+    "PNGGrey1024Path": "satellites/aws/grey/aws-grey-1024px.png",
+    "PNGGrey512Path": "satellites/aws/grey/aws-grey-512px.png"
   },
   {
     "folder": "biomass",
@@ -156,7 +180,10 @@
     "PhotoCleanPath": "satellites/biomass/biomass-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/biomass/biomass-photo-clean-1024px.png",
     "PhotoClean512Path": "satellites/biomass/biomass-photo-clean-512px.png",
-    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "cfosat",
@@ -172,7 +199,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/cfosat/grey/cfosat-grey.svg",
+    "PNGGrey1024Path": "satellites/cfosat/grey/cfosat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/cfosat/grey/cfosat-grey-512px.png"
   },
   {
     "folder": "cloudsat",
@@ -190,7 +220,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/cloudsat/cloudsat-photo.png",
     "PhotoCut512Path": "satellites/cloudsat/cloudsat-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/cloudsat/cloudsat-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/cloudsat/cloudsat-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/cloudsat/grey/cloudsat-grey.svg",
+    "PNGGrey1024Path": "satellites/cloudsat/grey/cloudsat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/cloudsat/grey/cloudsat-grey-512px.png"
   },
   {
     "folder": "cryosat-2",
@@ -210,7 +243,10 @@
     "PhotoPath": "satellites/cryosat-2/cryosat-2-photo.jpg",
     "PhotoCleanPath": "satellites/cryosat-2/cryosat-2-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/cryosat-2/cryosat-2-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/cryosat-2/cryosat-2-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/cryosat-2/cryosat-2-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/cryosat-2/grey/cryosat-2-grey.svg",
+    "PNGGrey1024Path": "satellites/cryosat-2/grey/cryosat-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/cryosat-2/grey/cryosat-2-grey-512px.png"
   },
   {
     "folder": "csg-2",
@@ -226,7 +262,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/csg-2/grey/csg-2-grey.svg",
+    "PNGGrey1024Path": "satellites/csg-2/grey/csg-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/csg-2/grey/csg-2-grey-512px.png"
   },
   {
     "folder": "cygnss",
@@ -244,7 +283,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/cygnss/cygnss-photo.png",
     "PhotoCut512Path": "satellites/cygnss/cygnss-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/cygnss/cygnss-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/cygnss/cygnss-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/cygnss/grey/cygnss-grey.svg",
+    "PNGGrey1024Path": "satellites/cygnss/grey/cygnss-grey-1024px.png",
+    "PNGGrey512Path": "satellites/cygnss/grey/cygnss-grey-512px.png"
   },
   {
     "folder": "dscovr",
@@ -262,7 +304,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/dscovr/dscovr-photo.jpg",
     "PhotoCut512Path": "satellites/dscovr/dscovr-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/dscovr/dscovr-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/dscovr/dscovr-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/dscovr/grey/dscovr-grey.svg",
+    "PNGGrey1024Path": "satellites/dscovr/grey/dscovr-grey-1024px.png",
+    "PNGGrey512Path": "satellites/dscovr/grey/dscovr-grey-512px.png"
   },
   {
     "folder": "dubaisat-1",
@@ -280,7 +325,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/dubaisat-1/dubaisat-1-photo.jpg",
     "PhotoCut512Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/dubaisat-1/dubaisat-1-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/dubaisat-1/grey/dubaisat-1-grey.svg",
+    "PNGGrey1024Path": "satellites/dubaisat-1/grey/dubaisat-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/dubaisat-1/grey/dubaisat-1-grey-512px.png"
   },
   {
     "folder": "dubaisat-2",
@@ -298,7 +346,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/dubaisat-2/dubaisat-2-photo.jpg",
     "PhotoCut512Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/dubaisat-2/dubaisat-2-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/dubaisat-2/grey/dubaisat-2-grey.svg",
+    "PNGGrey1024Path": "satellites/dubaisat-2/grey/dubaisat-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/dubaisat-2/grey/dubaisat-2-grey-512px.png"
   },
   {
     "folder": "earthcare",
@@ -318,7 +369,10 @@
     "PhotoPath": "satellites/earthcare/earthcare-photo.jpg",
     "PhotoCleanPath": "satellites/earthcare/earthcare-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/earthcare/earthcare-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/earthcare/earthcare-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/earthcare/earthcare-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/earthcare/grey/earthcare-grey.svg",
+    "PNGGrey1024Path": "satellites/earthcare/grey/earthcare-grey-1024px.png",
+    "PNGGrey512Path": "satellites/earthcare/grey/earthcare-grey-512px.png"
   },
   {
     "folder": "earthdaily-constellation",
@@ -334,7 +388,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/earthdaily-constellation/grey/earthdaily-constellation-grey.svg",
+    "PNGGrey1024Path": "satellites/earthdaily-constellation/grey/earthdaily-constellation-grey-1024px.png",
+    "PNGGrey512Path": "satellites/earthdaily-constellation/grey/earthdaily-constellation-grey-512px.png"
   },
   {
     "folder": "envisat",
@@ -354,7 +411,10 @@
     "PhotoPath": "satellites/envisat/envisat-photo.jpg",
     "PhotoCleanPath": "satellites/envisat/envisat-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/envisat/envisat-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/envisat/envisat-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/envisat/envisat-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/envisat/grey/envisat-grey.svg",
+    "PNGGrey1024Path": "satellites/envisat/grey/envisat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/envisat/grey/envisat-grey-512px.png"
   },
   {
     "folder": "epoponcassiope",
@@ -370,7 +430,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/epoponcassiope/grey/epoponcassiope-grey.svg",
+    "PNGGrey1024Path": "satellites/epoponcassiope/grey/epoponcassiope-grey-1024px.png",
+    "PNGGrey512Path": "satellites/epoponcassiope/grey/epoponcassiope-grey-512px.png"
   },
   {
     "folder": "fy-1",
@@ -386,7 +449,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/fy-1/grey/fy-1-grey.svg",
+    "PNGGrey1024Path": "satellites/fy-1/grey/fy-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/fy-1/grey/fy-1-grey-512px.png"
   },
   {
     "folder": "fy-3c",
@@ -402,7 +468,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/fy-3c/grey/fy-3c-grey.svg",
+    "PNGGrey1024Path": "satellites/fy-3c/grey/fy-3c-grey-1024px.png",
+    "PNGGrey512Path": "satellites/fy-3c/grey/fy-3c-grey-512px.png"
   },
   {
     "folder": "goce",
@@ -422,7 +491,10 @@
     "PhotoPath": "satellites/goce/goce-photo.jpg",
     "PhotoCleanPath": "satellites/goce/goce-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/goce/goce-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/goce/goce-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/goce/goce-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/goce/grey/goce-grey.svg",
+    "PNGGrey1024Path": "satellites/goce/grey/goce-grey-1024px.png",
+    "PNGGrey512Path": "satellites/goce/grey/goce-grey-512px.png"
   },
   {
     "folder": "goes-16",
@@ -440,7 +512,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/goes-16/goes-16-photo.png",
     "PhotoCut512Path": "satellites/goes-16/goes-16-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/goes-16/goes-16-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/goes-16/goes-16-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/goes-16/grey/goes-16-grey.svg",
+    "PNGGrey1024Path": "satellites/goes-16/grey/goes-16-grey-1024px.png",
+    "PNGGrey512Path": "satellites/goes-16/grey/goes-16-grey-512px.png"
   },
   {
     "folder": "goes-19",
@@ -458,7 +533,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/goes-19/goes-19-photo.png",
     "PhotoCut512Path": "satellites/goes-19/goes-19-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/goes-19/goes-19-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/goes-19/goes-19-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/goes-19/grey/goes-19-grey.svg",
+    "PNGGrey1024Path": "satellites/goes-19/grey/goes-19-grey-1024px.png",
+    "PNGGrey512Path": "satellites/goes-19/grey/goes-19-grey-512px.png"
   },
   {
     "folder": "gold",
@@ -476,7 +554,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/gold/gold-photo.jpg",
     "PhotoCut512Path": "satellites/gold/gold-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/gold/gold-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/gold/gold-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/gold/grey/gold-grey.svg",
+    "PNGGrey1024Path": "satellites/gold/grey/gold-grey-1024px.png",
+    "PNGGrey512Path": "satellites/gold/grey/gold-grey-512px.png"
   },
   {
     "folder": "gomx4",
@@ -492,7 +573,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/gomx4/grey/gomx4-grey.svg",
+    "PNGGrey1024Path": "satellites/gomx4/grey/gomx4-grey-1024px.png",
+    "PNGGrey512Path": "satellites/gomx4/grey/gomx4-grey-512px.png"
   },
   {
     "folder": "gosat-gw",
@@ -508,7 +592,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/gosat-gw/grey/gosat-gw-grey.svg",
+    "PNGGrey1024Path": "satellites/gosat-gw/grey/gosat-gw-grey-1024px.png",
+    "PNGGrey512Path": "satellites/gosat-gw/grey/gosat-gw-grey-512px.png"
   },
   {
     "folder": "gpm-core",
@@ -526,7 +613,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/gpm-core/gpm-core-photo.png",
     "PhotoCut512Path": "satellites/gpm-core/gpm-core-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/gpm-core/gpm-core-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/gpm-core/gpm-core-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "grace-fo",
@@ -544,7 +634,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/grace-fo/grace-fo-photo.jpg",
     "PhotoCut512Path": "satellites/grace-fo/grace-fo-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/grace-fo/grace-fo-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/grace-fo/grace-fo-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "hotsat-1",
@@ -560,7 +653,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/hotsat-1/grey/hotsat-1-grey.svg",
+    "PNGGrey1024Path": "satellites/hotsat-1/grey/hotsat-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/hotsat-1/grey/hotsat-1-grey-512px.png"
   },
   {
     "folder": "hydrognss",
@@ -580,7 +676,10 @@
     "PhotoCleanPath": "satellites/hydrognss/hydrognss-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/hydrognss/hydrognss-photo-clean-1024px.png",
     "PhotoClean512Path": "satellites/hydrognss/hydrognss-photo-clean-512px.png",
-    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "ibex",
@@ -598,7 +697,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/ibex/ibex-photo.png",
     "PhotoCut512Path": "satellites/ibex/ibex-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/ibex/ibex-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/ibex/ibex-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "icesat",
@@ -616,7 +718,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/icesat/icesat-photo.png",
     "PhotoCut512Path": "satellites/icesat/icesat-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/icesat/icesat-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/icesat/icesat-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/icesat/grey/icesat-grey.svg",
+    "PNGGrey1024Path": "satellites/icesat/grey/icesat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/icesat/grey/icesat-grey-512px.png"
   },
   {
     "folder": "iss",
@@ -634,7 +739,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/iss/iss-photo.png",
     "PhotoCut512Path": "satellites/iss/iss-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/iss/iss-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/iss/iss-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "jason-1",
@@ -652,7 +760,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/jason-1/jason-1-photo.png",
     "PhotoCut512Path": "satellites/jason-1/jason-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/jason-1/jason-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/jason-1/jason-1-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/jason-1/grey/jason-1-grey.svg",
+    "PNGGrey1024Path": "satellites/jason-1/grey/jason-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/jason-1/grey/jason-1-grey-512px.png"
   },
   {
     "folder": "jason-2",
@@ -670,7 +781,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/jason-2/jason-2-photo.png",
     "PhotoCut512Path": "satellites/jason-2/jason-2-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/jason-2/jason-2-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/jason-2/jason-2-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/jason-2/grey/jason-2-grey.svg",
+    "PNGGrey1024Path": "satellites/jason-2/grey/jason-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/jason-2/grey/jason-2-grey-512px.png"
   },
   {
     "folder": "jason-3",
@@ -688,7 +802,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/jason-3/jason-3-photo.png",
     "PhotoCut512Path": "satellites/jason-3/jason-3-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/jason-3/jason-3-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/jason-3/jason-3-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/jason-3/grey/jason-3-grey.svg",
+    "PNGGrey1024Path": "satellites/jason-3/grey/jason-3-grey-1024px.png",
+    "PNGGrey512Path": "satellites/jason-3/grey/jason-3-grey-512px.png"
   },
   {
     "folder": "jpss-1",
@@ -706,7 +823,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/jpss-1/jpss-1-photo.png",
     "PhotoCut512Path": "satellites/jpss-1/jpss-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/jpss-1/jpss-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/jpss-1/jpss-1-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/jpss-1/grey/jpss-1-grey.svg",
+    "PNGGrey1024Path": "satellites/jpss-1/grey/jpss-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/jpss-1/grey/jpss-1-grey-512px.png"
   },
   {
     "folder": "jpss-2",
@@ -722,7 +842,10 @@
     "imageCredit": "",
     "imageSourceTier": "A",
     "imageStatus": "pending-public-domain",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/jpss-2/grey/jpss-2-grey.svg",
+    "PNGGrey1024Path": "satellites/jpss-2/grey/jpss-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/jpss-2/grey/jpss-2-grey-512px.png"
   },
   {
     "folder": "kalpana-1",
@@ -738,7 +861,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/kalpana-1/grey/kalpana-1-grey.svg",
+    "PNGGrey1024Path": "satellites/kalpana-1/grey/kalpana-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/kalpana-1/grey/kalpana-1-grey-512px.png"
   },
   {
     "folder": "khalifasat",
@@ -756,7 +882,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/khalifasat/khalifasat-photo.jpg",
     "PhotoCut512Path": "satellites/khalifasat/khalifasat-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/khalifasat/khalifasat-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/khalifasat/khalifasat-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/khalifasat/grey/khalifasat-grey.svg",
+    "PNGGrey1024Path": "satellites/khalifasat/grey/khalifasat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/khalifasat/grey/khalifasat-grey-512px.png"
   },
   {
     "folder": "lageos-1",
@@ -774,7 +903,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/lageos-1/lageos-1-photo.jpg",
     "PhotoCut512Path": "satellites/lageos-1/lageos-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/lageos-1/lageos-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/lageos-1/lageos-1-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "landsat-7",
@@ -792,7 +924,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/landsat-7/landsat-7-photo.png",
     "PhotoCut512Path": "satellites/landsat-7/landsat-7-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/landsat-7/landsat-7-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/landsat-7/landsat-7-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/landsat-7/grey/landsat-7-grey.svg",
+    "PNGGrey1024Path": "satellites/landsat-7/grey/landsat-7-grey-1024px.png",
+    "PNGGrey512Path": "satellites/landsat-7/grey/landsat-7-grey-512px.png"
   },
   {
     "folder": "landsat-8",
@@ -810,7 +945,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/landsat-8/landsat-8-photo.png",
     "PhotoCut512Path": "satellites/landsat-8/landsat-8-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/landsat-8/landsat-8-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/landsat-8/landsat-8-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/landsat-8/grey/landsat-8-grey.svg",
+    "PNGGrey1024Path": "satellites/landsat-8/grey/landsat-8-grey-1024px.png",
+    "PNGGrey512Path": "satellites/landsat-8/grey/landsat-8-grey-512px.png"
   },
   {
     "folder": "landsat-9",
@@ -828,7 +966,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/landsat-9/landsat-9-photo.png",
     "PhotoCut512Path": "satellites/landsat-9/landsat-9-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/landsat-9/landsat-9-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/landsat-9/landsat-9-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/landsat-9/grey/landsat-9-grey.svg",
+    "PNGGrey1024Path": "satellites/landsat-9/grey/landsat-9-grey-1024px.png",
+    "PNGGrey512Path": "satellites/landsat-9/grey/landsat-9-grey-512px.png"
   },
   {
     "folder": "lares",
@@ -844,7 +985,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/lares/grey/lares-grey.svg",
+    "PNGGrey1024Path": "satellites/lares/grey/lares-grey-1024px.png",
+    "PNGGrey512Path": "satellites/lares/grey/lares-grey-512px.png"
   },
   {
     "folder": "light-1",
@@ -860,7 +1004,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/light-1/grey/light-1-grey.svg",
+    "PNGGrey1024Path": "satellites/light-1/grey/light-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/light-1/grey/light-1-grey-512px.png"
   },
   {
     "folder": "meteosat-10",
@@ -876,7 +1023,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/meteosat-10/grey/meteosat-10-grey.svg",
+    "PNGGrey1024Path": "satellites/meteosat-10/grey/meteosat-10-grey-1024px.png",
+    "PNGGrey512Path": "satellites/meteosat-10/grey/meteosat-10-grey-512px.png"
   },
   {
     "folder": "meteosat-11",
@@ -892,7 +1042,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/meteosat-11/grey/meteosat-11-grey.svg",
+    "PNGGrey1024Path": "satellites/meteosat-11/grey/meteosat-11-grey-1024px.png",
+    "PNGGrey512Path": "satellites/meteosat-11/grey/meteosat-11-grey-512px.png"
   },
   {
     "folder": "meteosat-3",
@@ -908,7 +1061,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/meteosat-3/grey/meteosat-3-grey.svg",
+    "PNGGrey1024Path": "satellites/meteosat-3/grey/meteosat-3-grey-1024px.png",
+    "PNGGrey512Path": "satellites/meteosat-3/grey/meteosat-3-grey-512px.png"
   },
   {
     "folder": "meteosat-9",
@@ -924,7 +1080,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/meteosat-9/grey/meteosat-9-grey.svg",
+    "PNGGrey1024Path": "satellites/meteosat-9/grey/meteosat-9-grey-1024px.png",
+    "PNGGrey512Path": "satellites/meteosat-9/grey/meteosat-9-grey-512px.png"
   },
   {
     "folder": "metop-b",
@@ -940,7 +1099,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/metop-b/grey/metop-b-grey.svg",
+    "PNGGrey1024Path": "satellites/metop-b/grey/metop-b-grey-1024px.png",
+    "PNGGrey512Path": "satellites/metop-b/grey/metop-b-grey-512px.png"
   },
   {
     "folder": "meznsat",
@@ -956,7 +1118,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/meznsat/grey/meznsat-grey.svg",
+    "PNGGrey1024Path": "satellites/meznsat/grey/meznsat-grey-1024px.png",
+    "PNGGrey512Path": "satellites/meznsat/grey/meznsat-grey-512px.png"
   },
   {
     "folder": "mtg-i1",
@@ -975,7 +1140,10 @@
     "PhotoPath": "",
     "PhotoCleanPath": "satellites/mtg-i1/mtg-i1-photo-clean.png",
     "PhotoClean1024Path": "satellites/mtg-i1/mtg-i1-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/mtg-i1/mtg-i1-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/mtg-i1/mtg-i1-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/mtg-i1/grey/mtg-i1-grey.svg",
+    "PNGGrey1024Path": "satellites/mtg-i1/grey/mtg-i1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/mtg-i1/grey/mtg-i1-grey-512px.png"
   },
   {
     "folder": "mtg-s1",
@@ -995,7 +1163,10 @@
     "PhotoCleanPath": "satellites/mtg-s1/mtg-s1-photo-clean.png",
     "PhotoClean1024Path": "satellites/mtg-s1/mtg-s1-photo-clean-1024px.png",
     "PhotoClean512Path": "satellites/mtg-s1/mtg-s1-photo-clean-512px.png",
-    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "nisar",
@@ -1013,7 +1184,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/nisar/nisar-photo.png",
     "PhotoCut512Path": "satellites/nisar/nisar-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/nisar/nisar-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/nisar/nisar-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "novasar-1",
@@ -1029,7 +1203,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/novasar-1/grey/novasar-1-grey.svg",
+    "PNGGrey1024Path": "satellites/novasar-1/grey/novasar-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/novasar-1/grey/novasar-1-grey-512px.png"
   },
   {
     "folder": "npoess-2",
@@ -1045,7 +1222,10 @@
     "imageCredit": "",
     "imageSourceTier": "A",
     "imageStatus": "pending-public-domain",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/npoess-2/grey/npoess-2-grey.svg",
+    "PNGGrey1024Path": "satellites/npoess-2/grey/npoess-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/npoess-2/grey/npoess-2-grey-512px.png"
   },
   {
     "folder": "odin",
@@ -1061,7 +1241,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/odin/grey/odin-grey.svg",
+    "PNGGrey1024Path": "satellites/odin/grey/odin-grey-1024px.png",
+    "PNGGrey512Path": "satellites/odin/grey/odin-grey-512px.png"
   },
   {
     "folder": "pace",
@@ -1079,7 +1262,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/pace/pace-photo.jpg",
     "PhotoCut512Path": "satellites/pace/pace-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/pace/pace-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/pace/pace-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "planet-dove",
@@ -1095,7 +1281,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/planet-dove/grey/planet-dove-grey.svg",
+    "PNGGrey1024Path": "satellites/planet-dove/grey/planet-dove-grey-1024px.png",
+    "PNGGrey512Path": "satellites/planet-dove/grey/planet-dove-grey-512px.png"
   },
   {
     "folder": "pleiades-1b",
@@ -1111,7 +1300,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/pleiades-1b/grey/pleiades-1b-grey.svg",
+    "PNGGrey1024Path": "satellites/pleiades-1b/grey/pleiades-1b-grey-1024px.png",
+    "PNGGrey512Path": "satellites/pleiades-1b/grey/pleiades-1b-grey-512px.png"
   },
   {
     "folder": "prisma",
@@ -1127,7 +1319,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/prisma/grey/prisma-grey.svg",
+    "PNGGrey1024Path": "satellites/prisma/grey/prisma-grey-1024px.png",
+    "PNGGrey512Path": "satellites/prisma/grey/prisma-grey-512px.png"
   },
   {
     "folder": "rapideye",
@@ -1143,7 +1338,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/rapideye/grey/rapideye-grey.svg",
+    "PNGGrey1024Path": "satellites/rapideye/grey/rapideye-grey-1024px.png",
+    "PNGGrey512Path": "satellites/rapideye/grey/rapideye-grey-512px.png"
   },
   {
     "folder": "resurs-01-n2",
@@ -1159,7 +1357,10 @@
     "imageCredit": "",
     "imageSourceTier": "D",
     "imageStatus": "needs-permission-or-svg-fallback",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/resurs-01-n2/grey/resurs-01-n2-grey.svg",
+    "PNGGrey1024Path": "satellites/resurs-01-n2/grey/resurs-01-n2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/resurs-01-n2/grey/resurs-01-n2-grey-512px.png"
   },
   {
     "folder": "saocom-1a",
@@ -1175,7 +1376,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/saocom-1a/grey/saocom-1a-grey.svg",
+    "PNGGrey1024Path": "satellites/saocom-1a/grey/saocom-1a-grey-1024px.png",
+    "PNGGrey512Path": "satellites/saocom-1a/grey/saocom-1a-grey-512px.png"
   },
   {
     "folder": "scisat-1",
@@ -1191,7 +1395,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/scisat-1/grey/scisat-1-grey.svg",
+    "PNGGrey1024Path": "satellites/scisat-1/grey/scisat-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/scisat-1/grey/scisat-1-grey-512px.png"
   },
   {
     "folder": "sentinel-1",
@@ -1209,7 +1416,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/sentinel-1/sentinel-1-photo.jpg",
     "PhotoCut512Path": "satellites/sentinel-1/sentinel-1-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/sentinel-1/sentinel-1-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/sentinel-1/sentinel-1-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/sentinel-1/grey/sentinel-1-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-1/grey/sentinel-1-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-1/grey/sentinel-1-grey-512px.png"
   },
   {
     "folder": "sentinel-1c",
@@ -1225,7 +1435,10 @@
     "imageCredit": "",
     "imageSourceTier": "B",
     "imageStatus": "pending-cc-by-sa",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/sentinel-1c/grey/sentinel-1c-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-1c/grey/sentinel-1c-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-1c/grey/sentinel-1c-grey-512px.png"
   },
   {
     "folder": "sentinel-2",
@@ -1242,7 +1455,10 @@
     "imageSourceTier": "B",
     "imageStatus": "licensed",
     "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
-    "PhotoPath": "satellites/sentinel-2/sentinel-2-photo.jpg"
+    "PhotoPath": "satellites/sentinel-2/sentinel-2-photo.jpg",
+    "SVGGreyPath": "satellites/sentinel-2/grey/sentinel-2-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-2/grey/sentinel-2-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-2/grey/sentinel-2-grey-512px.png"
   },
   {
     "folder": "sentinel-2c",
@@ -1258,7 +1474,10 @@
     "imageCredit": "",
     "imageSourceTier": "B",
     "imageStatus": "pending-cc-by-sa",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/sentinel-2c/grey/sentinel-2c-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-2c/grey/sentinel-2c-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-2c/grey/sentinel-2c-grey-512px.png"
   },
   {
     "folder": "sentinel-3",
@@ -1278,7 +1497,10 @@
     "PhotoPath": "satellites/sentinel-3/sentinel-3-photo.jpg",
     "PhotoCleanPath": "satellites/sentinel-3/sentinel-3-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/sentinel-3/sentinel-3-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/sentinel-3/sentinel-3-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/sentinel-3/sentinel-3-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/sentinel-3/grey/sentinel-3-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-3/grey/sentinel-3-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-3/grey/sentinel-3-grey-512px.png"
   },
   {
     "folder": "sentinel-4",
@@ -1296,7 +1518,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/sentinel-4/sentinel-4-photo.jpg",
     "PhotoCut512Path": "satellites/sentinel-4/sentinel-4-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/sentinel-4/sentinel-4-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/sentinel-4/sentinel-4-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/sentinel-4/grey/sentinel-4-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-4/grey/sentinel-4-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-4/grey/sentinel-4-grey-512px.png"
   },
   {
     "folder": "sentinel-5a",
@@ -1315,7 +1540,10 @@
     "PhotoPath": "satellites/sentinel-5a/sentinel-5a-photo.jpg",
     "PhotoCleanPath": "satellites/sentinel-5a/sentinel-5a-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/sentinel-5a/sentinel-5a-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/sentinel-5a/sentinel-5a-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/sentinel-5a/sentinel-5a-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/sentinel-5a/grey/sentinel-5a-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-5a/grey/sentinel-5a-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-5a/grey/sentinel-5a-grey-512px.png"
   },
   {
     "folder": "sentinel-5p",
@@ -1335,7 +1563,10 @@
     "PhotoPath": "satellites/sentinel-5p/sentinel-5p-photo.jpg",
     "PhotoCleanPath": "satellites/sentinel-5p/sentinel-5p-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/sentinel-5p/sentinel-5p-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/sentinel-5p/sentinel-5p-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/sentinel-5p/sentinel-5p-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/sentinel-5p/grey/sentinel-5p-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-5p/grey/sentinel-5p-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-5p/grey/sentinel-5p-grey-512px.png"
   },
   {
     "folder": "sentinel-6",
@@ -1353,7 +1584,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/sentinel-6/sentinel-6-photo.png",
     "PhotoCut512Path": "satellites/sentinel-6/sentinel-6-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/sentinel-6/sentinel-6-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/sentinel-6/sentinel-6-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/sentinel-6/grey/sentinel-6-grey.svg",
+    "PNGGrey1024Path": "satellites/sentinel-6/grey/sentinel-6-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sentinel-6/grey/sentinel-6-grey-512px.png"
   },
   {
     "folder": "smap",
@@ -1371,7 +1605,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/smap/smap-photo.png",
     "PhotoCut512Path": "satellites/smap/smap-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/smap/smap-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/smap/smap-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "smile",
@@ -1391,7 +1628,10 @@
     "PhotoCleanPath": "satellites/smile/smile-photo-clean.png",
     "PhotoClean1024Path": "satellites/smile/smile-photo-clean-1024px.png",
     "PhotoClean512Path": "satellites/smile/smile-photo-clean-512px.png",
-    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images"
+    "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "smos",
@@ -1411,7 +1651,10 @@
     "PhotoPath": "satellites/smos/smos-photo.jpg",
     "PhotoCleanPath": "satellites/smos/smos-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/smos/smos-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/smos/smos-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/smos/smos-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/smos/grey/smos-grey.svg",
+    "PNGGrey1024Path": "satellites/smos/grey/smos-grey-1024px.png",
+    "PNGGrey512Path": "satellites/smos/grey/smos-grey-512px.png"
   },
   {
     "folder": "sorce",
@@ -1429,7 +1672,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/sorce/sorce-photo.png",
     "PhotoCut512Path": "satellites/sorce/sorce-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/sorce/sorce-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/sorce/sorce-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/sorce/grey/sorce-grey.svg",
+    "PNGGrey1024Path": "satellites/sorce/grey/sorce-grey-1024px.png",
+    "PNGGrey512Path": "satellites/sorce/grey/sorce-grey-512px.png"
   },
   {
     "folder": "suomi-npp",
@@ -1447,7 +1693,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/suomi-npp/suomi-npp-photo.png",
     "PhotoCut512Path": "satellites/suomi-npp/suomi-npp-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/suomi-npp/suomi-npp-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/suomi-npp/suomi-npp-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "swarm",
@@ -1467,7 +1716,10 @@
     "PhotoPath": "satellites/swarm/swarm-photo.jpg",
     "PhotoCleanPath": "satellites/swarm/swarm-photo-clean.jpg",
     "PhotoClean1024Path": "satellites/swarm/swarm-photo-clean-1024px.png",
-    "PhotoClean512Path": "satellites/swarm/swarm-photo-clean-512px.png"
+    "PhotoClean512Path": "satellites/swarm/swarm-photo-clean-512px.png",
+    "SVGGreyPath": "satellites/swarm/grey/swarm-grey.svg",
+    "PNGGrey1024Path": "satellites/swarm/grey/swarm-grey-1024px.png",
+    "PNGGrey512Path": "satellites/swarm/grey/swarm-grey-512px.png"
   },
   {
     "folder": "swot",
@@ -1485,7 +1737,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/swot/swot-photo.png",
     "PhotoCut512Path": "satellites/swot/swot-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/swot/swot-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/swot/swot-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/swot/grey/swot-grey.svg",
+    "PNGGrey1024Path": "satellites/swot/grey/swot-grey-1024px.png",
+    "PNGGrey512Path": "satellites/swot/grey/swot-grey-512px.png"
   },
   {
     "folder": "terra",
@@ -1503,7 +1758,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/terra/terra-photo.png",
     "PhotoCut512Path": "satellites/terra/terra-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/terra/terra-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/terra/terra-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "terrasar-x",
@@ -1519,7 +1777,10 @@
     "imageCredit": "",
     "imageSourceTier": "C",
     "imageStatus": "pending-agency-terms",
-    "PhotoPath": ""
+    "PhotoPath": "",
+    "SVGGreyPath": "satellites/terrasar-x/grey/terrasar-x-grey.svg",
+    "PNGGrey1024Path": "satellites/terrasar-x/grey/terrasar-x-grey-1024px.png",
+    "PNGGrey512Path": "satellites/terrasar-x/grey/terrasar-x-grey-512px.png"
   },
   {
     "folder": "themis",
@@ -1537,7 +1798,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/themis/themis-photo.png",
     "PhotoCut512Path": "satellites/themis/themis-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/themis/themis-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/themis/themis-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   },
   {
     "folder": "timed",
@@ -1555,7 +1819,10 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/timed/timed-photo.jpg",
     "PhotoCut512Path": "satellites/timed/timed-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/timed/timed-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/timed/timed-photo-cut-1024px.png",
+    "SVGGreyPath": "satellites/timed/grey/timed-grey.svg",
+    "PNGGrey1024Path": "satellites/timed/grey/timed-grey-1024px.png",
+    "PNGGrey512Path": "satellites/timed/grey/timed-grey-512px.png"
   },
   {
     "folder": "wind",
@@ -1573,6 +1840,9 @@
     "imageStatus": "licensed",
     "PhotoPath": "satellites/wind/wind-photo.png",
     "PhotoCut512Path": "satellites/wind/wind-photo-cut-512px.png",
-    "PhotoCut1024Path": "satellites/wind/wind-photo-cut-1024px.png"
+    "PhotoCut1024Path": "satellites/wind/wind-photo-cut-1024px.png",
+    "SVGGreyPath": "",
+    "PNGGrey1024Path": "",
+    "PNGGrey512Path": ""
   }
 ]

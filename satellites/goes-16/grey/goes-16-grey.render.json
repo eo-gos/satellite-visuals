@@ -1,0 +1,9 @@
+{
+  "source": "satellites/goes-16/grey/goes-16-grey.svg",
+  "svg_sha256": "41c4c24e2cbe01a9faaf00941ab530da2871cfb54d67d17f2d8308669ef63cbe",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "goes-16-grey-1024px.png": "6f6aaa621599922269e08b346365009e3cca1e6ed8a6ba1a7361d3bd5a132224",
+    "goes-16-grey-512px.png": "ab1ce13de5a2b26b2902b64fd1aa91a8502509945955f79420940870cdfda418"
+  }
+}

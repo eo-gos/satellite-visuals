@@ -1,0 +1,9 @@
+{
+  "source": "satellites/timed/grey/timed-grey.svg",
+  "svg_sha256": "843c1c27aeffda633e0344c53d9f73ba2703b9ef3de78822404bdbdeac32db2b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "timed-grey-1024px.png": "db64962a400f12d997a55de7bfb7c92badadc46f3e2bc0848e7f777cc9ef3534",
+    "timed-grey-512px.png": "ef46f3c8c5db4d807c6b19351d15b00c116a1d940dad375eb65fa4d3c9aa4dc0"
+  }
+}

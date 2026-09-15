@@ -1,0 +1,9 @@
+{
+  "source": "satellites/kalpana-1/grey/kalpana-1-grey.svg",
+  "svg_sha256": "6ccd61259e7afac0e6b51d571b9509005bd525ce1632d33d3a16c8a6df23b4c0",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "kalpana-1-grey-1024px.png": "29cea8d8ab432f44080fb15a038003cfeff147068d6fea75d5bb0d4f5c3c3d08",
+    "kalpana-1-grey-512px.png": "8d22904573fb4a97f67d8157b5e7fb656d0ceb1888cb9b5b669339243bce40d9"
+  }
+}

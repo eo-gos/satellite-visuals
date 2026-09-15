@@ -1,0 +1,9 @@
+{
+  "source": "satellites/jpss-2/grey/jpss-2-grey.svg",
+  "svg_sha256": "2e5a6ae9183fe2c2097f1973f8a5f7ba75386d803d08f1fec6a5c7c3cdab5111",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "jpss-2-grey-1024px.png": "78a1596d27152d65eb294b43d54ac26fc0a74d6f102b0090c2fe170c51bdd7b2",
+    "jpss-2-grey-512px.png": "88fb68130eea4290dbcba6432684ad7a5902d14e07ceb3196a70cd8433a50b14"
+  }
+}

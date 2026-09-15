@@ -1,0 +1,9 @@
+{
+  "source": "satellites/ace/grey/ace-grey.svg",
+  "svg_sha256": "17af60c43688edc32d865899c22cac24e5eb94d27e2c4a55911bdaa78b283631",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "ace-grey-1024px.png": "046baf246ee0a4ad951c52af6ec42b3cf176eddb02fea171255a791d73ebb700",
+    "ace-grey-512px.png": "27e21b8b2982014bda986be142b9af1c18584368b1971cd97c45289162627059"
+  }
+}

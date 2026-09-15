@@ -1,0 +1,9 @@
+{
+  "source": "satellites/landsat-9/grey/landsat-9-grey.svg",
+  "svg_sha256": "8a7d8644e4e13e4be55c5fe9644ab5e9c0694dc9897ca6c8ef33fa464c5f0ef6",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "landsat-9-grey-1024px.png": "535c7b8ba51c8b801a28f92170621116523b91ced6b833e0589371ace784fbbc",
+    "landsat-9-grey-512px.png": "28d6e46d51a3b7d552264bab07d065c22af348afaff6ad4225af76b864c88c39"
+  }
+}
