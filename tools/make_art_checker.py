@@ -36,6 +36,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from desaturate_svg import desaturate  # noqa: E402
 from house_art import checks as art_checks  # noqa: E402
 from house_art import schema  # noqa: E402
 from house_art.refs import OUT, local_path  # noqa: E402
@@ -67,8 +68,12 @@ def data_uri(path, width=320, quality=74):
     return "data:image/jpeg;base64," + base64.b64encode(buf.getvalue()).decode()
 
 
-def inline_svg(path, cls):
+def inline_svg(path, cls, grey=False):
     text = Path(path).read_text(encoding="utf-8")
+    if grey:
+        # The greyscale twin is what the Explorer will show, so it is the
+        # review target; same derivation as tools/desaturate_svg.py at apply.
+        text = desaturate(text)
     text = re.sub(r"<\?xml[^>]*\?>\s*", "", text)
     text = re.sub(r'\swidth="[^"]*"', "", text, count=1)
     text = re.sub(r'\sheight="[^"]*"', "", text, count=1)
@@ -163,8 +168,11 @@ def row_html(folder, d, orig, chk, icon16, refs_local):
       {share_html}
     </div>
     <div class="col">
-      <h3>Our drawing &mdash; {esc(folder)}.svg</h3>
-      <div class="artbox">{inline_svg(base / f"{folder}.svg", "colour")}</div>
+      <h3>Our drawing &mdash; {esc(folder)}.svg <span class="muted">(greyscale twin, as the Explorer will show it; colour master beside)</span></h3>
+      <div class="artpair">
+        <div class="artbox">{inline_svg(base / f"{folder}.svg", "colour", grey=True)}</div>
+        <div class="artbox colourmaster">{inline_svg(base / f"{folder}.svg", "colour")}</div>
+      </div>
       <div class="iconrow">
         <div class="iconcell"><div class="ic ic120">{inline_svg(base / f"{folder}-icon.svg", "icon")}</div><span>120 px</span></div>
         <div class="iconcell"><div class="ic ic24">{inline_svg(base / f"{folder}-icon.svg", "icon")}</div><span>24 px</span></div>
@@ -247,6 +255,8 @@ main{padding:22px 32px 60px;display:flex;flex-direction:column;gap:22px}
 .artbox{border:1px solid var(--line);border-radius:6px;background:#fff;padding:10px;
  display:flex;align-items:center;justify-content:center;min-height:180px}
 svg.colour{width:100%;height:auto;max-height:300px;display:block}
+.artpair{display:flex;gap:12px}.artpair .artbox{flex:1;min-width:0}.artpair .colourmaster{opacity:.85}
+.muted{font-weight:normal;color:#777;font-size:12px}
 .iconrow{display:flex;align-items:flex-end;gap:20px;margin-top:12px;flex-wrap:wrap}
 .iconcell{text-align:center}.iconcell span{display:block;font-size:10px;color:var(--mute);margin-top:4px}
 .iconnote{font-size:10.5px;color:var(--mute);max-width:26ch}

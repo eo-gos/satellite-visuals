@@ -10,21 +10,27 @@ For each approved pick this:
 
   1. copies `<folder>.svg` and `<folder>-icon.svg` out of the gitignored working
      directory into `satellites/<folder>/` (an icon marked `drop` is not copied);
-  2. creates or updates the index.json entry: `folder`, the artwork paths,
-     `artStatus: house-generated`, and `references` — the list of URLs the
-     description was written from;
-  3. adds ATTRIBUTIONS.csv rows for each SVG: repo maintainers, CC BY 4.0, with
+  2. derives the greyscale twin `satellites/<folder>/grey/<folder>-grey.svg`
+     from the copied colour SVG (`tools/desaturate_svg.py`, the same derivation
+     every house drawing gets) — the twin is the form the Explorer shows, and
+     `check_index.py` refuses a colour SVG without a fresh one;
+  3. creates or updates the index.json entry: `folder`, the artwork paths
+     (colour, icon, grey), `artStatus: house-generated`, and `references` — the
+     list of URLs the description was written from;
+  4. adds ATTRIBUTIONS.csv rows for each SVG: repo maintainers, CC BY 4.0, with
      a method note recording that it is an original depiction drawn from
-     reference imagery rather than traced from it.
+     reference imagery rather than traced from it. The grey twin is a mechanical
+     derivative of the colour SVG and needs no row of its own.
 
 **Reference images are never copied into the repository.** Only their URLs
 travel, and a folder whose description carries none is refused: an original
 depiction with no record of what was looked at cannot be reviewed, and the
 `references` list is what makes golden rule 6 auditable after the fact.
 
-PNG renders are deliberately NOT produced here. `render_pngs.mjs` is the one
-place that turns our SVGs into the committed rasters, and it runs over the whole
-tree; this tool prints the command rather than duplicating it.
+PNG renders (colour and grey, plus the grey provenance sidecar) are deliberately
+NOT produced here. `render_pngs.mjs` is the one place that turns our SVGs into
+the committed rasters, and it runs over the whole tree; this tool prints the
+command rather than duplicating it.
 """
 
 import argparse
@@ -35,6 +41,7 @@ import sys
 from pathlib import Path
 
 sys.path.insert(0, str(Path(__file__).resolve().parent))
+from desaturate_svg import write_twin  # noqa: E402
 from house_art import schema  # noqa: E402
 from house_art.refs import OUT  # noqa: E402
 from index_utils import (UnsafeFolderName, by_folder, check_folder_name,  # noqa: E402
@@ -109,6 +116,15 @@ def apply_one(folder, pick, index, attrib_rows, repo=REPO, workdir=None, dry_run
     # entry is complete the moment that command has run.
     entry["PNG1024Path"] = f"satellites/{folder}/{folder}-1024px.png"
     entry["PNG512Path"] = f"satellites/{folder}/{folder}-512px.png"
+    # The greyscale twin is derived here, from the copied colour SVG, so the
+    # folder is complete for check_index the moment the PNGs are rendered.
+    # write_twin also returns the three grey path fields.
+    if not dry_run:
+        entry.update(write_twin(entry, Path(repo)))
+    else:
+        entry.update({"SVGGreyPath": f"satellites/{folder}/grey/{folder}-grey.svg",
+                      "PNGGrey1024Path": f"satellites/{folder}/grey/{folder}-grey-1024px.png",
+                      "PNGGrey512Path": f"satellites/{folder}/grey/{folder}-grey-512px.png"})
     entry["artStatus"] = ART_STATUS
     entry["references"] = urls
     entry.setdefault("PhotoPath", "")
@@ -134,7 +150,7 @@ def apply_one(folder, pick, index, attrib_rows, repo=REPO, workdir=None, dry_run
             attrib_rows[row[0]] = row
 
     actions.append(f"{'NEW ' if created else 'OK  '} {folder}: {colour_rel}"
-                   + (f" + icon" if keep_icon else " (icon dropped)")
+                   + (f" + icon" if keep_icon else " (icon dropped)") + " + grey twin"
                    + f", {len(urls)} reference URL(s), evidence {d.get('evidence')}")
     return actions
 

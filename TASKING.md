@@ -247,6 +247,13 @@ process, not about output:
   silhouette of the colour drawing's structural shapes, re-emitted in
   `fill:currentColor`. It is never derived from a photograph. The photo-derived
   icon lane is `make_icon.py` and keeps its own, stricter licence gate.
+- **The greyscale twin is derived at apply time.** `apply_art.py` writes
+  `grey/<folder>-grey.svg` from the colour SVG it just copied in, exactly as
+  every hand-drawn folder got one (`tools/desaturate_svg.py`); the twin is the
+  form the Explorer will show, and `check_index.py` refuses a colour SVG
+  without a fresh one. Review the drawing in grey: `make_art_checker.py` shows
+  the twin first and the colour master beside it, because colour is no longer
+  a review criterion — shape, originality and the 16 px icon are.
 
 ### When to use it
 

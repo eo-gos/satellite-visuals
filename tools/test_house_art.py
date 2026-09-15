@@ -31,6 +31,7 @@ from pathlib import Path
 sys.path.insert(0, str(Path(__file__).resolve().parent))
 
 import apply_art  # noqa: E402
+import desaturate_svg  # noqa: E402
 from house_art import checks, kit, schema  # noqa: E402
 from index_utils import UnsafeFolderName  # noqa: E402
 
@@ -319,6 +320,16 @@ class ApplyRefusalTests(unittest.TestCase):
         self.assertEqual(entry["SVGColourPath"], "satellites/testsat/testsat.svg")
         self.assertTrue((self.repo / "satellites/testsat/testsat.svg").exists())
         self.assertTrue((self.repo / "satellites/testsat/testsat-icon.svg").exists())
+        # the greyscale twin is derived at apply time, from the copied colour SVG
+        self.assertEqual(entry["SVGGreyPath"], "satellites/testsat/grey/testsat-grey.svg")
+        self.assertEqual(entry["PNGGrey1024Path"],
+                         "satellites/testsat/grey/testsat-grey-1024px.png")
+        twin = self.repo / entry["SVGGreyPath"]
+        self.assertTrue(twin.exists())
+        self.assertEqual(desaturate_svg.chromatic_tokens(twin.read_text(encoding="utf-8")), [])
+        src, sha = desaturate_svg.read_stamp(twin.read_text(encoding="utf-8"))
+        self.assertEqual(src, "satellites/testsat/testsat.svg")
+        self.assertEqual(sha, desaturate_svg.sha256_of(self.repo / src))
         # paperwork: our own work, CC BY 4.0, with the method recorded
         row = attrib["satellites/testsat/testsat.svg"]
         self.assertEqual(row[2], "repo maintainers")
@@ -370,7 +381,10 @@ class ApplyRefusalTests(unittest.TestCase):
         apply_art.apply_one("testsat", {"decision": "approve"}, index, attrib,
                             repo=self.repo, workdir=self.work)
         written = sorted(p.name for p in (self.repo / "satellites/testsat").iterdir())
-        self.assertEqual(written, ["testsat-icon.svg", "testsat.svg"])
+        self.assertEqual(written, ["grey", "testsat-icon.svg", "testsat.svg"])
+        # the grey/ subfolder holds only the derived twin: no raster, no reference
+        grey = sorted(p.name for p in (self.repo / "satellites/testsat/grey").iterdir())
+        self.assertEqual(grey, ["testsat-grey.svg"])
 
 
 class FolderNameGuardTests(unittest.TestCase):
