@@ -1,0 +1,9 @@
+{
+  "source": "satellites/kondor-fka/grey/kondor-fka-grey.svg",
+  "svg_sha256": "398997d88c8cc8c0627af99fba0dcc46eb89b1d3e767fdcc1d9b6a1ac4276d06",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "kondor-fka-grey-1024px.png": "11d3b9ae2646ba8c61853aa1b15b3c8434ceffaf6f9dd33d0e9a8e856958b553",
+    "kondor-fka-grey-512px.png": "88e7ecc71f1e6771a3812cfed54c5991ac4d164c9f3dd5e2c032a82e650477b5"
+  }
+}

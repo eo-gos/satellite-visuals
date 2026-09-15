@@ -1,0 +1,9 @@
+{
+  "source": "satellites/kanopus-v-ik/grey/kanopus-v-ik-grey.svg",
+  "svg_sha256": "c9140fa7762f8807b56a1d738e9b5918696f50fbc751202e6e3857663090ca9c",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "kanopus-v-ik-grey-1024px.png": "71e8d30b72d2a055dec26b5125c29b1729cbc72bffe44bbee86f8a464dba45de",
+    "kanopus-v-ik-grey-512px.png": "34d63a0fead6355a39d1b4f7a44812364e9b4073988675eee64967d28820a194"
+  }
+}
