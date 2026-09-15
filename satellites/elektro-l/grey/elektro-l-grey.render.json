@@ -1,0 +1,9 @@
+{
+  "source": "satellites/elektro-l/grey/elektro-l-grey.svg",
+  "svg_sha256": "426da1e35de77c47768bcde1fbe8a947b815772659fcf55678423a39b91f40c8",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "elektro-l-grey-1024px.png": "af1233947344f2b0f390738ab5978fbaffa8503aac4326b0300f75dcd58d5886",
+    "elektro-l-grey-512px.png": "b1a917d49f56b5309399aa48272f0d6a464831b6fb7678fd1eb6dbfbf6ffbdd9"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/smile/grey/smile-grey.svg",
+  "svg_sha256": "51ef293cf6b597b91632c10339b51b17cb8aa0f92e29e6729d4b60144c1abd6d",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "smile-grey-1024px.png": "ba1ad6e4b3052e0119c54d2cadb1fd34b0e3c4c586be3c5a590338de45f70191",
+    "smile-grey-512px.png": "a1e95c5be687d5f990c4313e2e64c5abe61935a96af342a87c5bc0e4b16f0576"
+  }
+}

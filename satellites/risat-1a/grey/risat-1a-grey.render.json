@@ -1,0 +1,9 @@
+{
+  "source": "satellites/risat-1a/grey/risat-1a-grey.svg",
+  "svg_sha256": "c281ee274b490c6c91f3e51747306b3f5125832b846b805128d6b9177fed6609",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "risat-1a-grey-1024px.png": "1d27af37604d3e0ce1e724653ffda197bf3780ac1a667fa351b8c629e9825528",
+    "risat-1a-grey-512px.png": "c73c847fa462bb152298784707a42918ebc6c493e067742a1dfc434f3cdfac2e"
+  }
+}

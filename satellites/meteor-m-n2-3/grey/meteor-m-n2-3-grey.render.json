@@ -1,0 +1,9 @@
+{
+  "source": "satellites/meteor-m-n2-3/grey/meteor-m-n2-3-grey.svg",
+  "svg_sha256": "61d5238990bdc90b34b09aff0ff22b6d0aa85adb8e90f8988f81d1daa3897bd3",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "meteor-m-n2-3-grey-1024px.png": "d727ff1c0e42da657b3e527aef94de1ff0aedd0e217b4ebde9b1189d3fe68c6e",
+    "meteor-m-n2-3-grey-512px.png": "f76d10e33a405760ab5539e211dae164a0904b2579ec2582453363dbb8283378"
+  }
+}

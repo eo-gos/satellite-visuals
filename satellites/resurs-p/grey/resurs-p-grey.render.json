@@ -1,0 +1,9 @@
+{
+  "source": "satellites/resurs-p/grey/resurs-p-grey.svg",
+  "svg_sha256": "532ef1fbe1d5bf49c2f1ce957fa098524d843d6fb670dee1b79709f2735d952a",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "resurs-p-grey-1024px.png": "d7e6704e90bca2accb9297e1ae7e55220de5769a5bf87b71fde09345cd80928b",
+    "resurs-p-grey-512px.png": "2cb2d04f707d5baac0bb622b31bb1dcb85a9ab2f4436c19055a52df322469169"
+  }
+}

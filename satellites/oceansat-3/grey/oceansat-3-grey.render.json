@@ -1,0 +1,9 @@
+{
+  "source": "satellites/oceansat-3/grey/oceansat-3-grey.svg",
+  "svg_sha256": "bab18c2ef7eb062912352ec0163998ecf6810b1bfde4fd1e54575ba9e194135b",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "oceansat-3-grey-1024px.png": "28dfe49a87065b684c062b91582eb6028e3e1bc8c577727daedd0f8c53c22f18",
+    "oceansat-3-grey-512px.png": "6fa660bd95e0b60d7c7813e34c18f72c6033ad472b3bae09f197cd7b02735e90"
+  }
+}

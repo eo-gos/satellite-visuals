@@ -1,9 +1,9 @@
 {
   "source": "satellites/sentinel-2/grey/sentinel-2-grey.svg",
-  "svg_sha256": "fca66f2db18f3586ecb1426bea5db45478419479ecde0020f5a65f2102d9d6cc",
+  "svg_sha256": "427700f31b547d8bda15cce7911ba289486531bd649b23fe980c8cda1c904928",
   "renderer": "@resvg/resvg-js 2.6.2",
   "renders": {
-    "sentinel-2-grey-1024px.png": "e5ff7d8701bcb1ded5f52b98d5056a3a227979fba1115147dd1b75f8b8d6d7ce",
-    "sentinel-2-grey-512px.png": "ec87aa3aff6278b7efa056b12dde1aba89ed7488055d3c2f1d7ea0b13e4f3ab5"
+    "sentinel-2-grey-1024px.png": "37ca8f7a742cd66de4acfacc5f0e677271fb4bfeeb4ce921d634e32c4f8b126e",
+    "sentinel-2-grey-512px.png": "2e057af4d90920710410c412945c616b532a0da56c0a38ecb20f4cbca7ff3dc3"
   }
 }
