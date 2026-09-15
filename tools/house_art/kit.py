@@ -301,8 +301,21 @@ class Scene:
                   mat, n, struct=False, shade=1)
 
     def ribbed_reflector(self, hub, axis, r, ribs=14, sag=0.22, mat="mesh",
-                         overhang=0.16, struct=True, scallop=0.0, mast=0.0):
-        """Umbrella-style deployable mesh reflector: radial ribs + gore membranes."""
+                         overhang=0.16, struct=True, scallop=0.0, mast=0.0,
+                         ribs_behind=True):
+        """Umbrella-style deployable mesh reflector: radial ribs + gore membranes.
+
+        With `ribs_behind` every rib face is given a depth-sort bias that places
+        it just before the earliest gore of this reflector, so the ribs always
+        paint BEFORE the whole canopy: the membrane covers them all the way
+        round and only the overhang tips show past the rim. Without it the
+        painter's sort puts near-side ribs over the canopy and far-side ribs
+        behind it (George on Biomass, rounds 2-3: spars "on the wrong side of
+        the canopy"); a constant geometric offset cannot fix that because the
+        sort compares centroid depths of ribs and gores that overlap on screen
+        at nearly the same depth. The bias is per face and camera-dependent, so
+        it is computed here from the scene's camera.
+        """
         axis = _n(axis)
         ref = (0, 0, 1) if abs(_dot(axis, (0, 0, 1))) < 0.9 else (1, 0, 0)
         e1 = _n(_cross(axis, ref))
@@ -313,6 +326,7 @@ class Scene:
             d = _add(_mul(e1, math.cos(a)), _mul(e2, math.sin(a)))
             tips.append(_add(hub, _mul(d, r), _mul(axis, -sag * r)))
             mids.append(_add(hub, _mul(d, r * 0.55), _mul(axis, -sag * r * 0.36)))
+        gore_faces = []
         # alternating gore shades so the membrane reads as a faceted umbrella;
         # scallop pulls the gore edge in between rib tips, as the real mesh hangs
         for i in range(ribs):
@@ -323,7 +337,9 @@ class Scene:
                         _mul(axis, -sag * r * (1 - scallop * 0.5)))
             pts = ([hub, mids[i], tips[i], edge, tips[j], mids[j]] if scallop
                    else [hub, mids[i], tips[i], tips[j], mids[j]])
-            self.add(Face(pts, mat, struct, shade=(0 if i % 2 == 0 else 1)))
+            gore = Face(pts, mat, struct, shade=(0 if i % 2 == 0 else 1))
+            self.add(gore)
+            gore_faces.append(gore)
         if mast:
             self.tube(_add(hub, _mul(axis, -0.02 * r)),
                       _add(hub, _mul(axis, mast * r)), r * 0.022, "dark",
@@ -336,6 +352,7 @@ class Scene:
         # A constant offset makes all of them sort the same way, so the spokes read
         # consistently through the full 360.
         back = _mul(axis, -0.055 * r)
+        first_rib_face = len(self.faces)
         for i in range(ribs):
             a = 2 * math.pi * i / ribs
             d = _add(_mul(e1, math.cos(a)), _mul(e2, math.sin(a)))
@@ -343,6 +360,11 @@ class Scene:
                        _mul(axis, -sag * r * (1 + overhang)), back)
             self.tube(_add(hub, back), far, r * 0.016,
                       "dark", n=5, struct=struct, caps=False)
+        if ribs_behind:
+            depth = lambda f: sum(self.cam.depth(p) for p in f.pts) / len(f.pts)
+            earliest_gore = min(depth(f) for f in gore_faces)
+            for f in self.faces[first_rib_face:]:
+                f.bias = (earliest_gore - 1e-3 * r) - depth(f)
 
     def greeble(self, origin, u, v, cells, mat="white", shade=None, lift=0.02):
         """Small flat detail plates lying on a face; never structural."""

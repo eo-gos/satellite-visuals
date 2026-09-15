@@ -270,6 +270,39 @@ class IconDerivationTests(unittest.TestCase):
         self.assertIn('viewBox="0.00 0.00 512.00', head)
 
 
+class ReflectorRibSortTests(unittest.TestCase):
+    """Umbrella reflector ribs must paint behind every gore they overlap on
+    screen, whatever the tilt, so the canopy covers them all the way round and
+    only the overhang tips show past the rim (George on Biomass, rounds 2-3:
+    spars must be consistent through the full 360)."""
+
+    def _violations(self, ribs_behind):
+        # reflector tipped towards the camera: the case that put near-side ribs
+        # over the canopy. No mast (it is a dark tube too and would be counted).
+        scene = kit.Scene(kit.Camera(az=30, el=18))
+        scene.ribbed_reflector((0, 0, 0), kit._n((0.15, -0.42, -0.90)), 4.6,
+                               ribs=15, sag=0.27, overhang=0.12, scallop=0.09,
+                               mast=0.0, ribs_behind=ribs_behind)
+        cam = scene.cam
+        ordered = sorted(scene.faces,
+                         key=lambda f: (sum(cam.depth(p) for p in f.pts) / len(f.pts)) + f.bias)
+        def bbox(f):
+            xs, ys = zip(*(cam.project(p) for p in f.pts))
+            return min(xs), min(ys), max(xs), max(ys)
+        def overlap(a, b):
+            return not (a[2] < b[0] or b[2] < a[0] or a[3] < b[1] or b[3] < a[1])
+        ribs = [(i, bbox(f)) for i, f in enumerate(ordered) if f.mat == "dark"]
+        gores = [(i, bbox(f)) for i, f in enumerate(ordered) if f.mat == "mesh"]
+        self.assertTrue(ribs and gores)
+        # a rib face painted AFTER a gore it overlaps on screen would show over it
+        return sum(1 for ri, rb in ribs for gi, gb in gores if overlap(rb, gb) and ri > gi)
+
+    def test_ribs_never_paint_over_a_gore_they_overlap(self):
+        self.assertEqual(self._violations(ribs_behind=True), 0)
+
+    def test_without_the_bias_ribs_would_paint_over_gores(self):
+        self.assertGreater(self._violations(ribs_behind=False), 0)
+
 class ApplyRefusalTests(unittest.TestCase):
     """apply_art must refuse anything it cannot justify later."""
 
