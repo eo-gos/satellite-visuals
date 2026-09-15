@@ -200,10 +200,10 @@
     "folder": "biomass",
     "missionID": "768",
     "missionName": "Biomass",
-    "SVGColourPath": "",
-    "SVGBlackPath": "",
-    "PNG1024Path": "",
-    "PNG512Path": "",
+    "SVGColourPath": "satellites/biomass/biomass.svg",
+    "SVGBlackPath": "satellites/biomass/biomass-icon.svg",
+    "PNG1024Path": "satellites/biomass/biomass-1024px.png",
+    "PNG512Path": "satellites/biomass/biomass-512px.png",
     "imageSourceURL": "https://www.esa.int/ESA_Multimedia/Images/2024/10/Biomass_stowed_and_deployment_configurations",
     "imageRightsHolder": "ESA/ATG medialab",
     "imageLicense": "ESA Standard Licence",
@@ -215,9 +215,18 @@
     "PhotoClean1024Path": "satellites/biomass/biomass-photo-clean-1024px.png",
     "PhotoClean512Path": "satellites/biomass/biomass-photo-clean-512px.png",
     "licenceNoticeUrl": "https://www.esa.int/ESA_Multimedia/Copyright_Notice_Images",
-    "SVGGreyPath": "",
-    "PNGGrey1024Path": "",
-    "PNGGrey512Path": ""
+    "SVGGreyPath": "satellites/biomass/grey/biomass-grey.svg",
+    "PNGGrey1024Path": "satellites/biomass/grey/biomass-grey-1024px.png",
+    "PNGGrey512Path": "satellites/biomass/grey/biomass-grey-512px.png",
+    "artStatus": "house-generated",
+    "references": [
+      "https://www.esa.int/ESA_Multimedia/Images/2025/02/Biomass_satellite",
+      "https://www.esa.int/ESA_Multimedia/Images/2021/11/Biomass_12-metre_wire-mesh_reflector",
+      "https://commons.wikimedia.org/wiki/File:ESA_Biomass_Satellite_seeing_wood_through_trees.png",
+      "https://commons.wikimedia.org/wiki/File:Rolling_Biomass_to_the_cleanroom_(cropped)_ESA507406.jpg",
+      "https://space.skyrocket.de/doc_sdat/biomass.htm",
+      "https://www.eoportal.org/satellite-missions/biomass"
+    ]
   },
   {
     "folder": "cfosat",

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/biomass/grey/biomass-grey.svg",
+  "svg_sha256": "c323d7d60d2085b5678b365711412a2ed685e61a19fbaf89b1183e028e5637fc",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "biomass-grey-1024px.png": "989a6792ccbe4514ee8fe18cc2a96badf3037d3dc9aba245fff114c422b0ebf3",
+    "biomass-grey-512px.png": "414e1360380baf086867d9d8b8d5e281d6250d0cfba000e637cc0e2b4f58f866"
+  }
+}
