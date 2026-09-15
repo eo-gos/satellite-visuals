@@ -17,21 +17,27 @@ change on either side. Files under ``grey/`` are invisible to that glob, so the
 switch happens only when the API is told to look there (a separate PR).
 
 Each twin carries a stamp comment naming the source file and the SHA-256 of the
-colour SVG it was derived from. ``--check`` reads the stamp and fails when a
-twin is missing, stale (source hash differs), or still carries chroma; it is
-the freshness gate ``check_index.py`` calls, so an edited colour drawing cannot
-ship with an old twin.
+colour SVG it was derived from, and its PNG renders are tied to it by a sidecar
+``grey/<folder>-grey.render.json`` written by the renderer: the SHA-256 of the
+grey SVG that was rendered and of each PNG produced. ``--check`` reads both and
+fails when a twin is missing, stale (source hash differs), still carries
+chroma, or its PNGs were not rendered from the current grey SVG (sidecar
+missing, its SVG hash differs, or a PNG's bytes differ from the recorded
+render). Provenance is content-based throughout: file timestamps are never
+consulted, so a fresh clone (Git writes files in its own order) validates the
+same as the tree that generated it. This is the gate ``check_index.py`` calls.
 
     python3 tools/desaturate_svg.py            # write/refresh every twin + index fields
     python3 tools/desaturate_svg.py swot smos  # only these folders
     python3 tools/desaturate_svg.py --check    # verify only, exit 1 on findings
 
-PNG twins (``grey/<folder>-grey-1024px.png``, ``-512px.png``) are rendered from
-the grey SVG by ``tools/render_pngs.mjs``; run it after this tool.
+PNG twins (``grey/<folder>-grey-1024px.png``, ``-512px.png``) and the sidecar are
+written by ``tools/render_pngs.mjs``; run it after this tool.
 """
 
 import argparse
 import hashlib
+import json
 import re
 import sys
 from pathlib import Path
@@ -50,7 +56,7 @@ STAMP_RE = re.compile(
 COLOUR_PROPS = r"fill|stroke|stop-color|flood-color|lighting-color|color"
 TOKEN_RE = re.compile(
     r"(?P<prop>\b(?:" + COLOUR_PROPS + r"))"
-    r"(?P<sep>\s*[:=]\s*\"?\s*)"
+    r"(?P<sep>\s*[:=]\s*[\"']?\s*)"
     r"(?P<val>#[0-9a-fA-F]{3,8}\b|rgba?\([^)]*\)|[a-zA-Z]+\b)",
 )
 # Keywords that are not colours, left alone.
@@ -176,6 +182,29 @@ def read_stamp(grey_text):
     return (m.group("src"), m.group("sha")) if m else (None, None)
 
 
+RENDER_STAMP_SUFFIX = ".render.json"
+
+
+def render_stamp_path(grey_svg_rel):
+    """Sidecar path for a grey SVG: grey/<folder>-grey.render.json."""
+    return grey_svg_rel[:-len(".svg")] + RENDER_STAMP_SUFFIX
+
+
+def write_render_stamp(grey_svg, pngs, renderer, repo=REPO):
+    """Record which grey SVG the PNGs were rendered from and what bytes came
+    out. `grey_svg` and `pngs` are repo-relative. The node renderer writes the
+    same shape; this is the reference implementation the gate reads."""
+    stamp = {
+        "source": grey_svg,
+        "svg_sha256": sha256_of(repo / grey_svg),
+        "renderer": renderer,
+        "renders": {Path(p).name: sha256_of(repo / p) for p in pngs},
+    }
+    out = repo / render_stamp_path(grey_svg)
+    out.write_text(json.dumps(stamp, indent=2) + "\n", encoding="utf-8")
+    return stamp
+
+
 def twin_paths(folder):
     """Repo-relative paths of the grey SVG and its two PNG renders."""
     base = f"satellites/{folder}/{GREY_DIR}/{folder}-grey"
@@ -200,8 +229,7 @@ def write_twin(entry, repo=REPO):
     paths = twin_paths(folder)
     out = repo / paths["SVGGreyPath"]
     out.parent.mkdir(parents=True, exist_ok=True)
-    # Idempotent: an unchanged twin is not rewritten, so its mtime stays older
-    # than the PNGs rendered from it and the freshness check stays quiet.
+    # Idempotent: an unchanged twin is not rewritten.
     if not (out.is_file() and out.read_text(encoding="utf-8") == grey):
         out.write_text(grey, encoding="utf-8")
     return paths
@@ -240,12 +268,35 @@ def check_entry(entry, repo=REPO):
         if chroma:
             problems.append(f"{folder}: grey twin still carries colour: "
                             f"{sorted(set(chroma))[:5]}")
-        src_png = repo / expected["SVGGreyPath"]
-        for field in ("PNGGrey1024Path", "PNGGrey512Path"):
-            png = repo / expected[field]
-            if png.is_file() and png.stat().st_mtime < src_png.stat().st_mtime:
-                problems.append(f"{folder}: {expected[field]} is older than the grey "
-                                f"SVG — run tools/render_pngs.mjs")
+        # PNG provenance: content-based, never mtime. The renderer records the
+        # grey SVG hash it rendered and the bytes it produced; both must match.
+        stamp_rel = render_stamp_path(expected["SVGGreyPath"])
+        stamp_path = repo / stamp_rel
+        if not stamp_path.is_file():
+            problems.append(f"{folder}: missing {stamp_rel} — run tools/render_pngs.mjs")
+        else:
+            try:
+                stamp = json.loads(stamp_path.read_text(encoding="utf-8"))
+            except ValueError:
+                stamp = None
+            if not isinstance(stamp, dict) or not isinstance(stamp.get("renders"), dict):
+                problems.append(f"{folder}: {stamp_rel} is not a render stamp — "
+                                f"run tools/render_pngs.mjs")
+            else:
+                if stamp.get("svg_sha256") != sha256_of(grey_path):
+                    problems.append(f"{folder}: PNGs were rendered from a different "
+                                    f"grey SVG — run tools/render_pngs.mjs")
+                for field in ("PNGGrey1024Path", "PNGGrey512Path"):
+                    png = repo / expected[field]
+                    recorded = stamp["renders"].get(png.name)
+                    if not png.is_file():
+                        continue  # already reported as missing above
+                    if recorded is None:
+                        problems.append(f"{folder}: {expected[field]} is not in "
+                                        f"{stamp_rel} — run tools/render_pngs.mjs")
+                    elif recorded != sha256_of(png):
+                        problems.append(f"{folder}: {expected[field]} differs from "
+                                        f"the recorded render — run tools/render_pngs.mjs")
     return problems
 
 

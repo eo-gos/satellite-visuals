@@ -13,13 +13,23 @@
 //
 // A folder may also carry a greyscale twin under grey/ (written by
 // tools/desaturate_svg.py from the colour SVG). It is rendered the same way to
-// grey/<base>-grey-1024px.png and grey/<base>-grey-512px.png. Run this after
-// the desaturation tool; check_index.py flags a grey PNG older than its SVG.
+// grey/<base>-grey-1024px.png and grey/<base>-grey-512px.png, and a sidecar
+// grey/<base>-grey.render.json records the SHA-256 of the SVG rendered and of
+// each PNG produced. check_index.py compares those hashes (never timestamps —
+// a fresh clone gets whatever mtimes Git hands out), so a grey SVG regenerated
+// without a re-render, or a PNG edited by hand, fails the gate. Run this after
+// the desaturation tool.
 
 import { Resvg } from "@resvg/resvg-js";
+import { createHash } from "node:crypto";
 import { readdirSync, readFileSync, writeFileSync, statSync } from "node:fs";
-import { join, dirname } from "node:path";
+import { join, dirname, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import { createRequire } from "node:module";
+
+const require = createRequire(import.meta.url);
+const RESVG_VERSION = require("@resvg/resvg-js/package.json").version;
+const sha256 = (buf) => createHash("sha256").update(buf).digest("hex");
 
 const repoRoot = join(dirname(fileURLToPath(import.meta.url)), "..");
 const GROUPS = ["satellites", "other-spacecraft"];
@@ -66,15 +76,33 @@ for (const group of GROUPS) {
 
     for (const [svgDir, svgName] of jobs) {
       const base = svgName.replace(/\.svg$/, "");
-      const svg = readFileSync(join(svgDir, svgName), "utf8");
+      const svgBytes = readFileSync(join(svgDir, svgName));
+      const svg = svgBytes.toString("utf8");
+      const renders = {};
+      let failed = false;
       for (const width of WIDTHS) {
         try {
           const resvg = new Resvg(svg, { fitTo: { mode: "width", value: width } });
-          writeFileSync(join(svgDir, `${base}-${width}px.png`), resvg.render().asPng());
+          const png = resvg.render().asPng();
+          const pngName = `${base}-${width}px.png`;
+          writeFileSync(join(svgDir, pngName), png);
+          renders[pngName] = sha256(png);
           rendered++;
         } catch (err) {
+          failed = true;
           problems.push(`${group}/${folder}/${svgName} @${width}px: ${err.message}`);
         }
+      }
+      // Provenance sidecar for grey twins only (the gate reads it there). A
+      // failed render leaves no sidecar, so the gate reports the folder.
+      if (svgDir !== dir && !failed) {
+        const stamp = {
+          source: relative(repoRoot, join(svgDir, svgName)),
+          svg_sha256: sha256(svgBytes),
+          renderer: `@resvg/resvg-js ${RESVG_VERSION}`,
+          renders,
+        };
+        writeFileSync(join(svgDir, `${base}.render.json`), JSON.stringify(stamp, null, 2) + "\n");
       }
     }
   }

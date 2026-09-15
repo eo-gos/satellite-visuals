@@ -714,12 +714,23 @@ class GreyTwinTests(unittest.TestCase):
     def tearDown(self):
         self._tmp.cleanup()
 
-    def _render_pngs(self):
-        # The PNG renderer is node-side; the gate only needs the files to exist
-        # and be newer than the SVG.
-        for field in ("PNGGrey1024Path", "PNGGrey512Path"):
-            p = self.root / self.entry[field]
-            p.write_bytes(b"png")
+    def _render_pngs(self, entry=None, content=b"png"):
+        # The PNG renderer is node-side; the gate only needs the files and the
+        # provenance sidecar (hash of the grey SVG rendered, hash of each PNG),
+        # which desaturate_svg.write_render_stamp writes in the same shape.
+        entry = entry or self.entry
+        pngs = [entry["PNGGrey1024Path"], entry["PNGGrey512Path"]]
+        for rel in pngs:
+            (self.root / rel).write_bytes(content)
+        desaturate_svg.write_render_stamp(entry["SVGGreyPath"], pngs, "test", self.root)
+
+    def _age(self, rel, seconds):
+        """Move a file's mtime by `seconds` (negative = older). The gate must
+        never care; these tests prove it does not."""
+        import os
+        p = self.root / rel
+        t = p.stat().st_mtime + seconds
+        os.utime(p, (t, t))
 
     def test_luminance_matches_css_grayscale(self):
         self.assertEqual(desaturate_svg.grey_of("#ff0000"), "#363636")
@@ -786,16 +797,72 @@ class GreyTwinTests(unittest.TestCase):
         problems = check_entries([self.entry], self.root)
         self.assertTrue(any("still carries colour" in p for p in problems), problems)
 
-    def test_gate_fails_when_pngs_are_older_than_the_grey_svg(self):
+    def test_fresh_checkout_order_does_not_matter(self):
+        """Git writes files in its own order: PNGs may land before their SVG.
+        With content-based provenance the gate passes regardless of mtimes."""
         self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
         self._render_pngs()
-        import os
-        import time
-        grey = self.root / self.entry["SVGGreyPath"]
-        later = time.time() + 5
-        os.utime(grey, (later, later))
+        self._age(self.entry["PNGGrey1024Path"], -3600)
+        self._age(self.entry["PNGGrey512Path"], -3600)
+        self._age(self.entry["SVGGreyPath"], +3600)
+        self.assertEqual(check_entries([self.entry], self.root), [])
+
+    def test_regenerated_svg_with_newer_but_stale_pngs_fails(self):
+        """The colour source changes, the grey SVG is regenerated, the PNGs
+        are not re-rendered but carry newer timestamps: the sidecar's SVG hash
+        no longer matches, so the gate must fail."""
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        (self.root / self.entry["SVGColourPath"]).write_text(
+            self.COLOUR.replace("#374178", "#374179"), encoding="utf-8")
+        desaturate_svg.write_twin(self.entry, self.root)
+        self._age(self.entry["PNGGrey1024Path"], +3600)
+        self._age(self.entry["PNGGrey512Path"], +3600)
         problems = check_entries([self.entry], self.root)
-        self.assertTrue(any("older than the grey SVG" in p for p in problems), problems)
+        self.assertTrue(any("rendered from a different grey SVG" in p for p in problems),
+                        problems)
+
+    def test_edited_png_fails(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        (self.root / self.entry["PNGGrey512Path"]).write_bytes(b"tampered")
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("differs from the recorded render" in p for p in problems),
+                        problems)
+
+    def test_missing_render_stamp_fails(self):
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        (self.root / desaturate_svg.render_stamp_path(self.entry["SVGGreyPath"])).unlink()
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any(".render.json" in p for p in problems), problems)
+
+    def test_single_quoted_attributes_are_converted_and_gated(self):
+        """XML allows either quote style; a single-quoted paint attribute must
+        be desaturated like a double-quoted one, and a twin that still carries
+        one must fail the gate at apply level."""
+        src = ("<svg xmlns='http://www.w3.org/2000/svg'><defs><linearGradient id='g'>"
+               "<stop stop-color='#0000ff'/></linearGradient></defs>"
+               "<path fill='#ff0000' stroke='#00ff00' d='M0 0h1'/></svg>")
+        grey = desaturate_svg.desaturate(src)
+        self.assertIn("stop-color='#121212'", grey)
+        self.assertIn("fill='#363636' stroke='#b6b6b6'", grey)
+        self.assertEqual(desaturate_svg.chromatic_tokens(grey), [])
+        self.assertEqual(desaturate_svg.chromatic_tokens(src),
+                         ["#0000ff", "#ff0000", "#00ff00"])
+        # apply level: a colour SVG written this way yields a clean twin ...
+        (self.root / self.entry["SVGColourPath"]).write_text(src, encoding="utf-8")
+        self.entry.update(desaturate_svg.write_twin(self.entry, self.root))
+        self._render_pngs()
+        self.assertEqual(check_entries([self.entry], self.root), [])
+        # ... and a twin hand-edited back to a single-quoted colour is caught.
+        twin = self.root / self.entry["SVGGreyPath"]
+        twin.write_text(twin.read_text(encoding="utf-8").replace("fill='#363636'",
+                                                                 "fill='#ff0000'"),
+                        encoding="utf-8")
+        self._render_pngs()  # sidecar re-tied to the edited twin so only chroma fails
+        problems = check_entries([self.entry], self.root)
+        self.assertTrue(any("still carries colour" in p for p in problems), problems)
 
     def test_photo_only_entry_has_nothing_to_check(self):
         entry = {"folder": "photosat", "missionID": "", "SVGColourPath": "",
