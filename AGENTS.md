@@ -29,6 +29,8 @@ edit it here.
 
 ## Repo-local
 - Review trigger: george, builder
+- In non-interactive runs use the gh CLI for label and comment operations;
+  MCP connectors are unavailable there.
 - Gates in addition to the protocol: any ESA imagery change (background removal is banned; every ESA image
   carries the ESA-Standard-Licence notice), publishing or removing any asset
   with licensing consequences (`ASSET-LICENSING.md` is binding), and any
