@@ -138,7 +138,7 @@ What each asset does:
 |---|---|---|
 | licensed photo + its cutout or clean render | the mission page | **yes** — this is the point |
 | `<name>-icon.svg` | mission lists, timelines, launch markers | no — lists just omit the icon |
-| `grey/<name>-grey.svg` + PNGs | the served form of a house drawing (derived from `<name>.svg` by `tools/desaturate_svg.py`; `check_index.py` fails when missing or stale) | only where a colour SVG exists |
+| `grey/<name>-grey.svg` + PNGs + `.render.json` | the greyscale twin of a house drawing, the form the Explorer will show once the API is switched to it (derived from `<name>.svg` by `tools/desaturate_svg.py`, rendered by `tools/render_pngs.mjs`; `check_index.py` fails when missing, stale, chromatic, or not rendered from the current twin) | only where a colour SVG exists |
 | `<name>.svg` colour vector + its PNG renders | fallback when there is no photo | no |
 
 `index.json` carries an explicit `folder` field on every entry — that is the entry's

@@ -15,6 +15,7 @@ satellites/<name>/
   grey/<name>-grey.svg         greyscale twin of <name>.svg (derived: tools/desaturate_svg.py)
   grey/<name>-grey-1024px.png  render of the grey twin (tools/render_pngs.mjs)
   grey/<name>-grey-512px.png   render of the grey twin
+  grey/<name>-grey.render.json provenance: hashes of the grey SVG rendered and the PNGs produced
   <name>-photo.<ext>          raw sourced photo, bit-identical to source (evidence-grade)
   <name>-photo-cut-1024px.png  transparent cutout, natural aspect, max-dim 1024 (derived)
   <name>-photo-cut-512px.png   smaller cutout for cards (derived)
@@ -25,15 +26,18 @@ satellites/<name>/
 
 Lowercase matters: these paths are served from a case-sensitive Linux bind-mount.
 
-**House drawings are served in greyscale.** The colour SVG is the master and
-stays in the repository; the Explorer and the API show the `grey/` twin, a
-luminance-only copy derived from it (CSS `grayscale(1)` weights). Photographs are
-never desaturated, so a grey image reads as "our drawing" and a colour one as
-"the rights holder's picture". Regenerate the twins after editing any colour SVG:
+**House drawings have a greyscale twin.** The colour SVG is the master and
+stays in the repository; the `grey/` twin is a luminance-only copy derived from
+it (CSS `grayscale(1)` weights), intended as the form the Explorer and the API
+show for a house drawing once the API is switched to it (a separate eogos-api
+change; until then the colour render is still what is served). Photographs are
+never desaturated, so a grey image will read as "our drawing" and a colour one
+as "the rights holder's picture". Regenerate the twins after editing any colour
+SVG:
 
 ```
 python3 tools/desaturate_svg.py && (cd tools && node render_pngs.mjs)
-python3 tools/check_index.py        # fails on a missing, stale or chromatic twin
+python3 tools/check_index.py        # fails on a missing, stale or chromatic twin, or PNGs not rendered from it
 ```
 
 **Not every folder has every file.** A folder with a licensed photo and no house
