@@ -12,6 +12,9 @@ satellites/<name>/
   <name>-icon.svg              monochrome icon vector (original work)
   <name>-1024px.png            render of <name>.svg (regenerate with tools/render_pngs.mjs)
   <name>-512px.png             render of <name>.svg
+  grey/<name>-grey.svg         greyscale twin of <name>.svg (derived: tools/desaturate_svg.py)
+  grey/<name>-grey-1024px.png  render of the grey twin (tools/render_pngs.mjs)
+  grey/<name>-grey-512px.png   render of the grey twin
   <name>-photo.<ext>          raw sourced photo, bit-identical to source (evidence-grade)
   <name>-photo-cut-1024px.png  transparent cutout, natural aspect, max-dim 1024 (derived)
   <name>-photo-cut-512px.png   smaller cutout for cards (derived)
@@ -21,6 +24,17 @@ satellites/<name>/
 ```
 
 Lowercase matters: these paths are served from a case-sensitive Linux bind-mount.
+
+**House drawings are served in greyscale.** The colour SVG is the master and
+stays in the repository; the Explorer and the API show the `grey/` twin, a
+luminance-only copy derived from it (CSS `grayscale(1)` weights). Photographs are
+never desaturated, so a grey image reads as "our drawing" and a colour one as
+"the rights holder's picture". Regenerate the twins after editing any colour SVG:
+
+```
+python3 tools/desaturate_svg.py && (cd tools && node render_pngs.mjs)
+python3 tools/check_index.py        # fails on a missing, stale or chromatic twin
+```
 
 **Not every folder has every file.** A folder with a licensed photo and no house
 artwork is valid — the mission page shows the photo, and lists show an icon only
