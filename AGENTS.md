@@ -14,7 +14,7 @@ or chatter. Never log against a project not
 permitted by `.diamondsky/project.json`; if attribution is uncertain, do not
 log.
 
-## Diamond Sky agent protocol (ds-collab v1.1)
+## Diamond Sky agent protocol (ds-collab v1.2)
 
 Read `.diamondsky/PROTOCOL.md` before building or reviewing. Minimum
 rules if you read nothing else: Claude Code builds, Codex reviews, the PR
@@ -28,7 +28,7 @@ Unsure means gated.
 edit it here.
 
 ## Repo-local
-- Review trigger: george (pilot)
+- Review trigger: george, builder
 - Gates in addition to the protocol: any ESA imagery change (background removal is banned; every ESA image
   carries the ESA-Standard-Licence notice), publishing or removing any asset
   with licensing consequences (`ASSET-LICENSING.md` is binding), and any

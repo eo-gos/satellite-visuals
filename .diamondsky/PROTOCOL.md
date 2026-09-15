@@ -1,6 +1,6 @@
-<!-- ds-collab v1.1. Generated from diamond-sky-steward@c8debbc. Do not edit here. -->
+<!-- ds-collab v1.2. Generated from diamond-sky-steward@57c23dc. Do not edit here. -->
 
-# Diamond Sky agent collaboration protocol (ds-collab v1.1)
+# Diamond Sky agent collaboration protocol (ds-collab v1.2)
 
 Applies in any repo containing .diamondsky/project.json.
 
@@ -46,11 +46,22 @@ Applies in any repo containing .diamondsky/project.json.
   scope or intent is quoted into the PR by that agent.
 
 ## Review (CX)
-- CC applies the `cx-review` label when a cycle is ready. The trigger
-  mode is set in the repo's Repo-local block: `george` (default, and
-  the pilot setting): the label records readiness only and each pass
-  requires George's explicit request; `label`: the label itself starts
-  the pass. Remove the label when you post your verdict.
+- CC applies the `cx-review` label when a cycle is ready. The repo's
+  Repo-local block lists the trigger modes in force, any combination of:
+  `george`: each pass requires George's explicit request;
+  `builder`: CC starts the pass itself by running Codex non-interactively
+  in the repo with exactly the phrase `Review <cycle id> per protocol`
+  and nothing else;
+  `scheduled`: a scheduled Codex job reviews any open PR carrying the
+  label. Default and pilot setting: `george`.
+- Claim the cycle before a pass starts: replace `cx-review` with
+  `cx-reviewing`. If the swap fails, do not review. Remove
+  `cx-reviewing` when you post the verdict. A scheduled job never
+  touches a claimed cycle and only picks up a `cx-review` label that
+  is at least 15 minutes old. Before posting, re-read the PR; if a
+  verdict for the same head commit already exists since the label was
+  applied, post nothing. Passes are counted per distinct head commit
+  reviewed, so a duplicate verdict never consumes budget.
 - Read the issue and the diff before the handoff. Run the declared
   reviewer-safe checks appropriate to the change, and independently
   chosen reviewer-safe checks where needed. Never run anything that
