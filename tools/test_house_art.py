@@ -20,8 +20,11 @@ Runs on Pillow alone; no numpy, no network.
     . .venv/bin/activate && python3 -m unittest tools.test_house_art -v
 """
 
+import base64
 import csv
+import io
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -790,6 +793,116 @@ class SilhouetteRowTests(unittest.TestCase):
                       'data-icon-call="1"', 'class="guide"'):
             self.assertIn(token, html)
         self.assertIn("satellite-visuals/house-art-review/2", make_art_checker.SCRIPT)
+
+
+class IconSixteenPxTests(unittest.TestCase):
+    """The 16 px cell must show the raster the legibility call was made on.
+
+    CX #144 pass 1: the cell embedded a 256 px JPEG and let the browser scale it
+    to 16 px and to 128 px, so the "magnified" view kept detail the real
+    downsample destroys, and both boxes were forced square — gaofen-2's icon is
+    256x106. A reviewer was deciding against a picture that had never been
+    rendered. These tests decode the embedded raster rather than trusting the
+    HTML labels."""
+
+    ORIG = CheckerRowTests.ORIG
+    SRC = (256, 106)          # deliberately non-square, gaofen-2's real shape
+
+    def setUp(self):
+        from PIL import Image, ImageDraw
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.base = self.tmp / "testsat"
+        self.base.mkdir()
+        kit.render(minimal_scene(), self.base / "testsat.svg",
+                   self.base / "testsat-icon.svg")
+        (self.base / "description.json").write_text(json.dumps(minimal_description()),
+                                                    encoding="utf-8")
+        # a transparent-background icon render, the way render_svg produces one
+        im = Image.new("RGBA", self.SRC, (0, 0, 0, 0))
+        dr = ImageDraw.Draw(im)
+        dr.rectangle([90, 10, 165, 95], fill=(0, 0, 0, 255))
+        dr.rectangle([0, 40, 256, 62], fill=(0, 0, 0, 255))
+        self.render = self.base / "testsat-icon-render.png"
+        im.save(self.render)
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _imgs(self):
+        """(src, width attr, height attr) for the px16 and px16big images."""
+        html = make_art_checker.row_html(
+            "testsat", minimal_description(), self.ORIG, {},
+            checks.icon_legibility(self.render), {}, has_icon=True)
+        out = {}
+        for cls in ("px16", "px16big"):
+            m = re.search(r'<img class="%s" src="([^"]+)" width="(\d+)" height="(\d+)"' % cls,
+                          html)
+            self.assertIsNotNone(m, f"no {cls} image in the row")
+            out[cls] = (m.group(1), int(m.group(2)), int(m.group(3)))
+        return html, out
+
+    @staticmethod
+    def _decode(src):
+        from PIL import Image
+        head, b64 = src.split(",", 1)
+        return head, Image.open(io.BytesIO(base64.b64decode(b64)))
+
+    def test_embedded_raster_is_the_real_16px_thumbnail(self):
+        _, imgs = self._imgs()
+        head, im = self._decode(imgs["px16"][0])
+        self.assertTrue(head.startswith("data:image/png"), head)
+        want = checks.icon_thumbnail(self.render, 16)
+        self.assertEqual(im.size, want.size)
+        self.assertEqual(max(im.size), 16)
+
+    def test_embedded_pixels_equal_the_pixels_that_were_measured(self):
+        """Not merely the same dimensions: the same image, losslessly."""
+        _, imgs = self._imgs()
+        _, im = self._decode(imgs["px16"][0])
+        want = checks.icon_thumbnail(self.render, 16)
+        self.assertEqual(list(im.convert("L").getdata()), list(want.getdata()))
+
+    def test_aspect_is_preserved_and_not_forced_square(self):
+        _, imgs = self._imgs()
+        _, im = self._decode(imgs["px16"][0])
+        self.assertNotEqual(im.width, im.height, "a 256x106 icon must not come out square")
+        src_aspect = self.SRC[0] / self.SRC[1]
+        self.assertLess(abs(im.width / im.height - src_aspect), 0.35)
+        # and the HTML must not re-impose a square through its attributes
+        self.assertEqual((imgs["px16"][1], imgs["px16"][2]), im.size)
+
+    def test_magnification_is_of_that_same_raster(self):
+        _, imgs = self._imgs()
+        self.assertEqual(imgs["px16"][0], imgs["px16big"][0],
+                         "the enlarged view must be the 16 px raster, not a bigger one")
+
+    def test_magnification_is_an_integer_factor(self):
+        """A non-integer scale resamples, which is the thing being avoided."""
+        _, imgs = self._imgs()
+        z = make_art_checker.ICON_ZOOM
+        self.assertEqual(imgs["px16big"][1], imgs["px16"][1] * z)
+        self.assertEqual(imgs["px16big"][2], imgs["px16"][2] * z)
+        self.assertEqual(z, int(z))
+
+    def test_css_does_not_force_a_square_box_on_the_16px_images(self):
+        css = make_art_checker.CSS
+        self.assertNotIn("img.px16,.px16{width:16px;height:16px", css)
+        self.assertNotIn("img.px16big,.px16big{width:128px;height:128px", css)
+        self.assertIn("img.px16big{image-rendering:pixelated}", css)
+
+    def test_the_caption_states_the_real_pixel_size(self):
+        html, imgs = self._imgs()
+        w, h = imgs["px16"][1], imgs["px16"][2]
+        self.assertIn(f"actual {w}&times;{h}", html)
+
+    def test_a_missing_render_still_falls_back_and_forces_the_icon_call(self):
+        self.render.unlink()
+        html = make_art_checker.row_html("testsat", minimal_description(), self.ORIG,
+                                         {}, None, {}, has_icon=True)
+        self.assertIn("no render", html)
+        self.assertIn('data-icon-call="1"', html)
+        self.assertNotIn('<img class="px16"', html)
 
 
 class ComparisonStripTests(unittest.TestCase):

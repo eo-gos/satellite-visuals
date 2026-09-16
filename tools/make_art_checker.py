@@ -194,20 +194,46 @@ def comparison_html(folder, base, review, refs_local, refs):
             f'<div class="comparestrip">{"".join(cells)}</div></div>')
 
 
-def icon_16_cell(icon_png, icon_svg, icon16):
-    """The 16 px check: the icon render at true size, and magnified beside it so
-    a person can see what breaks up. Falls back to the SVG when the render is
+# The 16 px preview is magnified by an integer factor and nothing else: any
+# non-integer scale resamples, and resampling is exactly what must not happen
+# between the raster that was measured and the picture that is judged.
+ICON_ZOOM = 8
+
+
+def icon_16_data_uri(icon_png, size=16):
+    """(data URI, width, height) of the real `size` px thumbnail.
+
+    PNG, not JPEG: this is the image `checks.icon_legibility` counted
+    components in, and a lossy re-encode of a 16 px raster would change the
+    very pixels the decision is about. The dimensions come back with it because
+    the thumbnail preserves aspect and is usually not square.
+    """
+    im = art_checks.icon_thumbnail(icon_png, size)
+    buf = io.BytesIO()
+    im.save(buf, "PNG", optimize=True)
+    return ("data:image/png;base64," + base64.b64encode(buf.getvalue()).decode(),
+            im.width, im.height)
+
+
+def icon_16_cell(icon_png, icon_svg, icon16, size=16):
+    """The 16 px check: the measured thumbnail at native size, and the SAME
+    thumbnail enlarged by an integer factor with nearest-neighbour so a person
+    can see which pixels survived. Falls back to the SVG when the render is
     missing, which is also the case that forces an explicit icon call."""
     if Path(icon_png).exists():
-        src = data_uri(icon_png, 256, 90)
-        marks = (f'<img class="px16" src="{src}" alt="icon at 16 px">'
-                 f'<img class="px16big" src="{src}" alt="icon at 16 px, magnified">')
-        note = ("16 px" if icon16 is None or icon16["legible"]
-                else f'16 px &mdash; breaks into {icon16["components"]}')
+        src, w, h = icon_16_data_uri(icon_png, size)
+        marks = (f'<img class="px16" src="{src}" width="{w}" height="{h}" '
+                 f'alt="icon at {w} by {h} px">'
+                 f'<img class="px16big" src="{src}" width="{w * ICON_ZOOM}" '
+                 f'height="{h * ICON_ZOOM}" alt="the same {w} by {h} px icon, '
+                 f'enlarged {ICON_ZOOM} times">')
+        note = (f'{size}&nbsp;px &middot; actual {w}&times;{h}'
+                + ("" if icon16 is None or icon16["legible"]
+                   else f' &mdash; breaks into {icon16["components"]}'))
     else:
-        marks = (f'<div class="px16 svgfallback">{inline_svg(icon_svg, "sil")}</div>'
-                 f'<div class="px16big svgfallback">{inline_svg(icon_svg, "sil")}</div>')
-        note = "16 px &mdash; no render"
+        marks = (f'<div class="px16fallback svgfallback">{inline_svg(icon_svg, "sil")}</div>'
+                 f'<div class="px16bigfallback svgfallback">{inline_svg(icon_svg, "sil")}</div>')
+        note = f"{size}&nbsp;px &mdash; no render"
     return (f'<figure class="sil"><div class="plate light tiny">{marks}</div>'
             f'<figcaption>{note}</figcaption></figure>')
 
@@ -385,8 +411,13 @@ main{padding:22px 32px 60px;display:flex;flex-direction:column;gap:22px}
  display:flex;align-items:center;justify-content:center}
 .mark svg.sil{width:100%;height:100%;display:block}
 .plate.tiny{gap:22px}
-img.px16,.px16{width:16px;height:16px;image-rendering:auto}
-img.px16big,.px16big{width:128px;height:128px;image-rendering:pixelated}
+/* No width/height here on purpose: the 16 px images carry their own attributes,
+   which preserve the thumbnail's real aspect. A square CSS box would stretch
+   every icon that is not square (CX #144 pass 1: gaofen-2 is 256x106). */
+img.px16{image-rendering:auto}
+img.px16big{image-rendering:pixelated}
+.px16fallback{width:16px;height:16px}
+.px16bigfallback{width:128px;height:128px}
 .svgfallback svg.sil{width:100%;height:100%;display:block;color:#1d2124}
 .sil.noicon .plate span{font-size:11px;color:var(--mute);padding:0 16px;text-align:center}
 .sil.wide .artbox{width:300px;height:240px;min-height:0}
