@@ -624,6 +624,95 @@ class CheckerRowTests(unittest.TestCase):
         self.assertIn('data-candidate="', html)
 
 
+class SilhouetteRowTests(unittest.TestCase):
+    """The review target is the SILHOUETTE the Explorer actually shows on a
+    mission page with no licensed photograph (George, 2026-09-16): the icon SVG
+    masked in the muted text colour at 0.75 opacity, 62% of the plate. The page
+    must show that first, on both plates, and must show it from the ICON, not
+    from the colour drawing."""
+
+    ORIG = CheckerRowTests.ORIG
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        base = self.tmp / "testsat"
+        base.mkdir()
+        kit.render(minimal_scene(), base / "testsat.svg", base / "testsat-icon.svg")
+        (base / "description.json").write_text(json.dumps(minimal_description()),
+                                               encoding="utf-8")
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _row(self, icon16=None, has_icon=True, description=None):
+        return make_art_checker.row_html("testsat", description or minimal_description(),
+                                         self.ORIG, {}, icon16, {}, has_icon=has_icon)
+
+    def test_row_leads_with_both_explorer_plates(self):
+        html = self._row()
+        self.assertIn('class="silstrip"', html)
+        self.assertIn('class="plate dark"', html)
+        self.assertIn('class="plate light"', html)
+        # and the silhouette strip comes before the reference/description grid
+        self.assertLess(html.index('class="silstrip"'), html.index('class="grid"'))
+
+    def test_plate_tokens_match_the_portal(self):
+        css = make_art_checker.CSS
+        self.assertIn(make_art_checker.PLATE_DARK, css)
+        self.assertIn(make_art_checker.PLATE_LIGHT, css)
+        self.assertIn(make_art_checker.PLATE_MUTED, css)
+        self.assertIn(f"width:{make_art_checker.PLATE_MARK_PCT}%", css)
+        self.assertIn("opacity:.75", css)
+        # no placeholder survived the substitution
+        self.assertNotIn("__PLATE", css)
+        self.assertNotIn("__MARK", css)
+
+    def test_silhouette_is_the_icon_not_the_colour_drawing(self):
+        """The mask must come from <folder>-icon.svg. It is currentColor-filled,
+        so the plate can tint it; the colour master never is."""
+        html = self._row()
+        mark = html.split('class="mark"', 1)[1].split("</div>", 1)[0]
+        self.assertIn("fill:currentColor", mark)
+        self.assertNotIn(kit.PALETTE["panel_m"], mark)
+
+    def test_grey_twin_and_colour_master_are_both_present(self):
+        html = self._row()
+        self.assertIn("grey twin", html)
+        self.assertIn("colour master", html)
+        # the grey twin is desaturated, the master is not
+        twin = html.split("grey twin", 1)[0]
+        self.assertNotIn(kit.PALETTE["panel_m"], twin.rsplit('class="artbox"', 1)[-1])
+
+    def test_sixteen_px_cell_says_when_the_icon_breaks_up(self):
+        self.assertIn("breaks into 3", self._row({"legible": False, "components": 3}))
+        self.assertNotIn("breaks into", self._row({"legible": True, "components": 1}))
+
+    def test_missing_icon_render_is_stated_on_the_row(self):
+        """No render to check is exactly the case that forces an icon call, so
+        the cell must say so rather than showing nothing."""
+        html = self._row(None, has_icon=True)
+        self.assertIn("no render", html)
+        self.assertIn('data-icon-call="1"', html)
+
+    def test_a_row_without_an_icon_says_so_instead_of_faking_a_plate(self):
+        html = self._row(None, has_icon=False)
+        self.assertIn("no icon", html)
+        self.assertNotIn('class="plate dark"', html)
+
+    def test_reference_caveat_is_shown_when_present(self):
+        d = minimal_description(reference_caveat="bus inferred from a sibling")
+        self.assertIn("bus inferred from a sibling", self._row(description=d))
+
+    def test_controls_and_export_contract_are_unchanged(self):
+        html = self._row({"legible": False, "components": 3})
+        for token in ('data-act="approve"', 'data-act="regenerate"', 'data-act="reject"',
+                      'data-act="keep"', 'data-act="drop"', 'data-candidate="',
+                      'data-icon-call="1"', 'class="guide"'):
+            self.assertIn(token, html)
+        self.assertIn("satellite-visuals/house-art-review/2", make_art_checker.SCRIPT)
+
+
 @unittest.skipIf(shutil.which("node") is None, "node not available")
 class CheckerLogicTests(unittest.TestCase):
     """The page's decision logic, run under node exactly as shipped (the LOGIC
