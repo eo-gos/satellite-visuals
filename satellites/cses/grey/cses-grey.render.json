@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cses/grey/cses-grey.svg",
+  "svg_sha256": "d526f00e06d0b6513cfd649b7cd7998c59cad41b432d29b3f4e7672786299fef",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cses-grey-1024px.png": "5971727137d9144a4a7bf40ae0434f63b6c06ce9d53da5c6f2da7b87968d5344",
+    "cses-grey-512px.png": "48f0cba878f14650b378ecb2a473fe07cf120ab01208a040e8b164c17529a92c"
+  }
+}

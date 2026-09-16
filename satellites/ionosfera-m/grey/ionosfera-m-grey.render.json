@@ -1,0 +1,9 @@
+{
+  "source": "satellites/ionosfera-m/grey/ionosfera-m-grey.svg",
+  "svg_sha256": "f78a940f5240f79cb99fe163f09e8ac40c10beb144aeec916aacc9d8d8c86b8d",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "ionosfera-m-grey-1024px.png": "6e5f076b77e3c6ec697512a972d8d38f14d00c3d35fbab2f36548b0a83acafab",
+    "ionosfera-m-grey-512px.png": "686ea8f1dc21ac7db1b6f866ae69553e49feb28b33fb803a7972f51f4bf1ca14"
+  }
+}

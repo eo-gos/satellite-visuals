@@ -162,13 +162,18 @@ def check_projection(scene, asserts):
             "asserts": len(asserts or []), "report": report, "problems": problems}
 
 
-def icon_legibility(icon_svg_png, size=16, min_ink=0.09):
-    """Does the silhouette survive at `size` px?
+def icon_thumbnail(icon_svg_png, size=16):
+    """THE raster the legibility call is made on: flattened onto white,
+    greyscaled, and downsampled to fit `size` with its aspect preserved.
 
-    Some spacecraft genuinely do not survive it — widely spaced arrays on booms
-    break into separate blobs — and that is a property of the vehicle, not a
-    defect in the drawing. The lane surfaces it as an explicit decision rather
-    than shipping an illegible icon: see TASKING.md, "the 16 px icon question".
+    This is a function rather than four lines inside `icon_legibility` so that
+    the review page can embed the very same image it measured. Showing a
+    reviewer a differently-produced picture and a number computed from this one
+    invites them to decide against a raster that was never rendered (CX #144
+    pass 1): a larger raster scaled down by the browser keeps detail that the
+    real downsample destroys, and forcing a square box distorts any icon that
+    is not square. Aspect is preserved here, so callers must use the returned
+    image's own width and height rather than assuming `size` x `size`.
     """
     im = Image.open(icon_svg_png)
     if im.mode in ("RGBA", "LA", "P"):
@@ -178,6 +183,18 @@ def icon_legibility(icon_svg_png, size=16, min_ink=0.09):
         im = bg
     im = im.convert("L")
     im.thumbnail((size, size), Image.LANCZOS)
+    return im
+
+
+def icon_legibility(icon_svg_png, size=16, min_ink=0.09):
+    """Does the silhouette survive at `size` px?
+
+    Some spacecraft genuinely do not survive it — widely spaced arrays on booms
+    break into separate blobs — and that is a property of the vehicle, not a
+    defect in the drawing. The lane surfaces it as an explicit decision rather
+    than shipping an illegible icon: see TASKING.md, "the 16 px icon question".
+    """
+    im = icon_thumbnail(icon_svg_png, size)
     mask = im.point(lambda v: 255 if v < 170 else 0).convert("1")
     ink = _count(mask) / float(im.width * im.height)
 

@@ -111,6 +111,133 @@ def icon_call_required(has_icon, icon16):
     return bool(has_icon) and (icon16 is None or not icon16["legible"])
 
 
+# ------------------------------------------------- the Explorer's own plate --
+# What a reader actually sees on a mission page with no licensed photograph
+# (George, 2026-09-16): a div masked by <folder>-icon.svg, filled in the muted
+# text colour at 0.75 opacity, occupying 62% of the plate. So the review target
+# is the SILHOUETTE — the union outline of our own structural polygons — not the
+# colour drawing, and the page shows it first, on both plates, at plate size.
+# The icon SVG is emitted with fill:currentColor, so inlining it inside an
+# element that sets `color` and `opacity` reproduces the portal's mask exactly
+# and stays vector at any zoom.
+PLATE_MUTED = "#8a8f98"
+PLATE_DARK = "#1f2937"
+PLATE_LIGHT = "#f3f4f6"
+PLATE_MARK_PCT = 62
+
+
+def silhouette_plate(icon_svg, tone, caption):
+    """One Explorer plate: the icon SVG masked and muted the way the page does."""
+    return (f'<figure class="sil"><div class="plate {esc(tone)}">'
+            f'<div class="mark">{inline_svg(icon_svg, "sil")}</div></div>'
+            f'<figcaption>{caption}</figcaption></figure>')
+
+
+def review_round(base):
+    """Optional round-over-round record for a regenerated candidate.
+
+    `<folder>/review.json` carries what the previous round was told to fix:
+
+        {"round": 2, "previous_decision": "regenerate",
+         "guidance": "<the reviewer's words, verbatim>",
+         "named_reference": 3}
+
+    and `<folder>/round1/` holds that round's artwork. When both are present the
+    row leads with a comparison: the previous silhouette beside the new one, and
+    the reference the reviewer named at a size you can actually judge, so a
+    re-review does not mean opening three windows and a file browser.
+    """
+    path = Path(base) / "review.json"
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def previous_round_dir(base, review):
+    """Where the previous round's artwork lives, or None if it was not kept."""
+    if not review:
+        return None
+    prev = Path(base) / f"round{int(review.get('round', 2)) - 1}"
+    icon = prev / f"{Path(base).name}-icon.svg"
+    return prev if icon.is_file() else None
+
+
+def comparison_html(folder, base, review, refs_local, refs):
+    """Previous silhouette, new silhouette, and the named reference beside them."""
+    prev = previous_round_dir(base, review)
+    cells = []
+    if prev:
+        cells.append(silhouette_plate(prev / f"{folder}-icon.svg", "light",
+                                      f"round {int(review.get('round', 2)) - 1} silhouette"))
+    cells.append(silhouette_plate(base / f"{folder}-icon.svg", "light",
+                                  f"round {esc(review.get('round', 2))} silhouette"))
+    n = review.get("named_reference")
+    named = next((r for r in refs if r.get("n") == n), None)
+    path = refs_local.get(n) if named else None
+    if path and Path(path).exists():
+        cells.append(
+            f'<figure class="sil ref-named"><a href="{esc(named.get("source_page") or "")}" '
+            f'target="_blank" rel="noopener">'
+            f'<img src="{data_uri(path, 640, 84)}" alt="reference {esc(n)}"></a>'
+            f'<figcaption>reference {esc(n)} &mdash; the one the note names'
+            f'{(" &middot; " + esc(named.get("credit", ""))) if named.get("credit") else ""}'
+            f'</figcaption></figure>')
+    guidance = review.get("guidance")
+    quote = (f'<blockquote class="guidance">{esc(guidance)}</blockquote>'
+             if guidance else "")
+    return (f'<div class="compare"><h3>Round {esc(review.get("round", 2))} '
+            f'&mdash; what the last round said</h3>{quote}'
+            f'<div class="comparestrip">{"".join(cells)}</div></div>')
+
+
+# The 16 px preview is magnified by an integer factor and nothing else: any
+# non-integer scale resamples, and resampling is exactly what must not happen
+# between the raster that was measured and the picture that is judged.
+ICON_ZOOM = 8
+
+
+def icon_16_data_uri(icon_png, size=16):
+    """(data URI, width, height) of the real `size` px thumbnail.
+
+    PNG, not JPEG: this is the image `checks.icon_legibility` counted
+    components in, and a lossy re-encode of a 16 px raster would change the
+    very pixels the decision is about. The dimensions come back with it because
+    the thumbnail preserves aspect and is usually not square.
+    """
+    im = art_checks.icon_thumbnail(icon_png, size)
+    buf = io.BytesIO()
+    im.save(buf, "PNG", optimize=True)
+    return ("data:image/png;base64," + base64.b64encode(buf.getvalue()).decode(),
+            im.width, im.height)
+
+
+def icon_16_cell(icon_png, icon_svg, icon16, size=16):
+    """The 16 px check: the measured thumbnail at native size, and the SAME
+    thumbnail enlarged by an integer factor with nearest-neighbour so a person
+    can see which pixels survived. Falls back to the SVG when the render is
+    missing, which is also the case that forces an explicit icon call."""
+    if Path(icon_png).exists():
+        src, w, h = icon_16_data_uri(icon_png, size)
+        marks = (f'<img class="px16" src="{src}" width="{w}" height="{h}" '
+                 f'alt="icon at {w} by {h} px">'
+                 f'<img class="px16big" src="{src}" width="{w * ICON_ZOOM}" '
+                 f'height="{h * ICON_ZOOM}" alt="the same {w} by {h} px icon, '
+                 f'enlarged {ICON_ZOOM} times">')
+        note = (f'{size}&nbsp;px &middot; actual {w}&times;{h}'
+                + ("" if icon16 is None or icon16["legible"]
+                   else f' &mdash; breaks into {icon16["components"]}'))
+    else:
+        marks = (f'<div class="px16fallback svgfallback">{inline_svg(icon_svg, "sil")}</div>'
+                 f'<div class="px16bigfallback svgfallback">{inline_svg(icon_svg, "sil")}</div>')
+        note = f"{size}&nbsp;px &mdash; no render"
+    return (f'<figure class="sil"><div class="plate light tiny">{marks}</div>'
+            f'<figcaption>{note}</figcaption></figure>')
+
+
 def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     thumbs = []
     for r in d.get("references", []):
@@ -164,6 +291,25 @@ def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     margin = orig.get("margin_over_control_p95")
     grade = d.get("evidence", "C")
 
+    review = review_round(base)
+    icon_svg = base / f"{folder}-icon.svg"
+    colour_svg = base / f"{folder}.svg"
+    silstrip = (
+        (silhouette_plate(icon_svg, "dark", "silhouette &middot; dark plate") +
+         silhouette_plate(icon_svg, "light", "silhouette &middot; light plate") +
+         icon_16_cell(base / f"{folder}-icon-render.png", icon_svg, icon16))
+        if has_icon else
+        '<figure class="sil noicon"><div class="plate light">'
+        '<span>no icon &mdash; nothing for the Explorer to show</span></div>'
+        '<figcaption>silhouette</figcaption></figure>')
+    silstrip += (
+        f'<figure class="sil wide"><div class="artbox">'
+        f'{inline_svg(colour_svg, "colour", grey=True)}</div>'
+        f'<figcaption>grey twin &mdash; what the API serves</figcaption></figure>'
+        f'<figure class="sil wide"><div class="artbox colourmaster">'
+        f'{inline_svg(colour_svg, "colour")}</div>'
+        f'<figcaption>colour master &mdash; kept, not shown on the page</figcaption></figure>')
+
     return f"""
 <section class="row" data-folder="{esc(folder)}" data-candidate="{esc(schema.candidate_fingerprint(base))}" data-icon-call="{'1' if icon_call else '0'}">
   <header class="rowhead">
@@ -174,6 +320,14 @@ def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     <div class="grade g{esc(grade)}" title="{esc(GRADE_TEXT.get(grade, ''))}">evidence {esc(grade)}</div>
     <div class="state">undecided</div>
   </header>
+  {comparison_html(folder, base, review, refs_local, d.get("references", [])) if review else ""}
+  <div class="silstrip">{silstrip}</div>
+  <p class="silnote">The Explorer shows the <b>silhouette</b> on a mission page with no
+    licensed photograph: the icon SVG masked in the muted text colour at 0.75 opacity,
+    {PLATE_MARK_PCT}% of the plate. Judge the row on whether that outline reads as this
+    spacecraft at plate size and survives 16&nbsp;px. The grey twin and the colour master
+    are by-products, shown for reference. Icon = union silhouette of our own colour-SVG
+    shapes, <code>fill:currentColor</code>; never traced from a photograph.</p>
   <div class="grid">
     <div class="col">
       <h3>References ({sum(1 for r in d.get("references", []) if r.get("downloaded"))} images,
@@ -181,21 +335,7 @@ def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
       <div class="refstrip">{''.join(thumbs)}</div>
       <p class="caveat"><b>Evidence {esc(grade)}:</b> {esc(d.get("evidence_note", ""))}</p>
       {share_html}
-    </div>
-    <div class="col">
-      <h3>Our drawing &mdash; {esc(folder)}.svg <span class="muted">(greyscale twin, as the Explorer will show it; colour master beside)</span></h3>
-      <div class="artpair">
-        <div class="artbox">{inline_svg(base / f"{folder}.svg", "colour", grey=True)}</div>
-        <div class="artbox colourmaster">{inline_svg(base / f"{folder}.svg", "colour")}</div>
-      </div>
-      <div class="iconrow">
-        <div class="iconcell"><div class="ic ic120">{inline_svg(base / f"{folder}-icon.svg", "icon")}</div><span>120 px</span></div>
-        <div class="iconcell"><div class="ic ic24">{inline_svg(base / f"{folder}-icon.svg", "icon")}</div><span>24 px</span></div>
-        <div class="iconcell"><div class="ic ic16">{inline_svg(base / f"{folder}-icon.svg", "icon")}</div>
-          <span>16 px{' &mdash; breaks up' if icon16 and not icon16["legible"] else ''}</span></div>
-        <div class="iconnote">icon = union silhouette of our own colour-SVG shapes,
-          <code>fill:currentColor</code></div>
-      </div>
+      {f'<p class="caveat"><b>Reference caveat:</b> {esc(d["reference_caveat"])}</p>' if d.get("reference_caveat") else ""}
     </div>
     <div class="col">
       <h3>Structured description</h3>
@@ -256,7 +396,42 @@ main{padding:22px 32px 60px;display:flex;flex-direction:column;gap:22px}
 .state{font-size:12px;font-weight:600;text-transform:uppercase;letter-spacing:.04em;
  color:var(--mute);min-width:118px;text-align:right}
 .state.approve{color:var(--ok)}.state.reject{color:var(--bad)}.state.regenerate{color:var(--warn)}
-.grid{display:grid;grid-template-columns:minmax(280px,1fr) minmax(320px,1.15fr) minmax(300px,1.05fr);gap:20px;padding:18px}
+.grid{display:grid;grid-template-columns:minmax(300px,1fr) minmax(320px,1.05fr);gap:20px;padding:18px}
+/* Silhouette first: the Explorer's own plates at plate size, then 16 px, then
+   the grey twin and the colour master as by-products. */
+.silstrip{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap;
+ padding:18px 18px 4px;background:#fbfcfc;border-bottom:1px solid var(--line)}
+.sil{margin:0}
+.sil figcaption{font-size:10.5px;color:var(--mute);margin-top:5px;text-align:center;max-width:240px}
+.plate{width:240px;height:240px;display:flex;align-items:center;justify-content:center;
+ border-radius:6px;overflow:hidden}
+.plate.dark{background:__PLATE_DARK__}
+.plate.light{background:__PLATE_LIGHT__;border:1px solid var(--line)}
+.mark{width:__MARK_PCT__%;height:__MARK_PCT__%;color:__PLATE_MUTED__;opacity:.75;
+ display:flex;align-items:center;justify-content:center}
+.mark svg.sil{width:100%;height:100%;display:block}
+.plate.tiny{gap:22px}
+/* No width/height here on purpose: the 16 px images carry their own attributes,
+   which preserve the thumbnail's real aspect. A square CSS box would stretch
+   every icon that is not square (CX #144 pass 1: gaofen-2 is 256x106). */
+img.px16{image-rendering:auto}
+img.px16big{image-rendering:pixelated}
+.px16fallback{width:16px;height:16px}
+.px16bigfallback{width:128px;height:128px}
+.svgfallback svg.sil{width:100%;height:100%;display:block;color:#1d2124}
+.sil.noicon .plate span{font-size:11px;color:var(--mute);padding:0 16px;text-align:center}
+.sil.wide .artbox{width:300px;height:240px;min-height:0}
+.silnote{font-size:11.5px;color:#3a4247;margin:0;padding:10px 18px;background:#fbfcfc;
+ border-bottom:1px solid var(--line)}
+.compare{padding:16px 18px 6px;background:#f4f7fa;border-bottom:1px solid var(--line)}
+.compare h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+ color:var(--accent)}
+blockquote.guidance{margin:0 0 12px;padding:8px 14px;border-left:3px solid var(--accent);
+ background:#fff;font-size:13px;color:#23303d}
+.comparestrip{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.sil.ref-named img{max-width:420px;max-height:300px;display:block;border:1px solid var(--line);
+ border-radius:6px;background:#fff}
+.sil.ref-named figcaption{max-width:420px}
 .col h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
 .refstrip{display:flex;flex-wrap:wrap;gap:8px}
 .ref{width:calc(50% - 4px)}
@@ -301,8 +476,17 @@ img.overlay{width:100%;max-width:280px;margin-top:8px;border:1px solid var(--lin
 .btn.on.reject,.btn.on.drop{background:var(--bad);border-color:var(--bad);color:#fff}
 .btn.on.regen{background:var(--warn);border-color:var(--warn);color:#fff}
 .guide{flex:1;min-width:220px;padding:7px 10px;border:1px solid var(--line);border-radius:5px;font-size:13px}
+.sil.wide svg.colour{width:auto;max-width:100%;max-height:224px}
 @media (max-width:1100px){.grid{grid-template-columns:1fr}}
 """
+
+# The plate tokens live in Python so the page and the tests read the same values
+# as the portal does; substituting them keeps CSS a plain literal (it is full of
+# braces, so an f-string would be unreadable).
+CSS = (CSS.replace("__PLATE_DARK__", PLATE_DARK)
+          .replace("__PLATE_LIGHT__", PLATE_LIGHT)
+          .replace("__PLATE_MUTED__", PLATE_MUTED)
+          .replace("__MARK_PCT__", str(PLATE_MARK_PCT)))
 
 LOGIC = """
 // Pure review logic, shared by the page and by tools/test_house_art.py (which

@@ -8,10 +8,16 @@ by the person writing that description, to know what the spacecraft looks like;
 they never reach the drawing. That is what makes the output our own copyright
 rather than a derivative of one particular render.
 
-Every polygon comes from a 3D primitive (box, chamfered prism, plate, solar
-wing, tube, tapered frustum, disc, dish, ribbed reflector, strut, detail plate)
-positioned from the description, then projected with an orthographic camera and
-flat-shaded from a fixed light direction into four tonal steps.
+Every polygon comes from a 3D primitive (box, chamfered prism, regular n-gon
+prism, plate, solar wing, tube, tapered frustum, disc, dish, ribbed reflector,
+strut, detail plate) positioned from the description, then projected with an
+orthographic camera and flat-shaded from a fixed light direction into four
+tonal steps.
+
+`ngon_prism` exists because a great many real buses are hexagonal drums with
+the wings hinged on two opposite side facets, not boxes with the wings on the
+ends; `facet_normal` gives the outward normal of a chosen facet so those
+mounts land on a face rather than being guessed.
 
 The mono icon is derived from OUR OWN colour geometry: the same structural
 polygons re-emitted in a single currentColor fill, which is the union silhouette
@@ -168,6 +174,54 @@ class Scene:
         for q in quads:
             out.append(self.add(Face(q, mat, struct)))
         return out
+
+    def ngon_prism(self, centre, r, h, n=6, mat="gold", axis="z", struct=True,
+                   caps=True, phase=0.0):
+        """Regular n-sided prism: an n-gon of circumradius `r` extruded `h` along
+        `axis` ("x", "y" or "z"), flat-shaded like every other solid.
+
+        Many real buses are not boxes. The ISRO IRS/IMS platforms and several
+        CAST and SAST buses are hexagonal drums with the wings hinged on two
+        opposite SIDE facets, and drawing them as a four-square box put the
+        wings on the wrong faces and lost the shape (George, batch-2 round 1:
+        cartosat-2, cartosat-3, emisat, eos-01, gaofen-9, gaofen-14).
+
+        `tube` would be wrong here: it is a cylinder approximated with enough
+        sides to read as round, whereas this is genuinely a polygon and must
+        keep its flat facets and hard vertical edges. `phase` rotates the
+        profile so a facet, rather than a vertex, can be presented to the
+        camera or to a wing hinge.
+        """
+        axis = {"x": (1, 0, 0), "y": (0, 1, 0), "z": (0, 0, 1)}[axis]
+        ref = (0, 0, 1) if abs(_dot(axis, (0, 0, 1))) < 0.9 else (1, 0, 0)
+        e1 = _n(_cross(axis, ref))
+        e2 = _cross(axis, e1)
+        p0 = _add(centre, _mul(axis, -h / 2))
+        p1 = _add(centre, _mul(axis, h / 2))
+        ring0, ring1 = [], []
+        for i in range(n):
+            a = 2 * math.pi * i / n + phase
+            d = _add(_mul(e1, math.cos(a) * r), _mul(e2, math.sin(a) * r))
+            ring0.append(_add(p0, d))
+            ring1.append(_add(p1, d))
+        for i in range(n):
+            j = (i + 1) % n
+            self.add(Face([ring0[i], ring0[j], ring1[j], ring1[i]], mat, struct))
+        if caps:
+            self.add(Face(ring1, mat, struct))
+            self.add(Face(list(reversed(ring0)), mat, struct))
+        return ring0, ring1
+
+    def facet_normal(self, n=6, axis="z", index=0, phase=0.0):
+        """Outward normal of facet `index` of an `ngon_prism` with the same
+        `n`, `axis` and `phase` — so a wing hinge, a radiator or an instrument
+        can be placed ON a facet rather than guessed at."""
+        axis_v = {"x": (1, 0, 0), "y": (0, 1, 0), "z": (0, 0, 1)}[axis]
+        ref = (0, 0, 1) if abs(_dot(axis_v, (0, 0, 1))) < 0.9 else (1, 0, 0)
+        e1 = _n(_cross(axis_v, ref))
+        e2 = _cross(axis_v, e1)
+        a = 2 * math.pi * (index + 0.5) / n + phase
+        return _n(_add(_mul(e1, math.cos(a)), _mul(e2, math.sin(a))))
 
     def prism(self, centre, size, mat, bevel=0.14, axis="z", struct=True):
         """Box with its four long edges chamfered flat. Straight edges only -

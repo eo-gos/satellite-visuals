@@ -1,0 +1,9 @@
+{
+  "source": "satellites/cartosat-3/grey/cartosat-3-grey.svg",
+  "svg_sha256": "76b9ba910fd89e158b05045d4f4ee59bb190cadc080ffd75e36a6cda79862878",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "cartosat-3-grey-1024px.png": "258ab99cb636f8b0861a1e713db3d27a20dd1d31d98cb35a3480022349cbd4e6",
+    "cartosat-3-grey-512px.png": "285c061bccb10ea5357da851358b217ec33acf74ec53746f485235be69007c90"
+  }
+}

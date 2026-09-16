@@ -20,8 +20,11 @@ Runs on Pillow alone; no numpy, no network.
     . .venv/bin/activate && python3 -m unittest tools.test_house_art -v
 """
 
+import base64
 import csv
+import io
 import json
+import re
 import shutil
 import subprocess
 import sys
@@ -622,6 +625,376 @@ class CheckerRowTests(unittest.TestCase):
     def test_row_carries_the_candidate_fingerprint(self):
         html = self._row(None, has_icon=False)
         self.assertIn('data-candidate="', html)
+
+
+class NgonPrismTests(unittest.TestCase):
+    """A hexagonal drum with side-mounted wings is a real bus shape and a box
+    is not a substitute for it (George, batch-2 round 1). `ngon_prism` must be
+    a genuine polygon — flat facets, hard edges, correct face count — and
+    `facet_normal` must agree with it so a mount lands on a facet."""
+
+    def _scene(self, **kw):
+        s = kit.Scene(kit.Camera(az=35, el=20))
+        with s.part("bus"):
+            s.ngon_prism((0, 0, 0), 1.0, 2.0, **kw)
+        return s
+
+    def test_face_count_is_sides_plus_two_caps(self):
+        for n in (5, 6, 8):
+            with self.subTest(n=n):
+                self.assertEqual(len(self._scene(n=n).faces), n + 2)
+
+    def test_caps_can_be_left_open(self):
+        self.assertEqual(len(self._scene(n=6, caps=False).faces), 6)
+
+    def test_every_face_is_structural_so_it_reaches_the_icon(self):
+        self.assertTrue(all(f.struct for f in self._scene(n=6).faces))
+
+    def test_vertices_lie_on_the_circumradius(self):
+        s = self._scene(n=6)
+        side = s.faces[0]
+        for x, y, z in side.pts:
+            self.assertAlmostEqual((x * x + y * y) ** 0.5, 1.0, places=6)
+            self.assertAlmostEqual(abs(z), 1.0, places=6)
+
+    def test_axis_selects_the_extrusion_direction(self):
+        s = kit.Scene()
+        with s.part("bus"):
+            s.ngon_prism((0, 0, 0), 1.0, 4.0, n=6, axis="y")
+        ys = [p[1] for f in s.faces for p in f.pts]
+        self.assertAlmostEqual(max(ys), 2.0, places=6)
+        self.assertAlmostEqual(min(ys), -2.0, places=6)
+
+    def test_facets_are_flat(self):
+        """A facet must be planar: this is a polygon, not a smoothed cylinder."""
+        s = self._scene(n=6)
+        for face in s.faces[:6]:
+            nrm = kit._normal(face.pts)
+            d = [kit._dot(nrm, p) for p in face.pts]
+            self.assertAlmostEqual(max(d) - min(d), 0.0, places=6)
+
+    def test_facet_normal_matches_the_facet_it_names(self):
+        s = self._scene(n=6)
+        for i in range(6):
+            with self.subTest(facet=i):
+                want = s.facet_normal(n=6, axis="z", index=i)
+                got = kit._normal(s.faces[i].pts)
+                self.assertGreater(kit._dot(want, got), 0.999)
+
+    def test_phase_rotates_the_profile(self):
+        import math
+        a = self._scene(n=6).faces[0].pts[0]
+        b = self._scene(n=6, phase=math.pi / 6).faces[0].pts[0]
+        self.assertGreater(abs(a[0] - b[0]) + abs(a[1] - b[1]), 0.1)
+
+    def test_it_is_not_a_tube(self):
+        """`tube` approximates a circle; this keeps the sides it was asked for."""
+        s = kit.Scene()
+        with s.part("bus"):
+            s.tube((0, 0, -1), (0, 0, 1), 1.0, "gold", n=6)
+        tube_faces = len(s.faces)
+        self.assertEqual(len(self._scene(n=6).faces), tube_faces)
+        # same face budget, but the prism's profile is exact: no radius shrink
+        self.assertAlmostEqual(
+            max((p[0] ** 2 + p[1] ** 2) ** 0.5 for f in self._scene(n=6).faces
+                for p in f.pts), 1.0, places=6)
+
+    def test_a_described_hexagonal_bus_passes_the_consistency_check(self):
+        s = self._scene(n=6)
+        report = checks.check_description(minimal_description(), s)
+        self.assertEqual(report["drawn"], ["bus"])
+        self.assertNotIn("drawn but not described", " ".join(report["problems"]))
+
+
+class SilhouetteRowTests(unittest.TestCase):
+    """The review target is the SILHOUETTE the Explorer actually shows on a
+    mission page with no licensed photograph (George, 2026-09-16): the icon SVG
+    masked in the muted text colour at 0.75 opacity, 62% of the plate. The page
+    must show that first, on both plates, and must show it from the ICON, not
+    from the colour drawing."""
+
+    ORIG = CheckerRowTests.ORIG
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        base = self.tmp / "testsat"
+        base.mkdir()
+        kit.render(minimal_scene(), base / "testsat.svg", base / "testsat-icon.svg")
+        (base / "description.json").write_text(json.dumps(minimal_description()),
+                                               encoding="utf-8")
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _row(self, icon16=None, has_icon=True, description=None):
+        return make_art_checker.row_html("testsat", description or minimal_description(),
+                                         self.ORIG, {}, icon16, {}, has_icon=has_icon)
+
+    def test_row_leads_with_both_explorer_plates(self):
+        html = self._row()
+        self.assertIn('class="silstrip"', html)
+        self.assertIn('class="plate dark"', html)
+        self.assertIn('class="plate light"', html)
+        # and the silhouette strip comes before the reference/description grid
+        self.assertLess(html.index('class="silstrip"'), html.index('class="grid"'))
+
+    def test_plate_tokens_match_the_portal(self):
+        css = make_art_checker.CSS
+        self.assertIn(make_art_checker.PLATE_DARK, css)
+        self.assertIn(make_art_checker.PLATE_LIGHT, css)
+        self.assertIn(make_art_checker.PLATE_MUTED, css)
+        self.assertIn(f"width:{make_art_checker.PLATE_MARK_PCT}%", css)
+        self.assertIn("opacity:.75", css)
+        # no placeholder survived the substitution
+        self.assertNotIn("__PLATE", css)
+        self.assertNotIn("__MARK", css)
+
+    def test_silhouette_is_the_icon_not_the_colour_drawing(self):
+        """The mask must come from <folder>-icon.svg. It is currentColor-filled,
+        so the plate can tint it; the colour master never is."""
+        html = self._row()
+        mark = html.split('class="mark"', 1)[1].split("</div>", 1)[0]
+        self.assertIn("fill:currentColor", mark)
+        self.assertNotIn(kit.PALETTE["panel_m"], mark)
+
+    def test_grey_twin_and_colour_master_are_both_present(self):
+        html = self._row()
+        self.assertIn("grey twin", html)
+        self.assertIn("colour master", html)
+        # the grey twin is desaturated, the master is not
+        twin = html.split("grey twin", 1)[0]
+        self.assertNotIn(kit.PALETTE["panel_m"], twin.rsplit('class="artbox"', 1)[-1])
+
+    def test_sixteen_px_cell_says_when_the_icon_breaks_up(self):
+        self.assertIn("breaks into 3", self._row({"legible": False, "components": 3}))
+        self.assertNotIn("breaks into", self._row({"legible": True, "components": 1}))
+
+    def test_missing_icon_render_is_stated_on_the_row(self):
+        """No render to check is exactly the case that forces an icon call, so
+        the cell must say so rather than showing nothing."""
+        html = self._row(None, has_icon=True)
+        self.assertIn("no render", html)
+        self.assertIn('data-icon-call="1"', html)
+
+    def test_a_row_without_an_icon_says_so_instead_of_faking_a_plate(self):
+        html = self._row(None, has_icon=False)
+        self.assertIn("no icon", html)
+        self.assertNotIn('class="plate dark"', html)
+
+    def test_reference_caveat_is_shown_when_present(self):
+        d = minimal_description(reference_caveat="bus inferred from a sibling")
+        self.assertIn("bus inferred from a sibling", self._row(description=d))
+
+    def test_controls_and_export_contract_are_unchanged(self):
+        html = self._row({"legible": False, "components": 3})
+        for token in ('data-act="approve"', 'data-act="regenerate"', 'data-act="reject"',
+                      'data-act="keep"', 'data-act="drop"', 'data-candidate="',
+                      'data-icon-call="1"', 'class="guide"'):
+            self.assertIn(token, html)
+        self.assertIn("satellite-visuals/house-art-review/2", make_art_checker.SCRIPT)
+
+
+class IconSixteenPxTests(unittest.TestCase):
+    """The 16 px cell must show the raster the legibility call was made on.
+
+    CX #144 pass 1: the cell embedded a 256 px JPEG and let the browser scale it
+    to 16 px and to 128 px, so the "magnified" view kept detail the real
+    downsample destroys, and both boxes were forced square — gaofen-2's icon is
+    256x106. A reviewer was deciding against a picture that had never been
+    rendered. These tests decode the embedded raster rather than trusting the
+    HTML labels."""
+
+    ORIG = CheckerRowTests.ORIG
+    SRC = (256, 106)          # deliberately non-square, gaofen-2's real shape
+
+    def setUp(self):
+        from PIL import Image, ImageDraw
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.base = self.tmp / "testsat"
+        self.base.mkdir()
+        kit.render(minimal_scene(), self.base / "testsat.svg",
+                   self.base / "testsat-icon.svg")
+        (self.base / "description.json").write_text(json.dumps(minimal_description()),
+                                                    encoding="utf-8")
+        # a transparent-background icon render, the way render_svg produces one
+        im = Image.new("RGBA", self.SRC, (0, 0, 0, 0))
+        dr = ImageDraw.Draw(im)
+        dr.rectangle([90, 10, 165, 95], fill=(0, 0, 0, 255))
+        dr.rectangle([0, 40, 256, 62], fill=(0, 0, 0, 255))
+        self.render = self.base / "testsat-icon-render.png"
+        im.save(self.render)
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _imgs(self):
+        """(src, width attr, height attr) for the px16 and px16big images."""
+        html = make_art_checker.row_html(
+            "testsat", minimal_description(), self.ORIG, {},
+            checks.icon_legibility(self.render), {}, has_icon=True)
+        out = {}
+        for cls in ("px16", "px16big"):
+            m = re.search(r'<img class="%s" src="([^"]+)" width="(\d+)" height="(\d+)"' % cls,
+                          html)
+            self.assertIsNotNone(m, f"no {cls} image in the row")
+            out[cls] = (m.group(1), int(m.group(2)), int(m.group(3)))
+        return html, out
+
+    @staticmethod
+    def _decode(src):
+        from PIL import Image
+        head, b64 = src.split(",", 1)
+        return head, Image.open(io.BytesIO(base64.b64decode(b64)))
+
+    def test_embedded_raster_is_the_real_16px_thumbnail(self):
+        _, imgs = self._imgs()
+        head, im = self._decode(imgs["px16"][0])
+        self.assertTrue(head.startswith("data:image/png"), head)
+        want = checks.icon_thumbnail(self.render, 16)
+        self.assertEqual(im.size, want.size)
+        self.assertEqual(max(im.size), 16)
+
+    def test_embedded_pixels_equal_the_pixels_that_were_measured(self):
+        """Not merely the same dimensions: the same image, losslessly."""
+        _, imgs = self._imgs()
+        _, im = self._decode(imgs["px16"][0])
+        want = checks.icon_thumbnail(self.render, 16)
+        self.assertEqual(list(im.convert("L").getdata()), list(want.getdata()))
+
+    def test_aspect_is_preserved_and_not_forced_square(self):
+        _, imgs = self._imgs()
+        _, im = self._decode(imgs["px16"][0])
+        self.assertNotEqual(im.width, im.height, "a 256x106 icon must not come out square")
+        src_aspect = self.SRC[0] / self.SRC[1]
+        self.assertLess(abs(im.width / im.height - src_aspect), 0.35)
+        # and the HTML must not re-impose a square through its attributes
+        self.assertEqual((imgs["px16"][1], imgs["px16"][2]), im.size)
+
+    def test_magnification_is_of_that_same_raster(self):
+        _, imgs = self._imgs()
+        self.assertEqual(imgs["px16"][0], imgs["px16big"][0],
+                         "the enlarged view must be the 16 px raster, not a bigger one")
+
+    def test_magnification_is_an_integer_factor(self):
+        """A non-integer scale resamples, which is the thing being avoided."""
+        _, imgs = self._imgs()
+        z = make_art_checker.ICON_ZOOM
+        self.assertEqual(imgs["px16big"][1], imgs["px16"][1] * z)
+        self.assertEqual(imgs["px16big"][2], imgs["px16"][2] * z)
+        self.assertEqual(z, int(z))
+
+    def test_css_does_not_force_a_square_box_on_the_16px_images(self):
+        css = make_art_checker.CSS
+        self.assertNotIn("img.px16,.px16{width:16px;height:16px", css)
+        self.assertNotIn("img.px16big,.px16big{width:128px;height:128px", css)
+        self.assertIn("img.px16big{image-rendering:pixelated}", css)
+
+    def test_the_caption_states_the_real_pixel_size(self):
+        html, imgs = self._imgs()
+        w, h = imgs["px16"][1], imgs["px16"][2]
+        self.assertIn(f"actual {w}&times;{h}", html)
+
+    def test_a_missing_render_still_falls_back_and_forces_the_icon_call(self):
+        self.render.unlink()
+        html = make_art_checker.row_html("testsat", minimal_description(), self.ORIG,
+                                         {}, None, {}, has_icon=True)
+        self.assertIn("no render", html)
+        self.assertIn('data-icon-call="1"', html)
+        self.assertNotIn('<img class="px16"', html)
+
+
+class ComparisonStripTests(unittest.TestCase):
+    """A re-review needs last round's silhouette, this round's, the note that
+    was written on it and the reference it named, all on the row. Without that a
+    reviewer is opening three windows and a file browser to answer one question
+    (George, batch-2 round 1)."""
+
+    ORIG = CheckerRowTests.ORIG
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.base = self.tmp / "testsat"
+        self.base.mkdir()
+        kit.render(minimal_scene(), self.base / "testsat.svg",
+                   self.base / "testsat-icon.svg")
+        (self.base / "description.json").write_text(json.dumps(minimal_description()),
+                                                    encoding="utf-8")
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _round1(self):
+        prev = self.base / "round1"
+        prev.mkdir(exist_ok=True)
+        kit.render(minimal_scene(hide_wings=True), prev / "testsat.svg",
+                   prev / "testsat-icon.svg")
+        return prev
+
+    def _review(self, **over):
+        data = {"round": 2, "previous_decision": "regenerate",
+                "guidance": "wings on the wrong side", "named_reference": 1}
+        data.update(over)
+        (self.base / "review.json").write_text(json.dumps(data), encoding="utf-8")
+        return data
+
+    def _row(self, refs_local=None):
+        return make_art_checker.row_html("testsat", minimal_description(), self.ORIG,
+                                         {}, {"legible": True, "components": 1},
+                                         refs_local or {}, has_icon=True)
+
+    def test_no_review_file_means_no_comparison(self):
+        self.assertNotIn('class="compare"', self._row())
+
+    def test_guidance_is_quoted_verbatim_on_the_row(self):
+        self._review()
+        html = self._row()
+        self.assertIn('class="compare"', html)
+        self.assertIn("wings on the wrong side", html)
+
+    def test_both_rounds_silhouettes_are_shown(self):
+        self._round1()
+        self._review()
+        html = self._row()
+        self.assertIn("round 1 silhouette", html)
+        self.assertIn("round 2 silhouette", html)
+
+    def test_a_missing_previous_round_degrades_to_this_round_only(self):
+        """The record is what it is: no round-1 artwork kept, no round-1 cell,
+        and the row must still build rather than raise."""
+        self._review()
+        html = self._row()
+        self.assertNotIn("round 1 silhouette", html)
+        self.assertIn("round 2 silhouette", html)
+
+    def test_named_reference_is_shown_when_its_file_is_there(self):
+        self._round1()
+        self._review(named_reference=1)
+        png = self.tmp / "ref1.png"
+        kit.render(minimal_scene(), self.tmp / "throwaway.svg", self.tmp / "throwaway-icon.svg")
+        from PIL import Image
+        Image.new("RGB", (64, 48), (200, 200, 200)).save(png)
+        html = self._row(refs_local={1: str(png)})
+        self.assertIn("the one the note names", html)
+        self.assertIn("reference 1", html)
+
+    def test_named_reference_that_is_not_downloaded_is_skipped(self):
+        self._review(named_reference=99)
+        self.assertNotIn("the one the note names", self._row())
+
+    def test_a_corrupt_review_file_does_not_break_the_page(self):
+        (self.base / "review.json").write_text("{not json", encoding="utf-8")
+        self.assertIsNone(make_art_checker.review_round(self.base))
+        self.assertNotIn('class="compare"', self._row())
+
+    def test_comparison_does_not_disturb_the_export_contract(self):
+        self._round1()
+        self._review()
+        html = self._row()
+        for token in ('data-candidate="', 'data-icon-call="0"', 'data-act="approve"'):
+            self.assertIn(token, html)
 
 
 @unittest.skipIf(shutil.which("node") is None, "node not available")
