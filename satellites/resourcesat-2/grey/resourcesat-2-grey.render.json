@@ -1,0 +1,9 @@
+{
+  "source": "satellites/resourcesat-2/grey/resourcesat-2-grey.svg",
+  "svg_sha256": "beeafb1951dc3c45cc77d2db7aa8672d3abb673bf70e4a93b3fc3d5de30e9b34",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "resourcesat-2-grey-1024px.png": "3de78984f45886ad2ca0f5e0d7cc1af7f4f754939a43a38abbefa7bdba58878a",
+    "resourcesat-2-grey-512px.png": "06b3638a2b490064290a286e4536ecb260da794693716cb2d37b84b2f3581821"
+  }
+}

@@ -1,0 +1,9 @@
+{
+  "source": "satellites/dq-1/grey/dq-1-grey.svg",
+  "svg_sha256": "91917cc4f007f3aef400b69b2acb92c382749044ddf445cdfae81d852d26b111",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "dq-1-grey-1024px.png": "2789a474254eb734578eaa60a5893c567c78165fd69ae4011c01284a3131ec9c",
+    "dq-1-grey-512px.png": "78a1660ac3abbf31d2e660e11bb139513c111ed9091173120babbb2c528dca22"
+  }
+}

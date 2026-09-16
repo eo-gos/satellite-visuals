@@ -1,0 +1,9 @@
+{
+  "source": "satellites/aist-2t/grey/aist-2t-grey.svg",
+  "svg_sha256": "c89371d73c38509226abb7f54bad92f6527b188fcad1225f875eecf8a9301fca",
+  "renderer": "@resvg/resvg-js 2.6.2",
+  "renders": {
+    "aist-2t-grey-1024px.png": "3b912e65ef8fc3913118900a8effe48898e856916f0c382d8253f68137aabf7c",
+    "aist-2t-grey-512px.png": "47d138c3897c1c53236585c3e4925a1aff4c4c4eab96e578475630c308ae76fe"
+  }
+}

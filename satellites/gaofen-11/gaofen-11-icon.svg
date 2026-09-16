@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg xmlns="http://www.w3.org/2000/svg" version="1.2" baseProfile="tiny" viewBox="0.00 0.00 512.00 512.00" width="512.00" height="512.00">
+<g>
+<path style="fill:currentColor" d="M 240.69 479.70 L 249.81 479.11 L 249.81 187.59 L 240.69 188.18 Z"/>
+<path style="fill:currentColor" d="M 272.94 485.37 L 257.60 484.37 L 242.26 485.37 L 231.02 488.08 L 226.91 491.80 L 231.02 495.51 L 242.26 498.22 L 257.60 499.22 L 272.94 498.22 L 284.17 495.51 L 288.28 491.80 L 284.17 488.08 Z"/>
+<path style="fill:currentColor" d="M 304.91 488.67 L 302.47 486.46 L 249.81 479.11 L 240.69 479.70 L 210.29 492.44 L 212.73 494.64 L 265.39 502.00 L 274.51 501.41 Z"/>
+<path style="fill:currentColor" d="M 76.56 134.05 L 76.56 10.00 L 75.60 10.40 L 75.60 134.45 Z"/>
+<path style="fill:currentColor" d="M 249.81 479.11 L 302.47 486.46 L 302.47 194.94 L 249.81 187.59 Z"/>
+<path style="fill:currentColor" d="M 190.05 149.90 L 76.56 134.05 L 75.60 134.45 L 189.09 150.31 Z"/>
+<path style="fill:currentColor" d="M 210.29 492.44 L 240.69 479.70 L 240.69 188.18 L 210.29 200.92 Z"/>
+<path style="fill:currentColor" d="M 302.47 486.46 L 304.91 488.67 L 304.91 197.15 L 302.47 194.94 Z"/>
+<path style="fill:currentColor" d="M 190.05 149.90 L 190.05 25.85 L 76.56 10.00 L 76.56 134.05 Z"/>
+<path style="fill:currentColor" d="M 189.09 150.31 L 75.60 134.45 L 75.60 10.40 L 189.09 26.25 Z"/>
+<path style="fill:currentColor" d="M 235.81 179.53 L 246.81 178.82 L 246.81 29.96 L 235.81 30.67 Z"/>
+<path style="fill:currentColor" d="M 190.05 25.85 L 189.09 26.25 L 75.60 10.40 L 76.56 10.00 Z"/>
+<path style="fill:currentColor" d="M 212.73 494.64 L 210.29 492.44 L 210.29 200.92 L 212.73 203.12 Z"/>
+<path style="fill:currentColor" d="M 304.91 488.67 L 274.51 501.41 L 274.51 209.89 L 304.91 197.15 Z"/>
+<path style="fill:currentColor" d="M 246.81 178.82 L 313.13 188.09 L 313.13 39.22 L 246.81 29.96 Z"/>
+<path style="fill:currentColor" d="M 187.01 89.15 L 189.57 93.04 L 192.12 87.01 L 189.57 83.12 Z"/>
+<path style="fill:currentColor" d="M 190.05 25.85 L 190.05 149.90 L 189.09 150.31 L 189.09 26.25 Z"/>
+<path style="fill:currentColor" d="M 265.39 502.00 L 212.73 494.64 L 212.73 203.12 L 265.39 210.48 Z"/>
+<path style="fill:currentColor" d="M 215.03 96.60 L 217.59 90.56 L 192.12 87.01 L 189.57 93.04 Z"/>
+<path style="fill:currentColor" d="M 217.59 90.56 L 215.03 86.67 L 189.57 83.12 L 192.12 87.01 Z"/>
+<path style="fill:currentColor" d="M 199.12 194.91 L 235.81 179.53 L 235.81 30.67 L 199.12 46.05 Z"/>
+<path style="fill:currentColor" d="M 212.48 92.71 L 215.03 96.60 L 189.57 93.04 L 187.01 89.15 Z"/>
+<path style="fill:currentColor" d="M 274.51 209.89 L 265.39 210.48 L 212.73 203.12 L 210.29 200.92 L 240.69 188.18 L 249.81 187.59 L 302.47 194.94 L 304.91 197.15 Z"/>
+<path style="fill:currentColor" d="M 215.03 86.67 L 212.48 92.71 L 187.01 89.15 L 189.57 83.12 Z"/>
+<path style="fill:currentColor" d="M 316.08 190.75 L 313.13 188.09 L 246.81 178.82 L 235.81 179.53 L 199.12 194.91 L 202.06 197.57 L 268.39 206.84 L 279.39 206.12 Z"/>
+<path style="fill:currentColor" d="M 215.03 86.67 L 217.59 90.56 L 215.03 96.60 L 212.48 92.71 Z"/>
+<path style="fill:currentColor" d="M 313.13 188.09 L 316.08 190.75 L 316.08 41.88 L 313.13 39.22 Z"/>
+<path style="fill:currentColor" d="M 274.51 501.41 L 265.39 502.00 L 265.39 210.48 L 274.51 209.89 Z"/>
+<path style="fill:currentColor" d="M 246.27 36.03 L 296.09 42.99 L 296.09 25.63 L 246.27 18.67 Z"/>
+<path style="fill:currentColor" d="M 219.10 47.42 L 246.27 36.03 L 246.27 18.67 L 219.10 30.05 Z"/>
+<path style="fill:currentColor" d="M 202.06 197.57 L 199.12 194.91 L 199.12 46.05 L 202.06 48.71 Z"/>
+<path style="fill:currentColor" d="M 246.27 36.03 L 219.10 47.42 L 268.93 54.38 L 296.09 42.99 Z"/>
+<path style="fill:currentColor" d="M 279.39 57.26 L 268.39 57.97 L 202.06 48.71 L 199.12 46.05 L 235.81 30.67 L 246.81 29.96 L 313.13 39.22 L 316.08 41.88 Z"/>
+<path style="fill:currentColor" d="M 316.08 190.75 L 279.39 206.12 L 279.39 57.26 L 316.08 41.88 Z"/>
+<path style="fill:currentColor" d="M 246.27 18.67 L 296.09 25.63 L 268.93 37.01 L 219.10 30.05 Z"/>
+<path style="fill:currentColor" d="M 217.50 125.92 L 217.50 160.04 L 219.10 159.37 L 219.10 125.25 Z"/>
+<path style="fill:currentColor" d="M 217.50 160.04 L 250.71 164.68 L 252.31 164.01 L 219.10 159.37 Z"/>
+<path style="fill:currentColor" d="M 296.97 98.12 L 294.41 104.15 L 296.97 108.04 L 299.52 102.01 Z"/>
+<path style="fill:currentColor" d="M 219.10 159.37 L 252.31 164.01 L 252.31 129.89 L 219.10 125.25 Z"/>
+<path style="fill:currentColor" d="M 296.09 42.99 L 268.93 54.38 L 268.93 37.01 L 296.09 25.63 Z"/>
+<path style="fill:currentColor" d="M 217.50 160.04 L 217.50 125.92 L 250.71 130.56 L 250.71 164.68 Z"/>
+<path style="fill:currentColor" d="M 299.52 102.01 L 296.97 108.04 L 322.43 111.60 L 324.99 105.57 Z"/>
+<path style="fill:currentColor" d="M 296.97 98.12 L 299.52 102.01 L 324.99 105.57 L 322.43 101.67 Z"/>
+<path style="fill:currentColor" d="M 268.39 206.84 L 202.06 197.57 L 202.06 48.71 L 268.39 57.97 Z"/>
+<path style="fill:currentColor" d="M 217.50 125.92 L 219.10 125.25 L 252.31 129.89 L 250.71 130.56 Z"/>
+<path style="fill:currentColor" d="M 296.97 108.04 L 294.41 104.15 L 319.88 107.71 L 322.43 111.60 Z"/>
+<path style="fill:currentColor" d="M 294.41 104.15 L 296.97 98.12 L 322.43 101.67 L 319.88 107.71 Z"/>
+<path style="fill:currentColor" d="M 250.71 164.68 L 250.71 130.56 L 252.31 129.89 L 252.31 164.01 Z"/>
+<path style="fill:currentColor" d="M 219.10 47.42 L 219.10 30.05 L 268.93 37.01 L 268.93 54.38 Z"/>
+<path style="fill:currentColor" d="M 324.99 105.57 L 322.43 111.60 L 319.88 107.71 L 322.43 101.67 Z"/>
+<path style="fill:currentColor" d="M 321.95 44.81 L 321.95 168.86 L 322.91 168.46 L 322.91 44.41 Z"/>
+<path style="fill:currentColor" d="M 279.39 206.12 L 268.39 206.84 L 268.39 57.97 L 279.39 57.26 Z"/>
+<path style="fill:currentColor" d="M 321.95 168.86 L 435.44 184.72 L 436.40 184.31 L 322.91 168.46 Z"/>
+<path style="fill:currentColor" d="M 322.91 168.46 L 436.40 184.31 L 436.40 60.26 L 322.91 44.41 Z"/>
+<path style="fill:currentColor" d="M 321.95 168.86 L 321.95 44.81 L 435.44 60.66 L 435.44 184.72 Z"/>
+<path style="fill:currentColor" d="M 321.95 44.81 L 322.91 44.41 L 436.40 60.26 L 435.44 60.66 Z"/>
+<path style="fill:currentColor" d="M 435.44 184.72 L 435.44 60.66 L 436.40 60.26 L 436.40 184.31 Z"/>
+</g>
+</svg>
