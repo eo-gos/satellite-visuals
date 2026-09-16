@@ -133,6 +133,67 @@ def silhouette_plate(icon_svg, tone, caption):
             f'<figcaption>{caption}</figcaption></figure>')
 
 
+def review_round(base):
+    """Optional round-over-round record for a regenerated candidate.
+
+    `<folder>/review.json` carries what the previous round was told to fix:
+
+        {"round": 2, "previous_decision": "regenerate",
+         "guidance": "<the reviewer's words, verbatim>",
+         "named_reference": 3}
+
+    and `<folder>/round1/` holds that round's artwork. When both are present the
+    row leads with a comparison: the previous silhouette beside the new one, and
+    the reference the reviewer named at a size you can actually judge, so a
+    re-review does not mean opening three windows and a file browser.
+    """
+    path = Path(base) / "review.json"
+    if not path.is_file():
+        return None
+    try:
+        data = json.loads(path.read_text(encoding="utf-8"))
+    except ValueError:
+        return None
+    return data if isinstance(data, dict) else None
+
+
+def previous_round_dir(base, review):
+    """Where the previous round's artwork lives, or None if it was not kept."""
+    if not review:
+        return None
+    prev = Path(base) / f"round{int(review.get('round', 2)) - 1}"
+    icon = prev / f"{Path(base).name}-icon.svg"
+    return prev if icon.is_file() else None
+
+
+def comparison_html(folder, base, review, refs_local, refs):
+    """Previous silhouette, new silhouette, and the named reference beside them."""
+    prev = previous_round_dir(base, review)
+    cells = []
+    if prev:
+        cells.append(silhouette_plate(prev / f"{folder}-icon.svg", "light",
+                                      f"round {int(review.get('round', 2)) - 1} silhouette"))
+    cells.append(silhouette_plate(base / f"{folder}-icon.svg", "light",
+                                  f"round {esc(review.get('round', 2))} silhouette"))
+    n = review.get("named_reference")
+    named = next((r for r in refs if r.get("n") == n), None)
+    path = refs_local.get(n) if named else None
+    if path and Path(path).exists():
+        cells.append(
+            f'<figure class="sil ref-named"><a href="{esc(named.get("source_page") or "")}" '
+            f'target="_blank" rel="noopener">'
+            f'<img src="{data_uri(path, 640, 84)}" alt="reference {esc(n)}"></a>'
+            f'<figcaption>reference {esc(n)} &mdash; the one the note names'
+            f'{(" &middot; " + esc(named.get("credit", ""))) if named.get("credit") else ""}'
+            f'</figcaption></figure>')
+    guidance = review.get("guidance")
+    quote = (f'<blockquote class="guidance">{esc(guidance)}</blockquote>'
+             if guidance else "")
+    return (f'<div class="compare"><h3>Round {esc(review.get("round", 2))} '
+            f'&mdash; what the last round said</h3>{quote}'
+            f'<div class="comparestrip">{"".join(cells)}</div></div>')
+
+
 def icon_16_cell(icon_png, icon_svg, icon16):
     """The 16 px check: the icon render at true size, and magnified beside it so
     a person can see what breaks up. Falls back to the SVG when the render is
@@ -204,6 +265,7 @@ def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     margin = orig.get("margin_over_control_p95")
     grade = d.get("evidence", "C")
 
+    review = review_round(base)
     icon_svg = base / f"{folder}-icon.svg"
     colour_svg = base / f"{folder}.svg"
     silstrip = (
@@ -232,6 +294,7 @@ def row_html(folder, d, orig, chk, icon16, refs_local, has_icon=None):
     <div class="grade g{esc(grade)}" title="{esc(GRADE_TEXT.get(grade, ''))}">evidence {esc(grade)}</div>
     <div class="state">undecided</div>
   </header>
+  {comparison_html(folder, base, review, refs_local, d.get("references", [])) if review else ""}
   <div class="silstrip">{silstrip}</div>
   <p class="silnote">The Explorer shows the <b>silhouette</b> on a mission page with no
     licensed photograph: the icon SVG masked in the muted text colour at 0.75 opacity,
@@ -329,6 +392,15 @@ img.px16big,.px16big{width:128px;height:128px;image-rendering:pixelated}
 .sil.wide .artbox{width:300px;height:240px;min-height:0}
 .silnote{font-size:11.5px;color:#3a4247;margin:0;padding:10px 18px;background:#fbfcfc;
  border-bottom:1px solid var(--line)}
+.compare{padding:16px 18px 6px;background:#f4f7fa;border-bottom:1px solid var(--line)}
+.compare h3{margin:0 0 8px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;
+ color:var(--accent)}
+blockquote.guidance{margin:0 0 12px;padding:8px 14px;border-left:3px solid var(--accent);
+ background:#fff;font-size:13px;color:#23303d}
+.comparestrip{display:flex;gap:16px;align-items:flex-start;flex-wrap:wrap}
+.sil.ref-named img{max-width:420px;max-height:300px;display:block;border:1px solid var(--line);
+ border-radius:6px;background:#fff}
+.sil.ref-named figcaption{max-width:420px}
 .col h3{margin:0 0 10px;font-size:12px;text-transform:uppercase;letter-spacing:.05em;color:var(--mute)}
 .refstrip{display:flex;flex-wrap:wrap;gap:8px}
 .ref{width:calc(50% - 4px)}

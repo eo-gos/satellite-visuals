@@ -792,6 +792,98 @@ class SilhouetteRowTests(unittest.TestCase):
         self.assertIn("satellite-visuals/house-art-review/2", make_art_checker.SCRIPT)
 
 
+class ComparisonStripTests(unittest.TestCase):
+    """A re-review needs last round's silhouette, this round's, the note that
+    was written on it and the reference it named, all on the row. Without that a
+    reviewer is opening three windows and a file browser to answer one question
+    (George, batch-2 round 1)."""
+
+    ORIG = CheckerRowTests.ORIG
+
+    def setUp(self):
+        self.tmp = Path(tempfile.mkdtemp())
+        self.addCleanup(shutil.rmtree, self.tmp, ignore_errors=True)
+        self.base = self.tmp / "testsat"
+        self.base.mkdir()
+        kit.render(minimal_scene(), self.base / "testsat.svg",
+                   self.base / "testsat-icon.svg")
+        (self.base / "description.json").write_text(json.dumps(minimal_description()),
+                                                    encoding="utf-8")
+        self._out = make_art_checker.OUT
+        make_art_checker.OUT = self.tmp
+        self.addCleanup(setattr, make_art_checker, "OUT", self._out)
+
+    def _round1(self):
+        prev = self.base / "round1"
+        prev.mkdir(exist_ok=True)
+        kit.render(minimal_scene(hide_wings=True), prev / "testsat.svg",
+                   prev / "testsat-icon.svg")
+        return prev
+
+    def _review(self, **over):
+        data = {"round": 2, "previous_decision": "regenerate",
+                "guidance": "wings on the wrong side", "named_reference": 1}
+        data.update(over)
+        (self.base / "review.json").write_text(json.dumps(data), encoding="utf-8")
+        return data
+
+    def _row(self, refs_local=None):
+        return make_art_checker.row_html("testsat", minimal_description(), self.ORIG,
+                                         {}, {"legible": True, "components": 1},
+                                         refs_local or {}, has_icon=True)
+
+    def test_no_review_file_means_no_comparison(self):
+        self.assertNotIn('class="compare"', self._row())
+
+    def test_guidance_is_quoted_verbatim_on_the_row(self):
+        self._review()
+        html = self._row()
+        self.assertIn('class="compare"', html)
+        self.assertIn("wings on the wrong side", html)
+
+    def test_both_rounds_silhouettes_are_shown(self):
+        self._round1()
+        self._review()
+        html = self._row()
+        self.assertIn("round 1 silhouette", html)
+        self.assertIn("round 2 silhouette", html)
+
+    def test_a_missing_previous_round_degrades_to_this_round_only(self):
+        """The record is what it is: no round-1 artwork kept, no round-1 cell,
+        and the row must still build rather than raise."""
+        self._review()
+        html = self._row()
+        self.assertNotIn("round 1 silhouette", html)
+        self.assertIn("round 2 silhouette", html)
+
+    def test_named_reference_is_shown_when_its_file_is_there(self):
+        self._round1()
+        self._review(named_reference=1)
+        png = self.tmp / "ref1.png"
+        kit.render(minimal_scene(), self.tmp / "throwaway.svg", self.tmp / "throwaway-icon.svg")
+        from PIL import Image
+        Image.new("RGB", (64, 48), (200, 200, 200)).save(png)
+        html = self._row(refs_local={1: str(png)})
+        self.assertIn("the one the note names", html)
+        self.assertIn("reference 1", html)
+
+    def test_named_reference_that_is_not_downloaded_is_skipped(self):
+        self._review(named_reference=99)
+        self.assertNotIn("the one the note names", self._row())
+
+    def test_a_corrupt_review_file_does_not_break_the_page(self):
+        (self.base / "review.json").write_text("{not json", encoding="utf-8")
+        self.assertIsNone(make_art_checker.review_round(self.base))
+        self.assertNotIn('class="compare"', self._row())
+
+    def test_comparison_does_not_disturb_the_export_contract(self):
+        self._round1()
+        self._review()
+        html = self._row()
+        for token in ('data-candidate="', 'data-icon-call="0"', 'data-act="approve"'):
+            self.assertIn(token, html)
+
+
 @unittest.skipIf(shutil.which("node") is None, "node not available")
 class CheckerLogicTests(unittest.TestCase):
     """The page's decision logic, run under node exactly as shipped (the LOGIC
