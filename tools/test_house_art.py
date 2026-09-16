@@ -624,6 +624,85 @@ class CheckerRowTests(unittest.TestCase):
         self.assertIn('data-candidate="', html)
 
 
+class NgonPrismTests(unittest.TestCase):
+    """A hexagonal drum with side-mounted wings is a real bus shape and a box
+    is not a substitute for it (George, batch-2 round 1). `ngon_prism` must be
+    a genuine polygon — flat facets, hard edges, correct face count — and
+    `facet_normal` must agree with it so a mount lands on a facet."""
+
+    def _scene(self, **kw):
+        s = kit.Scene(kit.Camera(az=35, el=20))
+        with s.part("bus"):
+            s.ngon_prism((0, 0, 0), 1.0, 2.0, **kw)
+        return s
+
+    def test_face_count_is_sides_plus_two_caps(self):
+        for n in (5, 6, 8):
+            with self.subTest(n=n):
+                self.assertEqual(len(self._scene(n=n).faces), n + 2)
+
+    def test_caps_can_be_left_open(self):
+        self.assertEqual(len(self._scene(n=6, caps=False).faces), 6)
+
+    def test_every_face_is_structural_so_it_reaches_the_icon(self):
+        self.assertTrue(all(f.struct for f in self._scene(n=6).faces))
+
+    def test_vertices_lie_on_the_circumradius(self):
+        s = self._scene(n=6)
+        side = s.faces[0]
+        for x, y, z in side.pts:
+            self.assertAlmostEqual((x * x + y * y) ** 0.5, 1.0, places=6)
+            self.assertAlmostEqual(abs(z), 1.0, places=6)
+
+    def test_axis_selects_the_extrusion_direction(self):
+        s = kit.Scene()
+        with s.part("bus"):
+            s.ngon_prism((0, 0, 0), 1.0, 4.0, n=6, axis="y")
+        ys = [p[1] for f in s.faces for p in f.pts]
+        self.assertAlmostEqual(max(ys), 2.0, places=6)
+        self.assertAlmostEqual(min(ys), -2.0, places=6)
+
+    def test_facets_are_flat(self):
+        """A facet must be planar: this is a polygon, not a smoothed cylinder."""
+        s = self._scene(n=6)
+        for face in s.faces[:6]:
+            nrm = kit._normal(face.pts)
+            d = [kit._dot(nrm, p) for p in face.pts]
+            self.assertAlmostEqual(max(d) - min(d), 0.0, places=6)
+
+    def test_facet_normal_matches_the_facet_it_names(self):
+        s = self._scene(n=6)
+        for i in range(6):
+            with self.subTest(facet=i):
+                want = s.facet_normal(n=6, axis="z", index=i)
+                got = kit._normal(s.faces[i].pts)
+                self.assertGreater(kit._dot(want, got), 0.999)
+
+    def test_phase_rotates_the_profile(self):
+        import math
+        a = self._scene(n=6).faces[0].pts[0]
+        b = self._scene(n=6, phase=math.pi / 6).faces[0].pts[0]
+        self.assertGreater(abs(a[0] - b[0]) + abs(a[1] - b[1]), 0.1)
+
+    def test_it_is_not_a_tube(self):
+        """`tube` approximates a circle; this keeps the sides it was asked for."""
+        s = kit.Scene()
+        with s.part("bus"):
+            s.tube((0, 0, -1), (0, 0, 1), 1.0, "gold", n=6)
+        tube_faces = len(s.faces)
+        self.assertEqual(len(self._scene(n=6).faces), tube_faces)
+        # same face budget, but the prism's profile is exact: no radius shrink
+        self.assertAlmostEqual(
+            max((p[0] ** 2 + p[1] ** 2) ** 0.5 for f in self._scene(n=6).faces
+                for p in f.pts), 1.0, places=6)
+
+    def test_a_described_hexagonal_bus_passes_the_consistency_check(self):
+        s = self._scene(n=6)
+        report = checks.check_description(minimal_description(), s)
+        self.assertEqual(report["drawn"], ["bus"])
+        self.assertNotIn("drawn but not described", " ".join(report["problems"]))
+
+
 class SilhouetteRowTests(unittest.TestCase):
     """The review target is the SILHOUETTE the Explorer actually shows on a
     mission page with no licensed photograph (George, 2026-09-16): the icon SVG
