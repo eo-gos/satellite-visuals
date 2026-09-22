@@ -93,3 +93,7 @@ each licence name to its deed URL (the hyperlink target the portal credit line n
 • Original materials — the SVGs, the rasters rendered from them, documentation, and curation/metadata authored by the maintainers — are licensed under [Creative Commons Attribution 4.0 International (CC BY 4.0)](https://creativecommons.org/licenses/by/4.0/).
 
 • Sourced photographs are added only under their owners' open licences, recorded per image in `index.json` and `ATTRIBUTIONS.csv`. See `ASSET-LICENSING.md` for the policy, including the attribution-is-not-a-licence rule.
+
+## Agent comments
+
+Comments on issues and PRs that start with `CC:`, `CX:` or `CR:` are written by AI agents working for @gamedaygeorge under `.diamondsky/PROTOCOL.md`.
